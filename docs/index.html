@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1538-926553">
+<meta name="app-build" content="1024-1549-d36fa5">
 <title>PhD Plan</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M8 23V9h7a4.5 4.5 0 0 1 0 9H8' fill='none' stroke='%23111' stroke-width='2.2'/%3E%3Ccircle cx='23.5' cy='21.5' r='2.2' fill='%23a8281e'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -1384,7 +1384,11 @@ function renderSettings(){
    Each server runs tools/server-monitor/plan_monitor.py, published to the tailnet by `tailscale serve`.
    While this tab is open and visible, every server is polled every few seconds and only its card is
    repainted, so nothing else on the page re-renders. The server list is part of the (encrypted) plans. */
-const LIVE={timer:0,busy:false,POLL:3000,st:{},hist:{}};
+const LIVE={timer:0,busy:false,POLL:3000,st:{},hist:{},lna:''};
+/* Chrome asks before a public site may reach devices on the local network (the tailnet included); until it is
+   answered, requests just wait. Track that permission so the cards can say what to click. */
+(async()=>{try{const p=await navigator.permissions.query({name:'local-network-access'});LIVE.lna=p.state;
+  p.onchange=()=>{LIVE.lna=p.state;if(p.state==='granted'&&LIVE.timer)monTick();if(D&&U.tab==='res')(D.servers||[]).forEach(paintServer)}}catch(e){}})();
 const srvUrl=s=>String(s.url||'').trim().replace(/\/+$/,'');
 const pctOf=(a,b)=>a!=null&&b?Math.round(a/b*1000)/10:null;
 const gib=b=>b==null?'—':b/2**30>=100?String(Math.round(b/2**30)):(b/2**30).toFixed(1);
@@ -1426,7 +1430,9 @@ function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[]
   const label={wait:'connecting…',live:'live',stale:'stale · '+(m.ok?Math.round((Date.now()-m.ok)/1000)+' s ago':''),off:'unreachable'}[state];
   let h=`<div class="srv-h"><h3 data-find>${esc(s.name)}</h3><span class="srv-st ${state}"><i></i>${label}</span>${x?`<span class="srv-meta">${esc(x.host)} · up ${dur(x.uptime)} · load ${x.load.map(n=>n.toFixed(1)).join(' ')}</span>`:''}</div>`;
   if(s.note)h+=`<p class="hint" data-find>${md(s.note)}</p>`;
-  if(!x)return h+(state==='off'?`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)? Chrome may also ask once whether this site may reach devices on your network: allow it.</p>`:'');
+  if(!x)return h+(state==='off'?(LIVE.lna==='prompt'?`<p class="err small">Chrome is waiting for your permission.</p><p class="hint">Click <strong>Allow</strong> in the prompt next to the address bar (“look for and connect to devices on your local network”). If it is gone, click the site-settings icon left of the address and allow <em>Local network access</em>.</p>`
+    :LIVE.lna==='denied'?`<p class="err small">Chrome is blocking access to devices on your network for this site.</p><p class="hint">Click the site-settings icon left of the address and set <em>Local network access</em> to Allow, then reload.</p>`
+    :`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)?</p>`):'');
   const G=x.gpus||[];
   h+=`<div class="rrows">${rrow('cpu',x.cpu,`${x.cpu==null?'—':Math.round(x.cpu)+'%'} of ${x.cores} cores`,spark(H.map(p=>p[1])))}
     ${rrow('memory',pctOf(x.mem.used,x.mem.total),`${size2(x.mem.used,x.mem.total)}${x.swap&&x.swap.used>2**28?` · swap ${gib(x.swap.used)}`:''}`,spark(H.map(p=>p[2])))}
