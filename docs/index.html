@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1632-4e9e4e">
+<meta name="app-build" content="1024-1646-19c044">
 <title>Control Panel</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M7 10h18M7 16h18M7 22h18' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='10' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='21' cy='16' r='2.6' fill='%23a8281e'/%3E%3Ccircle cx='15' cy='22' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -485,68 +485,70 @@ ol.steps pre code{font:13px var(--f-code);background:none;padding:0;white-space:
 @media (max-width:700px){.rrow{grid-template-columns:5.2em minmax(40px,1fr) auto}.rrow>.spark,.rrow>span:empty{display:none}.rrow>.gu{grid-column:2/-1}
   .gpu{grid-template-columns:1.1em minmax(40px,1fr) minmax(100px,1.3fr) 2.2em}.gpu .gn,.gpu .spark{display:none}.gpu>.gu{grid-column:2/-1}.srv-meta{margin-left:0}}
 
-/* this week: deadline countdown, calendar, to-dos */
 :root{--c0:#3d6b9e;--c1:#2f7a57;--c2:#8e4a86;--c3:#8a5a00;--c4:#5a6776;--c5:#a8281e}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c0:#86aee0;--c1:#7cc49b;--c2:#d29bd0;--c3:#e3b965;--c4:#a7b1bd;--c5:#e8806f}}
 :root[data-theme="dark"]{--c0:#86aee0;--c1:#7cc49b;--c2:#d29bd0;--c3:#e3b965;--c4:#a7b1bd;--c5:#e8806f}
-.dls{display:flex;flex-wrap:wrap;gap:12px 36px;align-items:flex-end;margin-bottom:18px}
-.dl{display:flex;gap:12px;align-items:baseline}
-.dl b{font-weight:400;font-size:2.8rem;line-height:1;color:var(--ink);font-variant-numeric:lining-nums}
-.dl.soon b{color:var(--hl)}
-.dl span{color:var(--muted);font-size:15.5px;line-height:1.35}
-.dl strong{color:var(--ink);font-weight:600}
-.dl small{display:block;font-size:14px;color:var(--faint);font-style:italic}
-.dl-ed{align-self:center}
-.cal-top{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;justify-content:space-between;margin-bottom:8px;min-height:1.5em}
-.nextup{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:15.5px}
-.nu b{font-weight:400;font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);margin-right:6px}
-.nu.now b{color:var(--hl)}
-.cal-status{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--faint);font-style:italic;margin-left:auto}
 .src{display:inline-flex;align-items:center;gap:5px;font-style:normal;color:var(--muted)}
 .src i{width:8px;height:8px;border-radius:2px;background:var(--c)}
-.cal{border:1px solid var(--line);border-radius:4px;background:var(--surface);overflow:hidden}
-.cal-row{display:grid;grid-template-columns:46px repeat(7,minmax(0,1fr))}
-.cal-dh{padding:6px 8px 5px;border-left:1px solid var(--line);font-size:15px;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.05em;white-space:nowrap}
-.cal-dh b{font-weight:600;color:var(--soft)}
-.cal-dh.today,.cal-dh.today b{color:var(--hl)}
-.cal-all{border-top:1px solid var(--line);min-height:26px}
-.cal-ac{border-left:1px solid var(--line);padding:3px;display:grid;gap:2px;align-content:start;min-width:0}
-.cal-ac.today,.cal-col.today{background-color:var(--accent-soft)}
-.cal-gut{font-size:12.5px;color:var(--faint);padding:5px 6px 0 0;text-align:right;font-variant-caps:all-small-caps}
-.cal-body{border-top:1px solid var(--line);position:relative}
-.cal-hours{position:relative}
-.cal-hours span{position:absolute;right:6px;transform:translateY(-50%);font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
-.cal-col{position:relative;border-left:1px solid var(--line);background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--hpx) - 1px),var(--line) calc(var(--hpx) - 1px),var(--line) var(--hpx))}
-.cal-col.past .ev{opacity:.55}
-.ev{position:absolute;margin-left:2px;padding:2px 5px;border:0;border-left:3px solid var(--c);border-radius:3px;background:color-mix(in srgb,var(--c) 15%,var(--surface));color:var(--ink);text-align:left;font:13px/1.25 var(--f-body);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;gap:1px;z-index:1}
-.ev:hover{background:color-mix(in srgb,var(--c) 26%,var(--surface));z-index:2}
-.ev.sel,.evc.sel{outline:1.5px solid var(--c);outline-offset:0}
-.ev-t{font-weight:600;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
-.ev-m{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ev.short .ev-t{display:block;white-space:nowrap;-webkit-line-clamp:unset}
-.evc{display:block;width:100%;text-align:left;border:0;border-left:3px solid var(--c);border-radius:3px;background:color-mix(in srgb,var(--c) 15%,var(--surface));color:var(--ink);font:12.5px/1.35 var(--f-body);padding:1px 5px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.evc.dl{--c:var(--hl);color:var(--hl);font-weight:600;cursor:default}
-.evc.td{--c:var(--line-strong);background:transparent;color:var(--soft)}
-.cal-now{position:absolute;left:0;right:0;border-top:1.5px solid var(--hl);z-index:3;pointer-events:none}
-.cal-now::before{content:"";position:absolute;left:-4px;top:-4.5px;width:7px;height:7px;border-radius:50%;background:var(--hl)}
-.cal-detail{margin-top:10px;border-left:3px solid var(--c)}
-.cd-h{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
-.cal-agenda{display:none}
-.ag-day{display:grid;gap:2px}
-.ag-day.past{opacity:.6}
-.ag-h{font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);font-size:15.5px;padding-top:6px;border-top:1px solid var(--line)}
-.ag-day.today .ag-h{color:var(--hl)}
-.ag-row{display:grid;grid-template-columns:6.8em minmax(0,1fr);gap:8px;border:0;background:none;padding:4px 0;text-align:left;color:var(--text);font:15px var(--f-body);cursor:pointer}
-.ag-row.sel{background:var(--accent-soft)}
-.ag-time{color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
-.ag-t i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--c);margin-right:7px;vertical-align:1px}
-.ag-row.k-dl .ag-t{color:var(--hl);font-weight:600}
-.wk-todo{margin-top:22px}
-.todo-h{display:flex;gap:10px;align-items:baseline}
-.wk-todo form.add{border-top:1px dotted var(--line);padding-top:10px}
 details.howto summary{cursor:pointer;color:var(--soft);font-size:15px}
 details.howto[open] summary{margin-bottom:8px}
-@media (max-width:700px){.cal{display:none}.cal-agenda{display:grid;gap:10px}.dl b{font-size:2.2rem}}
+/* plan */
+.plan .wknav .chips{margin-left:auto}
+.pstep{display:grid;gap:10px;padding-top:4px}
+.ph{display:flex;align-items:center;gap:10px;font-weight:400;font-style:italic;font-size:1.5rem;line-height:1.25;margin:0;color:var(--ink)}
+.ph small{font-style:normal;font-size:15px;color:var(--faint);font-variant-caps:all-small-caps;letter-spacing:.06em}
+.pn{font-style:normal;font-size:14px;width:1.7em;height:1.7em;border-radius:50%;border:1px solid var(--line-strong);display:inline-flex;align-items:center;justify-content:center;color:var(--muted);flex:none}
+.lw-sum{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;color:var(--soft)}
+.lw-sum b{font-weight:600;color:var(--ink)}
+textarea.lw-note{min-height:0;font-style:italic}
+details.lw-done summary{cursor:pointer;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.06em}
+.olist{display:grid}
+.orow{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;padding:5px 0;border-top:1px dotted var(--line);min-width:0}
+.olist>.orow:first-child{border-top:0}
+.orow input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;margin:0;flex:none}
+.orow .td-t{flex:1 1 0;min-width:8em}
+.orow.done .td-t{text-decoration:line-through;text-decoration-color:var(--faint);color:var(--faint)}
+.hrs{display:inline-flex;align-items:center;gap:3px;color:var(--muted);font-size:14px;flex:none}
+.hrs input{width:3.4em;font:14px var(--f-body);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:3px;padding:1px 4px;text-align:right}
+.hrs input:focus{outline:none;border-color:var(--ink)}
+form.add input.hrs-in{flex:0 0 4.6em;width:4.6em}
+.tsum{font-size:16px;color:var(--soft)}
+.tsum b{font-weight:400;font-size:1.7rem;color:var(--ink)}
+.tdays{display:grid;gap:5px}
+.tday{display:grid;grid-template-columns:4.4em minmax(80px,1fr) 14em;gap:4px 12px;align-items:center;font-size:15px}
+.tday.off{color:var(--faint)} .tday.past{opacity:.55}
+.tdl{font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.tday.today .tdl{color:var(--hl)}
+.tbar{height:8px;border-radius:2px;background:var(--ok-bg);overflow:hidden}
+.tday.off .tbar{background:var(--sunk)}
+.tbar i{display:block;height:100%;background:var(--muted)}
+.tdv{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdv b{font-weight:600;color:var(--ok)}
+.tdn{grid-column:2/-1;font-size:13.5px;color:var(--faint);font-style:italic;margin-top:-3px}
+.pdl{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:15px;color:var(--muted);align-items:baseline}
+.pdl strong{color:var(--ink);font-weight:600}
+.pdl .soon,.pdl .soon strong,.tgt.soon{color:var(--hl)}
+.pdue{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:15px;align-items:baseline}
+.cap{display:grid;gap:6px;padding:10px 14px;border:1px solid var(--line);border-radius:4px;background:var(--surface);position:sticky;top:50px;z-index:5}
+.cap-t{font-size:15.5px;color:var(--soft)}
+.cap-t b{font-weight:600;color:var(--ink)}
+.cap-bar{position:relative;height:8px;border-radius:2px;background:var(--line);overflow:hidden;display:flex}
+.cap-done{background:var(--ok)} .cap-plan{background:var(--ink)} .cap.over .cap-plan{background:var(--hl)}
+.cap-line{position:absolute;top:0;bottom:0;border-left:2px solid var(--surface)}
+.og{display:grid;gap:4px;padding:12px 0 4px;border-top:1px solid var(--line)}
+.og-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.og-h b{font-weight:600;color:var(--ink);font-size:16.5px}
+.og-hrs{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums}
+.og.compact{padding:8px 0}
+.og.compact .og-h b{font-weight:400;color:var(--soft)}
+.og-n{margin-left:auto;font-size:14.5px;color:var(--faint);font-style:italic}
+.cands{display:grid;padding-top:2px}
+.cands>.k{font-size:14.5px}
+.crow{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;padding:2px 0;color:var(--muted);font-size:15px}
+.crow .td-t{cursor:default;flex:1 1 0;min-width:8em}
+.wkb.add{color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:0 9px 2px}
+.wkb.add:hover{border-color:var(--ink)}
+@media (max-width:700px){.tday{grid-template-columns:3.8em minmax(50px,1fr)}.tdv,.tdn{grid-column:2/-1}.cap{top:44px}.plan .wknav .chips{margin-left:0}}
 
 .site-foot{padding-block:8px 36px;color:var(--faint);font-size:14.5px;font-style:italic;display:flex;gap:6px 18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .site-foot a{color:var(--muted)}
@@ -620,7 +622,7 @@ details.howto[open] summary{margin-bottom:8px}
 'use strict';
 
 /* ============================== constants ============================== */
-const TABS=[['week','This week'],['roadmap','Roadmap'],['research','Research'],['exp','Experience'],['admin','Admin'],['res','Resources'],['think','Thinking'],['log','Logbook']];
+const TABS=[['week','Plan'],['roadmap','Roadmap'],['research','Research'],['exp','Experience'],['admin','Admin'],['res','Resources'],['think','Thinking'],['log','Logbook']];
 const TABNAME=Object.fromEntries(TABS);
 const AREAS=['goal','research','exp','admin','career','profile','step'];
 const AREANAME={goal:'Goals',research:'Research',exp:'Experience',intern:'Experience',visit:'Experience',career:'Career',profile:'Visibility',admin:'Admin',step:'Step back'};
@@ -735,7 +737,7 @@ let D=null;                       // synced data (lives in the private repo)
 const CFG_KEY='phd-plan.github',CACHE_KEY='phd-plan.cache',UI_KEY='phd-plan.ui',PREVIEW_KEY='phd-plan.preview',DRAFT_KEY='phd-plan.draft',THEME_KEY='theme';
 const U=Object.assign({tab:'week',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
 U.exp=U.exp||{};U.selView=U.selView||{};
-const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false,editDl:false,calSel:''};
+const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false,editDl:false,calSel:'',editHours:false};
 const saveUI=()=>ls.set(UI_KEY,U);
 let IX={items:new Map(),todos:new Map(),byItem:new Map()};
 const adopt=x=>normalize(clone(x));
@@ -1378,7 +1380,7 @@ function sectionsBox(){const hid=new Set(D.hiddenTabs||[]);
 function calendarBox(){const on=!!(D.cal&&D.cal.priv);const d=CAL.data;const c=GH.cfg;const repo=`https://github.com/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}`;
   const ago=d?Math.round((Date.now()-new Date(d.at))/6e4):0;
   return `<section class="box"><h2 class="h-sm">Calendar</h2>
-  ${!on?`<p class="para small">Bring your meetings from Google Calendar, NUS Outlook, Feishu and others into <em>This week</em>. A GitHub Action in this repository fetches them every 15 minutes and encrypts them so that only this planner can read them.</p>
+  ${!on?`<p class="para small">Count your meetings from Google Calendar, NUS Outlook, Feishu and others in the <em>Plan</em>, so it knows how many free hours each day has. A GitHub Action in this repository fetches them every 15 minutes and encrypts them so that only this panel can read them.</p>
     <div class="btnrow"><button class="btn" type="button" data-act="cal-on"${T.busy==='cal'?' disabled':''}>${T.busy==='cal'?'Creating the key…':'Turn on calendar sync'}</button></div>`
   :`<p class="para small">${d?`Last synced ${ago<1?'just now':ago<120?ago+' minutes ago':Math.round(ago/60)+' hours ago'}, ${d.events.length} events.`:CAL.err&&CAL.err!=='no sync yet'?'<span class="err">'+esc(CAL.err)+'</span>':'Waiting for the first sync.'}</p>
     ${d&&(d.sources||[]).length?`<ul class="list small">${d.sources.map((s,i)=>`<li><span class="src"><i style="--c:var(--c${i%6})"></i>${esc(s.name)}</span> ${s.ok?s.n+' events':`<span class="err">failed (${esc(s.err||'')})</span>`}</li>`).join('')}</ul>`:''}
@@ -1390,7 +1392,7 @@ function calendarBox(){const on=!!(D.cal&&D.cal.priv);const d=CAL.data;const c=G
       <li>On GitHub, add a secret named <code>CALENDAR_SOURCES</code> under <a href="${repo}/settings/secrets/actions/new" target="_blank" rel="noopener noreferrer">this repository’s Actions secrets</a>, one calendar per line:<pre><code>Google | https://calendar.google.com/calendar/ical/…/basic.ics
 NUS    | https://outlook.office365.com/owa/calendar/…/calendar.ics
 Feishu | caldav | https://… | user name | password</code></pre></li>
-      <li>They appear here within 15 minutes, or at once with <a href="${repo}/actions/workflows/calendar.yml" target="_blank" rel="noopener noreferrer">Actions → calendar → Run workflow</a>.</li></ol>
+      <li>They are counted within 15 minutes, or at once with <a href="${repo}/actions/workflows/calendar.yml" target="_blank" rel="noopener noreferrer">Actions → calendar → Run workflow</a>.</li></ol>
       <p class="hint">Each link lets whoever has it read that calendar, so keep them only in the secret. GitHub stores secrets encrypted and the sync never prints them.</p></details>
     <div class="btnrow"><button class="btn ghost sm" type="button" data-act="cal-reload">Reload the calendar</button></div>`}
   </section>`}
@@ -1513,8 +1515,8 @@ function renderRes(){const S=D.servers||[];const editing=T.editSrv||!S.length;
   ${group('res-setup','Connecting a server',setupGuide(),{closed:S.length>0})}
   </div>`}
 
-/* ============================== this week: deadlines, the calendar, to-dos ==============================
-   Meetings come from the `calendar` branch. A GitHub Action (.github/workflows/calendar.yml) fetches the calendars
+/* ============================== plan: last week, the week's time, outcomes ==============================
+   Meetings come from the `calendar` branch (they only count against free hours). A GitHub Action (.github/workflows/calendar.yml) fetches the calendars
    in the CALENDAR_SOURCES secret every 15 minutes and encrypts them to the planner's RSA public key; the private
    key lives inside the encrypted plans (D.cal), so only a signed-in planner can read them. */
 const CAL={data:null,at:0,err:'',busy:false,timer:0};
@@ -1548,115 +1550,130 @@ async function calEnable(){
   const br=GH.cfg.siteBranch||'main';const cur=await GH.read(CAL_PUB,br);
   await GH.write(CAL_PUB,br,JSON.stringify({kty:pub.kty,n:pub.n,e:pub.e,alg:'RSA-OAEP-256'},null,1)+'\n',cur.missing?null:cur.sha,'calendar: set the planner public key');
   D.cal={priv,at:TODAY_ISO};CAL.at=0;commit('calendar key')}
-/* while This week is open: repaint every minute (the now line, "next"), reload every five */
-function calTick(){if(!D||U.tab!=='week'||document.visibilityState!=='visible')return;calLoad(false);paintWeekCal()}
+/* while the plan is open, reload the calendar every five minutes */
+function calTick(){if(!D||U.tab!=='week'||document.visibilityState!=='visible')return;calLoad(false)}
 function calSync(){const on=!!D&&U.tab==='week'&&document.visibilityState==='visible';
   if(on&&!CAL.timer){CAL.timer=setInterval(calTick,60e3);calLoad(false).then(()=>{if(Sync.mode==='preview')paintWeekCal()})}
   else if(!on&&CAL.timer){clearInterval(CAL.timer);CAL.timer=0}}
-function paintWeekCal(){const el=document.getElementById('wk-cal');if(el&&U.tab==='week')el.innerHTML=calSection(U.week||CUR_WK)}
+function paintWeekCal(){if(U.tab==='week')renderSoft()}
 
-/* the deadlines kept in view: pinned milestones, as a countdown */
-function deadlineStrip(){
-  if(T.editDl)return `<form class="edit" data-form="deadlines"><label>Deadlines to keep in view, one per line: the date, then what it is
-      <textarea class="field code" name="text" id="dl-text" rows="${Math.max(3,pinned().length+2)}" placeholder="2026-12-04  RSS 2027 extended abstract">${esc(pinned().map(m=>m.d+'  '+m.t).join('\n'))}</textarea></label>
-      <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="dl-cancel">Cancel</button></div></form>`;
-  const P=pinned().filter(m=>daysTo(m.d)>=0);
-  return `<div class="dls">${P.map(m=>{const n=daysTo(m.d);return `<div class="dl${n<=14?' soon':''}"><b>${n===0?'today':n}</b><span>${n===0?'':n===1?'day to':'days to'} <strong>${esc(m.t)}</strong><small>${esc(DOW[parseD(m.d).getDay()]+', '+dLong(m.d))}</small></span></div>`}).join('')}
-    <button class="linkbtn muted dl-ed" type="button" data-act="dl-edit">${P.length?'edit':'+ add a deadline'}</button></div>`}
-
-/* everything on the calendar between two local midnights: meetings, pinned deadlines, to-dos due */
-function calItems(from,to){const out=[];const S=(CAL.data&&CAL.data.sources)||[];
+/* ---------- the plan: 1 last week, 2 the week's time, 3 outcomes per project ----------
+   Research is the map of where each project stands; the plan turns it into next week's work. Meetings only
+   count against the hours: free time per day is the working window minus the meetings in it. */
+const PLAN0={start:9,end:18,days:[1,1,1,1,1,0,0]};       // working window and working days, Monday first
+const planCfg=()=>Object.assign({},PLAN0,D.plan||{});
+const fh=h=>(Math.round(h*2)/2).toFixed(1).replace(/\.0$/,'')+' h';
+const DAYN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+/* on weekends the plan opens on next week, the one being planned; on weekdays on the current week */
+const planWeek=()=>U.week||((TODAY.getDay()+6)%7>=5?addWeeks(CUR_WK,1):CUR_WK);
+function dayLoad(d,cfg){
+  const w0=new Date(d),w1=new Date(d);w0.setHours(cfg.start,0,0,0);w1.setHours(cfg.end,0,0,0);const d1=addDays(d,1);
+  const iv=[],list=[],notes=[];
   for(const e of (CAL.data&&CAL.data.events)||[]){
-    const s=e.all?parseD(e.s):new Date(e.s),en=e.all?parseD(e.e):new Date(e.e);if(!s||!en||en<=from||s>=to)continue;
-    out.push({k:'ev',id:e.id,t:e.t,s,e:en,all:!!e.all||en-s>=20*HOUR,loc:e.loc||'',url:safeUrl(e.url),src:e.src||0,srcName:(S[e.src]||{}).name||''})}
-  for(const m of pinned()){const d=parseD(m.d);if(d>=from&&d<to)out.push({k:'dl',id:'dl-'+m.id,t:m.t,s:d,e:addDays(d,1),all:true})}
-  for(const t of liveTodos())if(t.ddl&&!t.done&&visItem(t.item)){const d=parseD(t.ddl);if(d&&d>=from&&d<to)out.push({k:'td',id:'td-'+t.id,t:t.t,s:d,e:addDays(d,1),all:true,todo:t})}
-  return out}
-function lay(ps){/* side-by-side columns for overlapping meetings */
-  ps.sort((a,b)=>a.sm-b.sm||b.em-a.em);let group=[],ends=[],gEnd=-1;const close=()=>{for(const p of group)p.n=ends.length;group=[];ends=[]};
-  for(const p of ps){if(group.length&&p.sm>=gEnd){close();gEnd=-1}let c=ends.findIndex(e=>e<=p.sm);if(c<0){c=ends.length;ends.push(p.em)}else ends[c]=p.em;p.c=c;group.push(p);gEnd=Math.max(gEnd,p.em)}
-  close();return ps}
-function chip(x){
-  if(x.k==='td'){const it=itemById(x.todo.item);const [tab,sub]=tabFor(it);return `<button type="button" class="evc td" data-act="goto" data-tab="${tab}" data-sub="${sub}" data-target="it-${esc(x.todo.item)}" title="To-do due: ${esc(x.t)}">☐ ${esc(x.t)}</button>`}
-  if(x.k==='dl')return `<span class="evc dl" title="Deadline: ${esc(x.t)}">${esc(x.t)}</span>`;
-  return `<button type="button" class="evc${T.calSel===x.id?' sel':''}" style="--c:var(--c${x.src%6})" data-act="cal-sel" data-id="${esc(x.id)}" title="${esc(x.t)}">${esc(x.t)}</button>`}
-function weekGrid(days,items){
-  const now=new Date();const timed=items.filter(x=>!x.all),allday=items.filter(x=>x.all);
-  let h0=8,h1=19;const cols=days.map(d=>{const d1=addDays(d,1);const ps=[];
-    for(const x of timed){if(x.e<=d||x.s>=d1)continue;const sm=Math.max(0,(x.s-d)/6e4),em=Math.min(1440,Math.max((x.e-d)/6e4,Math.max(0,(x.s-d)/6e4)+20));
-      ps.push({x,sm,em});h0=Math.min(h0,Math.floor(sm/60));h1=Math.max(h1,Math.ceil(em/60))}
-    return lay(ps)});
-  h0=Math.max(0,h0);h1=Math.min(24,h1);const H=(h1-h0)*HPX;
-  const blk=p=>{const x=p.x,top=(p.sm-h0*60)/60*HPX,ht=Math.max(18,(p.em-p.sm)/60*HPX-2);
-    return `<button type="button" class="ev${ht<46?' short':''}${T.calSel===x.id?' sel':''}" style="top:${top}px;height:${ht}px;left:calc(${p.c} * 100% / ${p.n});width:calc(100% / ${p.n} - 3px);--c:var(--c${x.src%6})" data-act="cal-sel" data-id="${esc(x.id)}" title="${esc(hm(x.s)+'–'+hm(x.e)+' · '+x.t+(x.srcName?' · '+x.srcName:''))}"><span class="ev-t">${esc(x.t)}</span>${ht>=46?`<span class="ev-m">${hm(x.s)}${x.loc?' · '+esc(x.loc):''}</span>`:''}</button>`};
-  const nowTop=(now.getHours()*60+now.getMinutes()-h0*60)/60*HPX;
-  return `<div class="cal" style="--hpx:${HPX}px">
-    <div class="cal-row cal-head"><span></span>${days.map(d=>`<div class="cal-dh${sameDay(d,now)?' today':''}"><b>${DOW[d.getDay()]}</b> ${d.getDate()}</div>`).join('')}</div>
-    <div class="cal-row cal-all"><span class="cal-gut">all day</span>${days.map(d=>{const d1=addDays(d,1);return `<div class="cal-ac${sameDay(d,now)?' today':''}">${allday.filter(x=>x.s<d1&&x.e>d).sort((a,b)=>({dl:0,ev:1,td:2}[a.k]-{dl:0,ev:1,td:2}[b.k])).map(chip).join('')}</div>`}).join('')}</div>
-    <div class="cal-row cal-body" style="height:${H}px"><div class="cal-hours">${Array.from({length:h1-h0},(_,i)=>i?`<span style="top:${i*HPX}px">${pad(h0+i)}:00</span>`:'').join('')}</div>
-      ${days.map((d,i)=>`<div class="cal-col${sameDay(d,now)?' today':d<TODAY?' past':''}">${cols[i].map(blk).join('')}${sameDay(d,now)&&nowTop>=0&&nowTop<=H?`<span class="cal-now" style="top:${nowTop}px"></span>`:''}</div>`).join('')}</div>
-  </div>`}
-/* the same week as a list, for phones */
-function weekAgenda(days,items){const now=new Date();
-  return `<div class="cal-agenda">${days.map(d=>{const d1=addDays(d,1);const its=items.filter(x=>x.s<d1&&x.e>d).sort((a,b)=>(b.all-a.all)||(a.s-b.s));const today=sameDay(d,now);
-    if(!its.length&&!today)return '';
-    return `<div class="ag-day${today?' today':''}${d<TODAY?' past':''}"><div class="ag-h">${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}${today?' · today':''}</div>${its.length?its.map(x=>{
-      const when=x.all?(x.k==='dl'?'deadline':x.k==='td'?'due':'all day'):hm(x.s)+'–'+hm(x.e);
-      const act=x.k==='ev'?`data-act="cal-sel" data-id="${esc(x.id)}"`:x.k==='td'?(()=>{const [tab,sub]=tabFor(itemById(x.todo.item));return `data-act="goto" data-tab="${tab}" data-sub="${sub}" data-target="it-${esc(x.todo.item)}"`})():'';
-      return `<button type="button" class="ag-row k-${x.k}${T.calSel===x.id?' sel':''}" ${act}><span class="ag-time">${when}</span><span class="ag-t"><i style="--c:${x.k==='ev'?`var(--c${x.src%6})`:x.k==='dl'?'var(--hl)':'var(--faint)'}"></i>${x.k==='td'?'☐ ':''}${esc(x.t)}</span></button>`}).join(''):'<p class="blank small">Nothing on.</p>'}</div>`}).join('')}</div>`}
-function calDetail(){if(!T.calSel)return '';const e=((CAL.data&&CAL.data.events)||[]).find(x=>x.id===T.calSel);if(!e)return '';
-  const s=e.all?parseD(e.s):new Date(e.s),en=e.all?parseD(e.e):new Date(e.e);const src=((CAL.data.sources||[])[e.src]||{}).name||'';const url=safeUrl(e.url);
-  const when=e.all?`${DOW[s.getDay()]}, ${s.getDate()} ${MON[s.getMonth()]} · all day`:`${DOW[s.getDay()]}, ${s.getDate()} ${MON[s.getMonth()]} · ${hm(s)} – ${sameDay(s,en)?hm(en):DOW[en.getDay()]+' '+hm(en)}`;
-  return `<div class="box cal-detail" style="--c:var(--c${(e.src||0)%6})"><div class="cd-h"><h3>${esc(e.t)}</h3><button class="x" type="button" data-act="cal-sel" data-id="" aria-label="Close">×</button></div>
-    <p class="para">${esc(when)}${src?` · <span class="muted">${esc(src)}</span>`:''}</p>${e.loc?`<p class="para muted">${esc(e.loc)}</p>`:''}
-    ${url?`<div class="btnrow"><a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Join the meeting</a></div>`:''}</div>`}
-function nextUpHtml(){const now=Date.now();
-  const evs=((CAL.data&&CAL.data.events)||[]).filter(e=>!e.all).map(e=>({e,S:+new Date(e.s),E:+new Date(e.e)})).filter(o=>o.E>now&&o.S-now<20*HOUR&&o.E-o.S<20*HOUR).sort((a,b)=>a.S-b.S);
-  const join=o=>safeUrl(o.e.url)?` · <a href="${esc(o.e.url)}" target="_blank" rel="noopener noreferrer">join</a>`:'';
-  const parts=evs.filter(o=>o.S<=now).slice(0,2).map(o=>`<span class="nu now"><b>now</b> ${esc(o.e.t)} · until ${hm(new Date(o.E))}${join(o)}</span>`);
-  const nx=evs.find(o=>o.S>now);
-  if(nx)parts.push(`<span class="nu"><b>next</b> ${esc(nx.e.t)} · ${sameDay(new Date(nx.S),new Date())?'':'tomorrow '}${hm(new Date(nx.S))} (in ${inMin(Math.round((nx.S-now)/6e4))})${join(nx)}</span>`);
-  return parts.join('')}
-function calStatus(){
-  if(Sync.mode==='preview')return CAL.data?'sample calendar':'';
-  if(!D.cal||!D.cal.priv)return `Meetings from Google, NUS Outlook and Feishu can show here: <button class="linkbtn" type="button" data-act="tab" data-v="settings">connect your calendars</button>.`;
-  if(!CAL.data)return CAL.busy||!CAL.at?'loading the calendar…':CAL.err==='no sync yet'?'Calendar sync is on and waiting for its first run (Settings → Calendar).':'Calendar: '+esc(CAL.err);
+    if(e.all){const s=parseD(e.s),en=parseD(e.e);if(s&&en&&s<=d&&en>d)notes.push(e.t);continue}
+    const s=new Date(e.s),en=new Date(e.e);if(en-s>=20*HOUR||en<=d||s>=d1)continue;
+    list.push(hm(s)+'–'+hm(en)+'  '+e.t);if(en<=w0||s>=w1)continue;iv.push([Math.max(+s,+w0),Math.min(+en,+w1)])}
+  iv.sort((a,b)=>a[0]-b[0]);let busy=0,cs=0,ce=0;
+  for(const [a,b] of iv){if(a>ce){busy+=ce-cs;cs=a;ce=b}else ce=Math.max(ce,b)}busy+=ce-cs;
+  return {busy:busy/HOUR,win:Math.max(0,cfg.end-cfg.start),list,notes}}
+function weekFree(wk){const cfg=planCfg(),mon=weekMonday(wk);let free=0,busy=0;
+  const days=Array.from({length:7},(_,i)=>{const d=addDays(mon,i),on=!!cfg.days[i],L=dayLoad(d,cfg),f=on?Math.max(0,L.win-L.busy):0;if(on){free+=f;busy+=L.busy}return {d,on,L,f}});
+  return {days,free,busy,cfg}}
+function calNote(){
+  if(Sync.mode==='preview')return CAL.data?'Meetings from the sample calendar. Hover a day for its meetings.':'';
+  if(!D.cal||!D.cal.priv)return `Meetings are not counted yet: <button class="linkbtn" type="button" data-act="tab" data-v="settings">connect your calendars</button>.`;
+  if(!CAL.data)return CAL.busy||!CAL.at?'Loading your calendars…':CAL.err==='no sync yet'?'Calendar sync is on and waiting for its first run (Settings → Calendar).':'Calendars: '+esc(CAL.err);
   const ago=Math.round((Date.now()-new Date(CAL.data.at))/6e4);const bad=(CAL.data.sources||[]).filter(s=>!s.ok);
-  return `${(CAL.data.sources||[]).map((s,i)=>`<span class="src"><i style="--c:var(--c${i%6})"></i>${esc(s.name)}</span>`).join('')}<span>synced ${ago<1?'just now':ago<120?ago+' min ago':Math.round(ago/60)+' h ago'}</span>${bad.length?`<span class="err">${bad.map(s=>esc(s.name)).join(', ')} failed</span>`:''}`}
-function calSection(wk){const mon=weekMonday(wk);const days=Array.from({length:7},(_,i)=>addDays(mon,i));const items=calItems(mon,addDays(mon,7));
-  return `<div class="cal-top"><div class="nextup">${wk===CUR_WK?nextUpHtml():''}</div><div class="cal-status">${calStatus()}</div></div>
-    ${weekGrid(days,items)}${weekAgenda(days,items)}${calDetail()}`}
+  return `Meetings from ${(CAL.data.sources||[]).filter(s=>s.ok).map(s=>esc(s.name)).join(', ')||'no calendar'}, synced ${ago<1?'just now':ago<120?ago+' min ago':Math.round(ago/60)+' h ago'}${bad.length?` · <span class="err">${bad.map(s=>esc(s.name)).join(', ')} failed</span>`:''}. Hover a day for its meetings.`}
+function hoursForm(cfg){return `<form class="edit" data-form="plan-hours">
+    <div class="row2"><label>Work starts at<input type="number" class="field" name="start" id="ph-start" min="0" max="23" value="${cfg.start}"></label><label>and ends at<input type="number" class="field" name="end" id="ph-end" min="1" max="24" value="${cfg.end}"></label></div>
+    <div class="chips">${DAYN.map((n,i)=>`<label class="rep-l"><input type="checkbox" name="d${i}"${cfg.days[i]?' checked':''}> ${n}</label>`).join('')}</div>
+    <p class="hint">Free time is this window on these days, minus your meetings.</p>
+    <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="hours-cancel">Cancel</button></div></form>`}
+function deadlineEditor(){return `<form class="edit" data-form="deadlines"><label>Deadlines to keep in view, one per line: the date, then what it is
+    <textarea class="field code" name="text" id="dl-text" rows="${Math.max(3,pinned().length+2)}" placeholder="2026-12-04  RSS 2027 extended abstract">${esc(pinned().map(m=>m.d+'  '+m.t).join('\n'))}</textarea></label>
+    <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="dl-cancel">Cancel</button></div></form>`}
+function deadlinesLine(wk){const [mon,sun]=weekRange(wk);const P=pinned().filter(m=>daysTo(m.d)>=0);
+  return `<div class="pdl">${P.map(m=>{const n=daysTo(m.d),inWk=m.d>=mon&&m.d<=sun;return `<span class="${inWk||n<=14?'soon':''}"><strong>${esc(m.t)}</strong> · ${esc(DOW[parseD(m.d).getDay()]+' '+mdShort(m.d))} · ${inWk?'this week':'in '+n+' days'}</span>`}).join('')}
+    <button class="linkbtn muted" type="button" data-act="dl-edit">${P.length?'edit deadlines':'+ add a deadline'}</button></div>`}
+function timeInner(wk){const W=weekFree(wk),cfg=W.cfg;
+  if(T.editHours)return hoursForm(cfg);
+  const [mon,sun]=weekRange(wk);
+  const due=liveTodos().filter(t=>!t.done&&t.ddl&&t.ddl>=mon&&t.ddl<=sun&&visItem(t.item)).sort((a,b)=>a.ddl<b.ddl?-1:1);
+  const rows=W.days.map(({d,on,L,f})=>{const pb=on&&L.win?Math.min(100,L.busy/L.win*100):0;
+    return `<div class="tday${on?'':' off'}${sameDay(d,TODAY)?' today':''}${d<TODAY?' past':''}"${L.list.length?` title="${esc(L.list.join('\n'))}"`:''}>
+      <span class="tdl">${DOW[d.getDay()]} ${d.getDate()}</span><span class="tbar">${on?`<i style="width:${pb}%"></i>`:''}</span>
+      <span class="tdv">${on?`${L.busy?fh(L.busy)+' meetings · ':''}<b>${fh(f)} free</b>`:L.list.length?L.list.length+' meeting'+(L.list.length>1?'s':''):'off'}</span>
+      ${L.notes.length?`<span class="tdn">${esc(L.notes.join(' · '))}</span>`:''}</div>`}).join('');
+  return `<div class="tsum"><b>${fh(W.free)}</b> free for focused work${W.busy?`, after ${fh(W.busy)} of meetings`:''} · <button class="linkbtn muted" type="button" data-act="hours-edit">${String(cfg.start).padStart(2,'0')}:00–${String(cfg.end).padStart(2,'0')}:00, ${cfg.days.every((x,i)=>!!x===(i<5))?'Mon–Fri':DAYN.filter((_,i)=>cfg.days[i]).join(' ')}</button></div>
+    <div class="tdays">${rows}</div><p class="hint">${calNote()}</p>
+    ${T.editDl?deadlineEditor():deadlinesLine(wk)}
+    ${due.length?`<div class="pdue"><span class="k">due this week</span>${due.map(t=>`<span>${md(t.t)} <span class="muted">· ${DOW[parseD(t.ddl).getDay()]}</span></span>`).join('')}</div>`:''}`}
 
-/* to-dos: this week's plan, plus anything due within two weeks of its end, from the sections that are shown */
-function weekTodos(wk){const [mon,sun]=weekRange(wk);const plan=new Set(week(wk).plan||[]);const horizon=iso(addDays(parseD(sun),14));
-  const L=liveTodos().filter(t=>visItem(t.item)&&(plan.has(t.id)?(!t.done||t.doneAt>=mon):t.ddl&&(!t.done?t.ddl<=horizon:(t.doneAt>=mon&&t.doneAt<=sun))));
-  const key=t=>(t.done?'1':'0')+(t.ddl||'9999');L.sort((a,b)=>key(a)<key(b)?-1:key(a)>key(b)?1:0);
-  return {L,R:weeklyFor(wk).filter(x=>visArea(x.it.area))}}
-function renderWeek(){
-  const wk=U.week||CUR_WK;const [mon,sun]=weekRange(wk);const isCur=wk===CUR_WK,isPast=wk<CUR_WK;const prev=addWeeks(wk,-1);
-  const {L,R}=weekTodos(wk);const open=L.filter(t=>!t.done).length+R.filter(x=>!recOn(wk,x.w.id)).length;
-  const lines=[...R.filter(x=>!recOn(wk,x.w.id)).map(x=>weeklyLine(x.it,x.w,'wk',{wk,chip:true,noDel:true,find:true})),
-    ...L.filter(t=>!t.done).map(t=>todoLine(t,'wk',{wk,chip:true,noWeek:true,find:true})),
-    ...R.filter(x=>recOn(wk,x.w.id)).map(x=>weeklyLine(x.it,x.w,'wk',{wk,chip:true,noDel:true,find:true})),
-    ...L.filter(t=>t.done).map(t=>todoLine(t,'wk',{wk,chip:true,noWeek:true,find:true}))].join('');
-  return `
-  <div class="wknav">
-    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${prev}" aria-label="Previous week">←</button>
-    <h1 class="wklabel">${isCur?'This week':isPast?'A past week':'A future week'} <span>${wk.slice(5)} · ${mdShort(mon)} – ${mdShort(sun)}</span></h1>
-    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,1)}" aria-label="Next week">→</button>
-    ${isCur?'':`<button class="btn sm" type="button" data-act="wk-go" data-v="${CUR_WK}">Back to this week</button>`}
-  </div>
-  ${deadlineStrip()}
-  <div id="wk-cal">${calSection(wk)}</div>
-  <section class="box wk-todo"><div class="todo-h"><h2 class="h-sm">To do</h2><span class="cnt">${open?open+' open':'all done'}</span></div>
-    <div class="todos">${lines||'<p class="blank">Nothing due. Add a to-do below, or on a project in Research.</p>'}</div>
-    <form class="add slim" data-form="wk-quick" data-wk="${wk}">
-      <input type="text" class="field" id="wkq-t" name="t" placeholder="+ Add a to-do" required aria-label="New to-do">
-      <select class="field" id="wkq-item" name="item" aria-label="Which project it belongs to">${itemOptions(U.lastItem,true)}</select>
-      <input type="date" class="field" id="wkq-d" name="d" aria-label="Due date (optional)">
-      <label class="rep-l" title="Shows up once every week"><input type="checkbox" name="rep" id="wkq-r"> weekly</label>
-      <button class="btn sm" type="submit">Add</button></form>
+/* step 1: what happened to last week's plan */
+function lastWeekInner(wk){const lw=addWeeks(wk,-1);const W=week(lw);const [m,s]=weekRange(lw);const tgt=new Set(week(wk).plan||[]);
+  const P=(W.plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item));
+  const open=P.filter(t=>!t.done),done=[...P.filter(t=>t.done),...liveTodos().filter(t=>t.done&&t.doneAt>=m&&t.doneAt<=s&&!P.includes(t)&&visItem(t.item))];
+  const toCarry=open.filter(t=>!tgt.has(t.id));
+  const note=`<textarea class="field lw-note" data-wk="${lw}" data-field="review" rows="2" placeholder="Anything to change for this week?" aria-label="Note on ${lw.slice(5)}">${esc(W.review||'')}</textarea>`;
+  if(!P.length&&!done.length)return `<p class="blank">Nothing was planned or finished in ${lw.slice(5)}.</p>${note}`;
+  return `<div class="lw-sum"><span><b>${done.length}</b> done · <b>${open.length}</b> not done</span>${toCarry.length?`<button class="btn ghost sm" type="button" data-act="wk-carry" data-v="${wk}">Carry ${toCarry.length} over</button>`:''}</div>
+    ${open.length?`<div class="olist">${open.map(t=>`<div class="orow"><span class="td-t">${md(t.t)}</span>${itemChip(itemById(t.item))}${t.est!=null?`<span class="muted small">${fh(+t.est)}</span>`:''}${tgt.has(t.id)?'<span class="tag">carried over</span>':`<button class="wkb" type="button" data-act="wk-add" data-id="${esc(t.id)}" data-v="${wk}">carry over</button>`}</div>`).join('')}</div>`:''}
+    ${done.length?`<details class="lw-done"><summary>done (${done.length})</summary><div class="olist">${done.map(t=>`<div class="orow done"><span class="td-t">${md(t.t)}</span>${itemChip(itemById(t.item))}</div>`).join('')}</div></details>`:''}
+    ${note}`}
+
+/* step 3: outcomes per project, picked from the project's open to-dos or added here, each with an estimate */
+const ACTIVE=it=>!['Done','Paused','Ended','Dropped'].includes(st(it));
+function projDeadline(it){const tg=(it.target||'').trim().toLowerCase();return tg?pinned().find(m=>m.t.toLowerCase().startsWith(tg)&&daysTo(m.d)>=0)||null:null}
+function planRow(t,wk,chip){return `<div class="orow${t.done?' done':''}">
+    <input type="checkbox" data-act="done" data-id="${esc(t.id)}"${t.done?' checked':''} aria-label="Done: ${esc(t.t)}">
+    ${T.editTodo==='pl:'+t.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-pl-${t.id}" name="t" value="${esc(t.t)}" aria-label="Edit outcome" data-edit="todo" data-key="pl:${esc(t.id)}" data-id="${esc(t.id)}" autocomplete="off"></form>`
+      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(t.id)}" data-v="pl" title="Click to edit">${md(t.t)}</button>`}
+    ${chip&&t.item!=='other'?itemChip(itemById(t.item)):''}${dueBadge(t)}<label class="hrs"><input type="number" min="0" step="0.5" value="${t.est!=null?t.est:''}" placeholder="–" data-act="est" data-id="${esc(t.id)}" aria-label="Hours for: ${esc(t.t)}"> h</label>
+    <button class="x" type="button" data-act="wk-remove" data-id="${esc(t.id)}" data-v="${wk}" title="Take out of this week" aria-label="Take out of this week">−</button></div>`}
+const candRow=(t,wk)=>`<div class="crow"><button class="wkb add" type="button" data-act="wk-add" data-id="${esc(t.id)}" data-v="${wk}" title="Plan it for this week">+ plan</button><span class="td-t">${md(t.t)}</span>${dueBadge(t)}${t.est!=null?`<span class="small">${fh(+t.est)}</span>`:''}</div>`;
+const addOutcome=(item,wk,name)=>`<form class="add slim oadd" data-form="plan-add" data-item="${esc(item)}" data-wk="${wk}"><input type="text" class="field" name="t" placeholder="+ an outcome for this week" required aria-label="New outcome for ${esc(name)}"><input type="number" class="field hrs-in" name="h" min="0" step="0.5" placeholder="h" aria-label="Hours"><button class="btn sm" type="submit">Add</button></form>`;
+/* a project opens fully when something is planned for it, it has a deadline coming, or you ask; otherwise it is one line */
+function projGroup(it,wk,plan){const ts=todosOf(it);const order=week(wk).plan||[];const P=ts.filter(t=>plan.has(t.id)).sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id)),C=ts.filter(t=>!t.done&&!plan.has(t.id)).sort((a,b)=>(a.ddl||'9')<(b.ddl||'9')?-1:(a.ddl||'9')>(b.ddl||'9')?1:0);
+  const hrs=P.reduce((s,t)=>s+(+t.est||0),0);const dl=projDeadline(it);const k='cand:'+it.id,more=!!U.exp[k],ok='og:'+it.id;
+  const head=`${it.kind==='proj'?`<span class="proj-id">${esc(it.id)}</span>`:''}<b>${esc(it.title)}</b>${dl?`<span class="tgt${daysTo(dl.d)<=14?' soon':''}">${esc(dl.t)} in ${daysTo(dl.d)} days</span>`:it.target?`<span class="tgt">${esc(it.target)}</span>`:''}`;
+  if(!P.length&&!dl&&!U.exp[ok])return `<section class="og compact" id="pl-${esc(it.id)}"><div class="og-h">${head}<span class="og-n">${C.length?C.length+' open to-do'+(C.length>1?'s':''):''}</span><button class="wkb add" type="button" data-act="og-open" data-id="${esc(ok)}">+ plan</button></div></section>`;
+  return `<section class="og" id="pl-${esc(it.id)}"><div class="og-h">${head}<span class="og-hrs">${hrs?fh(hrs):!P.length&&!dl?`<button class="linkbtn muted" type="button" data-act="og-open" data-id="${esc(ok)}">less</button>`:''}</span></div>
+    ${P.length?`<div class="olist">${P.map(t=>planRow(t,wk)).join('')}</div>`:''}
+    ${(it.weekly||[]).map(w=>weeklyLine(it,w,'pl',{wk,noDel:true})).join('')}
+    ${addOutcome(it.id,wk,it.title)}
+    ${C.length?`<div class="cands"><span class="k">open to-dos in this project</span>${(more?C:C.slice(0,3)).map(t=>candRow(t,wk)).join('')}${C.length>3?`<button class="linkbtn muted" type="button" data-act="cand-more" data-id="${esc(k)}">${more?'fewer':'+ '+(C.length-3)+' more'}</button>`:''}</div>`:''}
   </section>`}
+function capBar(wk,free){const P=(week(wk).plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item));
+  const planned=P.reduce((s,t)=>s+(+t.est||0),0),doneH=P.filter(t=>t.done).reduce((s,t)=>s+(+t.est||0),0),noEst=P.filter(t=>t.est==null).length;
+  const max=Math.max(free,planned)||1,over=planned-free;
+  return `<div class="cap${over>0?' over':''}"><div class="cap-t"><b>${fh(planned)}</b> planned of <b>${fh(free)}</b> free${over>0?` · <span class="err">${fh(over)} over</span>`:free-planned>=1?` · ${fh(free-planned)} left`:''}${doneH?` · ${fh(doneH)} done`:''}${noEst?` · <span class="muted">${noEst} without an estimate</span>`:''}</div>
+    <div class="cap-bar"><i class="cap-done" style="width:${doneH/max*100}%"></i><i class="cap-plan" style="width:${(planned-doneH)/max*100}%"></i>${over>0?`<span class="cap-line" style="left:${free/max*100}%"></span>`:''}</div></div>`}
+function renderWeek(){
+  const wk=planWeek();const [mon,sun]=weekRange(wk);const plan=new Set(week(wk).plan||[]);const W=weekFree(wk);
+  const rank=it=>(projDeadline(it)?0:2)+(it.kind==='proj'?0:1);
+  const projs=[...areaItems('research','proj'),...areaItems('research','collab')].filter(it=>ACTIVE(it)||todosOf(it).some(t=>plan.has(t.id))).sort((a,b)=>rank(a)-rank(b)||(b.sel?1:0)-(a.sel?1:0));
+  const shown=new Set(projs.map(p=>p.id));
+  const other=(week(wk).plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item)&&!shown.has(t.item));
+  const otherIt=itemById('other');
+  return `<div class="narrow stack plan">
+  <div class="wknav">
+    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,-1)}" aria-label="Previous week">←</button>
+    <h1 class="wklabel">Plan <span>${wk.slice(5)} · ${mdShort(mon)} – ${mdShort(sun)}</span></h1>
+    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,1)}" aria-label="Next week">→</button>
+    <div class="chips">${[[CUR_WK,'this week'],[addWeeks(CUR_WK,1),'next week']].map(([w,l])=>`<button class="chipbtn" type="button" data-act="wk-go" data-v="${w}" aria-pressed="${wk===w}">${l}</button>`).join('')}</div>
+  </div>
+  <section class="pstep"><h2 class="ph"><span class="pn">1</span>Last week <small>${addWeeks(wk,-1).slice(5)}</small></h2>${lastWeekInner(wk)}</section>
+  <section class="pstep"><h2 class="ph"><span class="pn">2</span>Time</h2><div id="plan-time">${timeInner(wk)}</div></section>
+  <section class="pstep"><h2 class="ph"><span class="pn">3</span>Outcomes</h2>
+    ${capBar(wk,W.free)}
+    <p class="lede">What should each project have to show at the end of the week? Pick from its open to-dos or add an outcome, with a rough number of hours.</p>
+    ${projs.map(it=>projGroup(it,wk,plan)).join('')||'<p class="blank">No active projects: add one in Research.</p>'}
+    <section class="og"><div class="og-h"><b>Other</b><span class="og-hrs">${other.length?fh(other.reduce((s,t)=>s+(+t.est||0),0)):''}</span></div>
+      ${other.length?`<div class="olist">${other.map(t=>planRow(t,wk,true)).join('')}</div>`:''}${otherIt?(otherIt.weekly||[]).map(w=>weeklyLine(otherIt,w,'pl',{wk,noDel:true})).join(''):''}
+      ${addOutcome('other',wk,'Other')}</section>
+  </section>
+  </div>`}
 
 /* ============================== sign-in, setup and recovery screens ============================== */
 function shellBare(){document.getElementById('tabs').innerHTML='';moveInd(null);document.querySelector('.search').hidden=true;document.getElementById('sync').hidden=true;document.getElementById('settings-btn').hidden=true;
@@ -1875,6 +1892,7 @@ document.addEventListener('change',async e=>{
     case 'ch-date':{const c=D.channels.find(x=>x.id===id);if(c){c.date=t.value;commit('channel')}return}
     case 'ms-done':{const m=D.milestones.find(x=>x.id===id);if(!m)return;m.done=t.checked;if(t.checked){m.doneAt=TODAY_ISO;addLog('','Milestone: '+m.t,{auto:true,ms:m.id})}else{delete m.doneAt;D.logs=D.logs.filter(l=>l.ms!==m.id)}commit('milestone');return}
     case 'paper':U.paper=t.value;saveUI();render();return;
+    case 'est':{const td=todoById(id);if(!td)return;const h=parseFloat(t.value);if(isNaN(h))delete td.est;else td.est=Math.max(0,Math.round(h*2)/2);commit('estimate');return}
     case 'tab-show':{const h=new Set(D.hiddenTabs||[]);if(t.checked)h.delete(id);else h.add(id);D.hiddenTabs=TABS.map(x=>x[0]).filter(x=>h.has(x));commit('sections');return}
     case 'remember':setRemember(t.checked);toast(t.checked?'This device will keep you signed in':'You will be signed out when this tab closes');return;
     case 'stu-add':{const s=(D.students||[]).find(x=>x.id===id);if(s&&t.value){s.projects=[...(s.projects||[]),t.value];commit('students')}return}
@@ -1933,6 +1951,12 @@ document.addEventListener('submit',e=>{
     case 'ms':{const id=f.dataset.id;const fields={t:v('t'),d:v('d'),kind:v('kind'),est:v('est'),url:v('url'),note:v('note')};if(!fields.t||!parseD(fields.d))return;
       if(id==='new')D.milestones.push(Object.assign({id:'m'+uid(),done:false},fields));else{const m=D.milestones.find(x=>x.id===id);if(!m)return;Object.assign(m,fields)}
       T.editMs='';commit('milestone');return}
+    case 'plan-add':{if(!v('t'))return;const item=f.dataset.item;
+      if(item==='other'&&!itemById('other')){D.items.push({id:'other',area:'week',kind:'todo',set:'todo',title:'Other',st:'In progress',created:TODAY_ISO});reindex()}
+      if(!itemById(item))return;const td=addTodo(item,v('t'),'',f.dataset.wk);const h=parseFloat(v('h'));if(!isNaN(h))td.est=Math.max(0,Math.round(h*2)/2);
+      commit('plan');requestAnimationFrame(()=>{const n=document.querySelector(`form[data-form="plan-add"][data-item="${CSS.escape(item)}"] input[name="t"]`);if(n)n.focus()});return}
+    case 'plan-hours':{const s0=+v('start'),e0=+v('end');if(!(e0>s0&&s0>=0&&e0<=24))return toast('Work has to end after it starts, within 0–24');
+      D.plan={start:s0,end:e0,days:[0,1,2,3,4,5,6].map(i=>f.elements.namedItem('d'+i).checked?1:0)};T.editHours=false;commit('work hours');return}
     case 'deadlines':{let bad=0;const keep=new Set();
       for(const line of f.elements.text.value.split('\n').map(x=>x.trim()).filter(Boolean)){const m=/^(\d{4}-\d{2}-\d{2})\s+(.+)$/.exec(line);if(!m||!parseD(m[1])){bad++;continue}
         let x=D.milestones.find(y=>y.t===m[2].trim());if(!x){x={id:'m'+uid(),t:m[2].trim(),d:m[1],kind:'venue',est:false,url:'',note:'',done:false};D.milestones.push(x)}
@@ -1996,7 +2020,7 @@ document.addEventListener('click',async e=>{
     case 'wk-toggle':{const w=ensureWeek(v);if(w.plan.includes(id))w.plan=w.plan.filter(x=>x!==id);else w.plan.push(id);commit('week plan');return}
     case 'wk-add':ensureWeek(v).plan.push(id);commit('week plan');return;
     case 'wk-remove':{const w=ensureWeek(v);w.plan=w.plan.filter(x=>x!==id);commit('week plan');return}
-    case 'wk-go':U.week=v===CUR_WK?'':v;saveUI();if(U.tab!=='week')U.tab='week';render();window.scrollTo({top:0});return;
+    case 'wk-go':U.week=v;saveUI();if(U.tab!=='week')U.tab='week';render();window.scrollTo({top:0});return;
     case 'wk-carry':{const w=ensureWeek(v);const prev=week(addWeeks(v,-1));for(const tid of prev.plan||[]){const t=todoById(tid);if(t&&!t.done&&!t.del&&!w.plan.includes(tid))w.plan.push(tid)}commit('week plan');toast('Brought over');return}
     case 'blk-edit':T.editBlock=id;render();{const n=document.getElementById('blk-text-'+id);if(n)n.focus()}return;
     case 'blk-cancel':T.editBlock='';render();return;
@@ -2012,6 +2036,10 @@ document.addEventListener('click',async e=>{
     case 'ms-cancel':T.editMs='';render();return;
     case 'ms-del':snapshot();D.milestones=D.milestones.filter(m=>m.id!==id);commit('delete milestone');toast('Milestone deleted',true);return;
     case 'phd-edit':T.editPhd=!T.editPhd;render();return;
+    case 'hours-edit':T.editHours=true;render();return;
+    case 'hours-cancel':T.editHours=false;render();return;
+    case 'cand-more':U.exp[id]=!U.exp[id];break;
+    case 'og-open':{U.exp[id]=!U.exp[id];saveUI();render();const n=document.querySelector(`#pl-${CSS.escape(id.slice(3))} form[data-form="plan-add"] input[name="t"]`);if(n)n.focus();return}
     case 'cal-sel':T.calSel=T.calSel===id?'':(id||'');paintWeekCal();return;
     case 'dl-edit':T.editDl=true;render();{const n=document.getElementById('dl-text');if(n)n.focus()}return;
     case 'dl-cancel':T.editDl=false;render();return;

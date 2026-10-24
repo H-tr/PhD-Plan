@@ -1,8 +1,8 @@
 # Control Panel
 
 A password-protected personal control panel:
-- **This week:** the week's meetings from every calendar, deadlines in view, and what is due.
-- **Research:** research projects.
+- **Plan:** a planner for the coming week.
+- **Research:** where each project stands.
 - **Resources:** live use of the lab's GPU servers.
 
 It is styled after [h-tr.github.io](https://h-tr.github.io/) and shares that site's light/dark choice.
@@ -55,11 +55,12 @@ This repository is public, but your data in it is not readable. They are encrypt
 
 ## Using it
 
-- **This week:**
-  - A countdown to the deadlines you keep in view (*edit* changes them).
-  - Your meetings from Google Calendar, NUS Outlook, Feishu and other calendars, with what is on now and next; click a meeting for its link.
-  - One to-do list: this week's plan plus everything due within two weeks.
-  - Calendars are set up under Settings → Calendar; see [tools/calendar-sync](tools/calendar-sync/README.md).
+- **Plan:** the week's plan in three steps. On weekends it opens on next week; on weekdays, on the current one.
+  1. **Last week:** what got done, what didn't, and one click to carry the rest over, plus a short note.
+  2. **Time:** free hours per day for focused work, which is your working window minus your meetings. Meetings come from your calendars (Settings → Calendar, see [tools/calendar-sync](tools/calendar-sync/README.md)), and the deadlines you keep in view are listed too.
+  3. **Outcomes:** for each project, what it should have to show by the end of the week. Pick from its open to-dos or add new ones, each with rough hours; a bar compares planned hours with free hours. Projects with nothing planned collapse to one line.
+
+  During the week, tick outcomes off on the same page.
 - **Research:** each project has a status, to-dos with due dates, and a progress log. Click a to-do's text to edit it; ✎ edits the project.
 - **Resources:** live GPU, CPU and memory use of the lab servers, refreshed every 3 seconds while the tab is open.
   - Each GPU row shows who is using it; the CPU and memory bars show their top users.
