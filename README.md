@@ -1,9 +1,10 @@
 # Control Panel
 
 A password-protected personal control panel:
-- **Plan:** a planner for the coming week.
 - **Research:** where each project stands.
 - **Resources:** live use of the lab's GPU servers.
+
+A weekly **Plan** is also there, hidden by default.
 
 It is styled after [h-tr.github.io](https://h-tr.github.io/) and shares that site's light/dark choice.
 
@@ -55,7 +56,7 @@ This repository is public, but your data in it is not readable. They are encrypt
 
 ## Using it
 
-- **Plan:** the week's plan in three steps. On weekends it opens on next week; on weekdays, on the current one.
+- **Plan** (hidden by default; Settings → Sections shows it): the week's plan in three steps. On weekends it opens on next week; on weekdays, on the current one.
   1. **Last week:** what got done, what didn't, and one click to carry the rest over, plus a short note.
   2. **Time:** free hours per day for focused work, which is your working window minus your meetings. Meetings come from your calendars (Settings → Calendar, see [tools/calendar-sync](tools/calendar-sync/README.md)), and the deadlines you keep in view are listed too.
   3. **Outcomes:** for each project, what it should have to show by the end of the week. Pick from its open to-dos or add new ones, each with rough hours; a bar compares planned hours with free hours. Projects with nothing planned collapse to one line.
@@ -65,7 +66,7 @@ This repository is public, but your data in it is not readable. They are encrypt
 - **Resources:** live GPU, CPU and memory use of the lab servers, refreshed every 3 seconds while the tab is open.
   - Each GPU row shows who is using it; the CPU and memory bars show their top users.
   - Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md).
-- **Hidden sections:** Roadmap, Experience, Admin, Thinking and Logbook still exist, hidden by default. Settings → Sections brings any of them back, and their data is kept either way.
+- **Hidden sections:** Plan, Roadmap, Experience, Admin, Thinking and Logbook still exist, hidden by default. Settings → Sections brings any of them back, and their data is kept either way.
 - **Shortcuts and settings:** `/` focuses search, and deletions can be undone. Settings has sections, calendar, sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
 
 ## Changing the page

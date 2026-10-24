@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1646-19c044">
+<meta name="app-build" content="1024-1653-441ed2">
 <title>Control Panel</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M7 10h18M7 16h18M7 22h18' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='10' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='21' cy='16' r='2.6' fill='%23a8281e'/%3E%3Ccircle cx='15' cy='22' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -640,12 +640,12 @@ const HZ=[['long','Long-term','Where the PhD should end up.'],['year','This year
 const MSK={phd:'PhD milestone',venue:'Paper deadline',fellow:'Fellowship / award',career:'Internship / career',life:'Personal'};
 const TAGS={r:'Research',i:'Internship',v:'Visiting',c:'Career',p:'Visibility',m:'Mindset'};
 const TAGCODE={research:'r',internship:'i',intern:'i',visiting:'v',visit:'v',career:'c',visibility:'p',exposure:'p',mindset:'m'};
-const EMPTY={v:4,items:[],todos:[],logs:[],weeks:{},routines:[],
+const EMPTY={v:5,items:[],todos:[],logs:[],weeks:{},routines:[],
   steps:[{id:'hb',title:'Half step back',en:'Research',desc:'',items:[],checks:{},history:[]},{id:'fb',title:'Full step back',en:'Career',desc:'',items:[],checks:{},history:[]}],
   timeline:{version:'',periods:[],always:[]},blocks:{},abilities:[],rate:{},rateAt:'',channels:[],
   launchTpl:[{g:'Open source',items:['GitHub code']},{g:'Advertise',items:['arXiv','Personal homepage','Social media']},{g:'Connect',items:['Email related researchers']}],
   launch:{},letters:['','',''],absorb:[],checks:{},inbox:[],convs:[],hidden:{},students:[],
-  milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''},servers:[],hiddenTabs:['roadmap','exp','admin','think','log'],cal:null};
+  milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''},servers:[],hiddenTabs:['week','roadmap','exp','admin','think','log'],cal:null};
 
 /* ============================== utilities ============================== */
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -737,7 +737,7 @@ let D=null;                       // synced data (lives in the private repo)
 const CFG_KEY='phd-plan.github',CACHE_KEY='phd-plan.cache',UI_KEY='phd-plan.ui',PREVIEW_KEY='phd-plan.preview',DRAFT_KEY='phd-plan.draft',THEME_KEY='theme';
 const U=Object.assign({tab:'week',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
 U.exp=U.exp||{};U.selView=U.selView||{};
-const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false,editDl:false,calSel:'',editHours:false};
+const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false,editDl:false,calSel:'',editHours:false,peek:''};
 const saveUI=()=>ls.set(UI_KEY,U);
 let IX={items:new Map(),todos:new Map(),byItem:new Map()};
 const adopt=x=>normalize(clone(x));
@@ -757,6 +757,8 @@ function normalize(d){const out=Object.assign(clone(EMPTY),d||{});for(const k of
     for(const [t,dd] of [['RSS 2027 extended abstract','2026-12-04'],['RSS 2027 final paper','2027-04-16']]){
       const m=out.milestones.find(x=>x.t===t);if(m){if(m.pin==null)m.pin=true}
       else out.milestones.push({id:'m-'+hash(t),t,d:dd,kind:'venue',pin:true,est:false,url:'https://roboticsconference.org/information/cfp/',note:'',done:false})}}
+  /* v5 (25 Oct 2026): Plan is not needed day to day; hide it (Settings → Sections brings it back) */
+  if(!(out.v>=5)){out.v=5;if(Array.isArray(out.hiddenTabs)&&!out.hiddenTabs.includes('week'))out.hiddenTabs=['week',...out.hiddenTabs]}
   if(!Array.isArray(out.hiddenTabs))out.hiddenTabs=[];
   return out}
 function reindex(){
@@ -1375,8 +1377,8 @@ function signinBox(){const c=GH.cfg;const remember=!!ls.get(REMEMBER_KEY);const 
       <button class="btn ghost" type="button" data-act="signout">${out?'Click again to sign out':'Sign out of this device'}</button>
     </div></section>`}
 function sectionsBox(){const hid=new Set(D.hiddenTabs||[]);
-  return `<section class="box"><h2 class="h-sm">Sections</h2><div class="chips">${TABS.filter(([id])=>id!=='week').map(([id,l])=>`<label class="rep-l"><input type="checkbox" data-act="tab-show" data-id="${id}"${hid.has(id)?'':' checked'}> ${l}</label>`).join('')}</div>
-    <p class="hint">Hidden sections keep everything in them; their to-dos just stop showing up in This week.</p></section>`}
+  return `<section class="box"><h2 class="h-sm">Sections</h2><div class="chips">${TABS.map(([id,l])=>`<label class="rep-l"><input type="checkbox" data-act="tab-show" data-id="${id}"${hid.has(id)?'':' checked'}> ${l}</label>`).join('')}</div>
+    <p class="hint">Hidden sections keep everything in them, and links or search can still open them.</p></section>`}
 function calendarBox(){const on=!!(D.cal&&D.cal.priv);const d=CAL.data;const c=GH.cfg;const repo=`https://github.com/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}`;
   const ago=d?Math.round((Date.now()-new Date(d.at))/6e4):0;
   return `<section class="box"><h2 class="h-sm">Calendar</h2>
@@ -1410,7 +1412,7 @@ function renderSettings(){
       <input type="file" id="import-file" accept="application/json,.json" data-act="import" hidden>
     </div></section>
   ${sectionsBox()}
-  ${gh?calendarBox():''}
+  ${gh&&!(D.hiddenTabs||[]).includes('week')?calendarBox():''}
   ${gh?signinBox():''}
   <section class="box"><h2 class="h-sm">Appearance</h2>${filterChips('theme',themeChoice(),[['system','follow system'],['light','light'],['dark','dark']])}<p class="hint">Shared with the homepage: switching here switches h-tr.github.io too.</p></section>
   <section class="box" id="settings-hidden"><h2 class="h-sm">Deleted sections</h2>
@@ -1820,7 +1822,10 @@ function ensurePanels(){const host=document.getElementById('panels');if(host.dat
 function renderPanel(id){document.getElementById('p-'+id).innerHTML=PANELS[id]();T.stale[id]=false;
   if(id==='log'){const h=document.getElementById('heat');if(h)h.scrollLeft=h.scrollWidth}}
 function render(){
-  if(!D)return;ensurePanels();document.querySelector('.search').hidden=false;document.getElementById('sync').hidden=false;document.getElementById('settings-btn').hidden=false;
+  if(!D)return;ensurePanels();
+  /* a hidden section only shows when asked for explicitly (a link or a search hit); otherwise open the first shown one */
+  const shown=id=>!(D.hiddenTabs||[]).includes(id);
+  if(U.tab!=='settings'&&!shown(U.tab)&&T.peek!==U.tab)U.tab=TABS.map(x=>x[0]).find(shown)||'research';document.querySelector('.search').hidden=false;document.getElementById('sync').hidden=false;document.getElementById('settings-btn').hidden=false;
   if(!PANELS[U.tab])U.tab='week';
   const a=document.activeElement;const aid=a&&a.id;const key=a&&a.dataset&&a.dataset.act?[a.dataset.act,a.dataset.id||'',a.dataset.v||'']:null;
   renderTabs();paintHead();
@@ -1835,7 +1840,7 @@ let softPending=false;
 const typing=a=>a&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&(a.type==='text'||a.type==='password')));
 function renderSoft(){if(typing(document.activeElement)){softPending=true;return}render()}
 document.addEventListener('focusout',()=>{if(softPending){softPending=false;setTimeout(()=>{if(!typing(document.activeElement))render();else softPending=true},0)}});
-function setTab(id,sub){if(!PANELS[id])return;U.tab=id;if(sub)U.sub=sub;saveUI();try{history.replaceState(null,'','#'+id)}catch(e){}render()}
+function setTab(id,sub){if(!PANELS[id])return;U.tab=id;T.peek=id;if(sub)U.sub=sub;saveUI();try{history.replaceState(null,'','#'+id)}catch(e){}render()}
 /* show a collapsed element: open every collapsed ancestor and switch to its sub-page */
 function reveal(el){
   for(let p=el;p&&p.id!=='panels';p=p.parentElement){
@@ -1893,7 +1898,8 @@ document.addEventListener('change',async e=>{
     case 'ms-done':{const m=D.milestones.find(x=>x.id===id);if(!m)return;m.done=t.checked;if(t.checked){m.doneAt=TODAY_ISO;addLog('','Milestone: '+m.t,{auto:true,ms:m.id})}else{delete m.doneAt;D.logs=D.logs.filter(l=>l.ms!==m.id)}commit('milestone');return}
     case 'paper':U.paper=t.value;saveUI();render();return;
     case 'est':{const td=todoById(id);if(!td)return;const h=parseFloat(t.value);if(isNaN(h))delete td.est;else td.est=Math.max(0,Math.round(h*2)/2);commit('estimate');return}
-    case 'tab-show':{const h=new Set(D.hiddenTabs||[]);if(t.checked)h.delete(id);else h.add(id);D.hiddenTabs=TABS.map(x=>x[0]).filter(x=>h.has(x));commit('sections');return}
+    case 'tab-show':{const h=new Set(D.hiddenTabs||[]);if(t.checked)h.delete(id);else h.add(id);
+      if(TABS.every(x=>h.has(x[0]))){t.checked=true;toast('Keep at least one section');return}D.hiddenTabs=TABS.map(x=>x[0]).filter(x=>h.has(x));commit('sections');return}
     case 'remember':setRemember(t.checked);toast(t.checked?'This device will keep you signed in':'You will be signed out when this tab closes');return;
     case 'stu-add':{const s=(D.students||[]).find(x=>x.id===id);if(s&&t.value){s.projects=[...(s.projects||[]),t.value];commit('students')}return}
     case 'import':{try{T.pendingImport=await readFile(t);T.confirm='import';setTab('settings')}catch(err){toast(err.message)}t.value='';return}
