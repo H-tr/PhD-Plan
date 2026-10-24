@@ -60,7 +60,7 @@ This repository is public, but the plans in it are not readable. They are encryp
   - the half-step-back (research) and full-step-back (career) checklists;
   - fellowships and awards, channels, the paper-launch checklist;
   - the reading list, career notes, inbox and conversation notes.
-- **Resources:** live CPU, memory, disk and per-GPU usage of the lab servers, with who is running what, refreshed every 3 seconds while the tab is open. Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md). The server list is stored with the (encrypted) plans.
+- **Resources:** live GPU, CPU and memory use of the lab servers, refreshed every 3 seconds while the tab is open. Each GPU row shows who is using it (processes grouped per person, with memory and run time); the CPU and memory bars show their top users. Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md). The server list is stored with the (encrypted) plans.
 - **Logbook:** a year-long activity heatmap and every note, completed to-do, status change and weekly review, by month.
 - `/` focuses search. Everything is editable, and deletions can be undone. Settings has sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
 

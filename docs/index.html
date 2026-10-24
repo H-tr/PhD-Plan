@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1552-e92766">
+<meta name="app-build" content="1024-1558-eb109b">
 <title>PhD Plan</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M8 23V9h7a4.5 4.5 0 0 1 0 9H8' fill='none' stroke='%23111' stroke-width='2.2'/%3E%3Ccircle cx='23.5' cy='21.5' r='2.2' fill='%23a8281e'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -470,6 +470,8 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .gpus{display:grid;gap:0}
 .gpu{display:grid;grid-template-columns:1.2em 6.5em minmax(60px,.8fr) minmax(110px,1fr) 2.3em 60px minmax(170px,1.5fr);gap:2px 10px;align-items:center;font-size:14.5px;padding:4px 0;border-top:1px dotted var(--line)}
 .gpus>.rk{padding-bottom:3px}
+.gpus .gfree{color:var(--ok)}
+.gpus+.rrows{padding-top:4px}
 .gi{color:var(--faint);font-variant-numeric:tabular-nums}
 .gn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gm{display:grid;grid-template-columns:minmax(24px,1fr) auto;gap:6px;align-items:center;font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap}
@@ -1436,12 +1438,13 @@ function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[]
   if(!x)return h+(state==='off'?(LIVE.lna==='prompt'?`<p class="err small">Chrome is waiting for your permission.</p><p class="hint">Click <strong>Allow</strong> in the prompt next to the address bar (“look for and connect to devices on your local network”). If it is gone, click the site-settings icon left of the address and allow <em>Local network access</em>.</p>`
     :LIVE.lna==='denied'?`<p class="err small">Chrome is blocking access to devices on your network for this site.</p><p class="hint">Click the site-settings icon left of the address and set <em>Local network access</em> to Allow, then reload.</p>`
     :`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)?</p>`):'');
-  const G=x.gpus||[];
+  /* compute only, GPUs first: the GPUs are what people queue for; CPU and memory follow */
+  const G=x.gpus||[];const free=G.filter(gpuFree).length;
+  if(G.length)h+=`<div class="gpus"><div class="rk">gpus <span class="${free?'gfree':''}">${free} of ${G.length} free</span></div>${G.map((g,i)=>gpuRow(g,H.map(p=>(p[3]||[])[i]))).join('')}</div>`;
+  else if(x.errors&&x.errors.gpu)h+=`<p class="hint">GPU: ${esc(x.errors.gpu)}</p>`;
   h+=`<div class="rrows">${rrow('cpu',x.cpu,`${x.cpu==null?'—':Math.round(x.cpu)+'%'} of ${x.cores} cores`,spark(H.map(p=>p[1])),topUsers(x,'cpu',0.5,c=>(c>=10?Math.round(c):c.toFixed(1))+' cores'))}
     ${rrow('memory',pctOf(x.mem.used,x.mem.total),`${size2(x.mem.used,x.mem.total)}${x.swap&&x.swap.used>2**28?` · swap ${gib(x.swap.used)}`:''}`,spark(H.map(p=>p[2])),topUsers(x,'rss',4*2**30,b=>gib(b)+' GB'))}
-    ${(x.disks||[]).map(d=>rrow(esc(d.mount),pctOf(d.used,d.used+d.avail),size2(d.used,d.used+d.avail))).join('')}</div>`;
-  if(G.length)h+=`<div class="gpus"><div class="rk">gpus <span>${G.filter(gpuFree).length} of ${G.length} free</span></div>${G.map((g,i)=>gpuRow(g,H.map(p=>(p[3]||[])[i]))).join('')}</div>`;
-  else if(x.errors&&x.errors.gpu)h+=`<p class="hint">GPU: ${esc(x.errors.gpu)}</p>`;
+</div>`;
   return h}
 function glanceHtml(){return (D.servers||[]).map(s=>{const m=LIVE.st[s.id]||{},x=m.snap,st=srvState(s);const G=x&&x.gpus||[];
   const txt=x?(G.length?`${G.filter(gpuFree).length}/${G.length} GPUs free · `:'')+`cpu ${x.cpu==null?'—':Math.round(x.cpu)+'%'} · mem ${Math.round(pctOf(x.mem.used,x.mem.total))}%`:st==='off'?'unreachable':'connecting…';
@@ -1463,7 +1466,7 @@ function renderRes(){const S=D.servers||[];const editing=T.editSrv||!S.length;
       <div class="btnrow"><button class="btn" type="submit">Save</button>${S.length?'<button class="btn ghost" type="button" data-act="srv-cancel">Cancel</button>':''}</div></form>`:'';
   return `<div class="stack">
   ${pageHead('Resources',S.length&&!T.editSrv?`<button class="btn ghost sm" type="button" data-act="srv-edit">Edit servers</button>`:'')}
-  <p class="lede">${S.length?`Live usage, refreshed every ${LIVE.POLL/1000} seconds while this tab is open. Reachable only from devices on your tailnet.`:'Live CPU, memory, disk and GPU usage of your servers, and who is running what. Add the servers once the agent runs on them.'}</p>
+  <p class="lede">${S.length?`Live GPU, CPU and memory use, and who is using it, refreshed every ${LIVE.POLL/1000} seconds while this tab is open. Reachable only from devices on your tailnet.`:'Live GPU, CPU and memory use of your servers, and who is using it. Add the servers once the agent runs on them.'}</p>
   ${editor}
   ${S.length?`<div class="glance" id="res-glance">${glanceHtml()}</div><div class="srvs">${S.map(s=>`<section class="box srv" id="srv-${esc(s.id)}">${serverInner(s)}</section>`).join('')}</div>`:''}
   ${group('res-setup','Connecting a server',setupGuide(),{closed:S.length>0})}
