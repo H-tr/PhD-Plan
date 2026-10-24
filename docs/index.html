@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1431-f49123">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="app-build" content="1024-1508-8f9963">
 <title>PhD Plan</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M8 23V9h7a4.5 4.5 0 0 1 0 9H8' fill='none' stroke='%23111' stroke-width='2.2'/%3E%3Ccircle cx='23.5' cy='21.5' r='2.2' fill='%23a8281e'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -440,6 +440,50 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .log-e.review .t{white-space:pre-wrap}
 .log-e .tagk{margin-right:6px}
 
+/* resources: live server usage */
+.glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.gl{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:baseline;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:4px;padding:8px 12px;cursor:pointer;font:15.5px var(--f-body)}
+.gl:hover{border-color:var(--line-strong)}
+.gl b{font-weight:600}
+.gl>span:last-child{grid-column:2;color:var(--muted);font-size:14.5px}
+.srvs{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));align-items:start}
+.srv{gap:12px}
+.srv-h{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.srv-h h3{font-size:1.4rem}
+.srv-st{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.srv-st i{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
+.srv-st.live{color:var(--ok)} .srv-st.live i{background:var(--ok)}
+.srv-st.stale{color:var(--warn)} .srv-st.stale i{background:var(--warn)}
+.srv-st.off{color:var(--hl)} .srv-st.off i{background:var(--hl)}
+@media (prefers-reduced-motion: no-preference){.srv-st.live i{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.3}}}
+.srv-meta{font-size:14px;color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
+.rrows{display:grid;gap:5px}
+.rrow{display:grid;grid-template-columns:6.5em minmax(60px,1fr) auto 90px;gap:10px;align-items:center;font-size:14.5px}
+.rk{font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk span{color:var(--soft);margin-left:6px}
+.rv{font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap}
+.rbar{display:block;height:6px;border-radius:3px;background:var(--line);overflow:hidden;min-width:30px}
+.rbar i{display:block;height:100%;background:var(--ink);border-radius:3px}
+.rbar.warm i{background:var(--warn)} .rbar.hot i{background:var(--hl)}
+.spark{color:var(--faint);display:block}
+.spark path{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
+.gpus{display:grid;gap:0}
+.gpu{display:grid;grid-template-columns:1.2em 6.5em minmax(60px,1fr) minmax(120px,1.3fr) 2.3em 60px;gap:2px 10px;align-items:center;font-size:14.5px;padding:4px 0;border-top:1px dotted var(--line)}
+.gpus>.rk{padding-bottom:3px}
+.gi{color:var(--faint);font-variant-numeric:tabular-nums}
+.gn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm{display:grid;grid-template-columns:minmax(24px,1fr) auto;gap:6px;align-items:center;font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap}
+.gt{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right} .gt.warm{color:var(--warn)} .gt.hot{color:var(--hl)}
+.gw{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:0 14px;font-size:14px;color:var(--muted);font-style:italic}
+.gw .free{color:var(--ok);font-style:normal;font-variant-caps:all-small-caps;letter-spacing:.06em}
+.rusers{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;font-size:14.5px;color:var(--muted)}
+.rusers b{font-weight:600;color:var(--soft)}
+ol.steps{margin:0;padding-left:1.3em;display:grid;gap:10px;font-size:15.5px}
+ol.steps pre{margin:6px 0;padding:8px 10px;background:var(--sunk);border-radius:3px;overflow-x:auto}
+ol.steps pre code{font:13px var(--f-code);background:none;padding:0;white-space:pre}
+@media (max-width:560px){.rrow{grid-template-columns:5.2em minmax(40px,1fr) auto}.rrow>.spark,.rrow>span:last-child:empty{display:none}
+  .gpu{grid-template-columns:1.1em minmax(40px,1fr) minmax(100px,1.3fr) 2.2em}.gpu .gn,.gpu .spark{display:none}.gw{grid-column:2/-1}.srv-meta{margin-left:0}}
+
 .site-foot{padding-block:8px 36px;color:var(--faint);font-size:14.5px;font-style:italic;display:flex;gap:6px 18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .site-foot a{color:var(--muted)}
 
@@ -512,7 +556,7 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 'use strict';
 
 /* ============================== constants ============================== */
-const TABS=[['week','This week'],['roadmap','Roadmap'],['research','Research'],['exp','Experience'],['admin','Admin'],['think','Thinking'],['log','Logbook']];
+const TABS=[['week','This week'],['roadmap','Roadmap'],['research','Research'],['exp','Experience'],['admin','Admin'],['res','Resources'],['think','Thinking'],['log','Logbook']];
 const TABNAME=Object.fromEntries(TABS);
 const AREAS=['goal','research','exp','admin','career','profile','step'];
 const AREANAME={goal:'Goals',research:'Research',exp:'Experience',intern:'Experience',visit:'Experience',career:'Career',profile:'Visibility',admin:'Admin',step:'Step back'};
@@ -535,7 +579,7 @@ const EMPTY={v:3,items:[],todos:[],logs:[],weeks:{},routines:[],
   timeline:{version:'',periods:[],always:[]},blocks:{},abilities:[],rate:{},rateAt:'',channels:[],
   launchTpl:[{g:'Open source',items:['GitHub code']},{g:'Advertise',items:['arXiv','Personal homepage','Social media']},{g:'Connect',items:['Email related researchers']}],
   launch:{},letters:['','',''],absorb:[],checks:{},inbox:[],convs:[],hidden:{},students:[],
-  milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''}};
+  milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''},servers:[]};
 
 /* ============================== utilities ============================== */
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -627,7 +671,7 @@ let D=null;                       // synced data (lives in the private repo)
 const CFG_KEY='phd-plan.github',CACHE_KEY='phd-plan.cache',UI_KEY='phd-plan.ui',PREVIEW_KEY='phd-plan.preview',DRAFT_KEY='phd-plan.draft',THEME_KEY='theme';
 const U=Object.assign({tab:'week',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
 U.exp=U.exp||{};U.selView=U.selView||{};
-const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null};
+const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false};
 const saveUI=()=>ls.set(UI_KEY,U);
 let IX={items:new Map(),todos:new Map(),byItem:new Map()};
 const adopt=x=>normalize(clone(x));
@@ -1330,6 +1374,84 @@ function renderSettings(){
   <p class="hint">Version ${esc(BUILD)}</p>
   </div>`}
 
+/* ---------- resources: live usage of the servers ----------
+   Each server runs tools/server-monitor/plan_monitor.py, published to the tailnet by `tailscale serve`.
+   While this tab is open and visible, every server is polled every few seconds and only its card is
+   repainted, so nothing else on the page re-renders. The server list is part of the (encrypted) plans. */
+const LIVE={timer:0,busy:false,POLL:3000,st:{},hist:{}};
+const srvUrl=s=>String(s.url||'').trim().replace(/\/+$/,'');
+const pctOf=(a,b)=>a!=null&&b?Math.round(a/b*1000)/10:null;
+const gib=b=>b==null?'—':b/2**30>=100?String(Math.round(b/2**30)):(b/2**30).toFixed(1);
+const mibG=m=>m==null?'—':m/1024>=10?String(Math.round(m/1024)):(m/1024).toFixed(1);
+const dur=s=>s>=86400?Math.floor(s/86400)+'d':s>=3600?Math.floor(s/3600)+'h':Math.max(1,Math.floor(s/60))+'m';
+const bar=p=>`<span class="rbar${p>=90?' hot':p>=70?' warm':''}"><i style="width:${p==null?0:Math.max(0,Math.min(100,p))}%"></i></span>`;
+const gpuFree=g=>(g.util==null||g.util<5)&&(g.mem_used==null||g.mem_used<600)&&!(g.procs||[]).length;
+async function getJSON(url,ms){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);
+  try{const r=await fetch(url,{cache:'no-store',signal:c.signal,credentials:'omit'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}
+  finally{clearTimeout(t)}}
+async function pollServer(s){const m=LIVE.st[s.id]||(LIVE.st[s.id]={});const base=srvUrl(s);
+  try{
+    if(!LIVE.hist[s.id]){const h=await getJSON(base+'/history',6000);LIVE.hist[s.id]=(h.points||[]).slice(-180)}
+    const x=await getJSON(base+'/metrics',5000);m.snap=x;m.ok=Date.now();m.err='';
+    const H=LIVE.hist[s.id];const last=H[H.length-1];
+    if(x.cpu!=null&&(!last||x.t-last[0]>=9.5)){H.push([x.t,x.cpu,pctOf(x.mem.used,x.mem.total),(x.gpus||[]).map(g=>g.util),(x.gpus||[]).map(g=>pctOf(g.mem_used,g.mem_total))]);if(H.length>180)H.shift()}
+  }catch(e){m.err=e.name==='AbortError'?'no answer within 5 seconds':e.name==='TypeError'?'cannot connect':(e.message||'cannot connect')}
+  paintServer(s)}
+async function monTick(){if(LIVE.busy||!D)return;LIVE.busy=true;try{await Promise.all((D.servers||[]).map(pollServer));paintGlance()}finally{LIVE.busy=false}}
+function monSync(){const on=!!D&&U.tab==='res'&&document.visibilityState==='visible'&&(D.servers||[]).length>0;
+  if(on&&!LIVE.timer){LIVE.timer=setInterval(monTick,LIVE.POLL);monTick()}else if(!on&&LIVE.timer){clearInterval(LIVE.timer);LIVE.timer=0}}
+function srvState(s){const m=LIVE.st[s.id]||{};if(!m.ok&&!m.err)return 'wait';
+  return m.ok&&Date.now()-m.ok<LIVE.POLL*2+4000?'live':m.ok?'stale':'off'}
+function spark(vals,w,h){w=w||90;h=h||20;const v=vals.map(x=>x==null?null:Math.max(0,Math.min(100,x)));const n=v.length;let d='',pen=false;
+  if(v.filter(x=>x!=null).length>1)v.forEach((y,i)=>{if(y==null){pen=false;return}d+=(pen?'L':'M')+(i/(n-1)*w).toFixed(1)+' '+(h-1-y/100*(h-2)).toFixed(1);pen=true});
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${d?`<path d="${d}"/>`:''}</svg>`}
+const rrow=(k,p,txt,sp)=>`<div class="rrow"><span class="rk">${k}</span>${bar(p)}<span class="rv">${txt}</span>${sp||''}</div>`;
+function gpuRow(g,hist){const mp=pctOf(g.mem_used,g.mem_total);const procs=g.procs||[];
+  const who=procs.length?procs.map(p=>`<span title="${esc((p.cmd||p.name||'')+(p.elapsed!=null?' · running '+dur(p.elapsed):''))}">${esc(p.user)} ${mibG(p.mem)} GB${p.elapsed!=null?` · ${dur(p.elapsed)}`:''}</span>`).join(''):gpuFree(g)?'<span class="free">free</span>':'';
+  return `<div class="gpu"><span class="gi">${g.i}</span><span class="gn" title="${esc(g.name)}">${esc(String(g.name).replace(/^NVIDIA\s+|GeForce\s+/g,''))}</span>
+    <span class="gm">${bar(g.util)}<span>${g.util==null?'—':Math.round(g.util)+'%'}</span></span>
+    <span class="gm">${bar(mp)}<span>${mibG(g.mem_used)} / ${mibG(g.mem_total)} GB</span></span>
+    <span class="gt${g.temp>=85?' hot':g.temp>=75?' warm':''}">${g.temp==null?'':Math.round(g.temp)+'°'}</span>${spark(hist,60,16)}
+    ${who?`<span class="gw">${who}</span>`:''}</div>`}
+function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[],state=srvState(s);
+  const label={wait:'connecting…',live:'live',stale:'stale · '+(m.ok?Math.round((Date.now()-m.ok)/1000)+' s ago':''),off:'unreachable'}[state];
+  let h=`<div class="srv-h"><h3 data-find>${esc(s.name)}</h3><span class="srv-st ${state}"><i></i>${label}</span>${x?`<span class="srv-meta">${esc(x.host)} · up ${dur(x.uptime)} · load ${x.load.map(n=>n.toFixed(1)).join(' ')}</span>`:''}</div>`;
+  if(s.note)h+=`<p class="hint" data-find>${md(s.note)}</p>`;
+  if(!x)return h+(state==='off'?`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)? Chrome may also ask once whether this site may reach devices on your network: allow it.</p>`:'');
+  const G=x.gpus||[];
+  h+=`<div class="rrows">${rrow('cpu',x.cpu,`${x.cpu==null?'—':Math.round(x.cpu)+'%'} of ${x.cores} cores`,spark(H.map(p=>p[1])))}
+    ${rrow('memory',pctOf(x.mem.used,x.mem.total),`${gib(x.mem.used)} / ${gib(x.mem.total)} GB${x.swap&&x.swap.used>2**28?` · swap ${gib(x.swap.used)}`:''}`,spark(H.map(p=>p[2])))}
+    ${(x.disks||[]).map(d=>rrow(esc(d.mount),pctOf(d.used,d.used+d.avail),`${gib(d.used)} / ${gib(d.used+d.avail)} GB`,'<span></span>')).join('')}</div>`;
+  if(G.length)h+=`<div class="gpus"><div class="rk">gpus <span>${G.filter(gpuFree).length} of ${G.length} free</span></div>${G.map((g,i)=>gpuRow(g,H.map(p=>(p[3]||[])[i]))).join('')}</div>`;
+  else if(x.errors&&x.errors.gpu)h+=`<p class="hint">GPU: ${esc(x.errors.gpu)}</p>`;
+  if((x.users||[]).length)h+=`<div class="rusers"><span class="rk">users</span>${x.users.slice(0,8).map(u=>`<span><b>${esc(u.user)}</b> ${u.cpu>=0.1?u.cpu.toFixed(1)+' cores · ':''}${gib(u.rss)} GB</span>`).join('')}</div>`;
+  return h}
+function glanceHtml(){return (D.servers||[]).map(s=>{const m=LIVE.st[s.id]||{},x=m.snap,st=srvState(s);const G=x&&x.gpus||[];
+  const txt=x?(G.length?`${G.filter(gpuFree).length}/${G.length} GPUs free · `:'')+`cpu ${x.cpu==null?'—':Math.round(x.cpu)+'%'} · mem ${Math.round(pctOf(x.mem.used,x.mem.total))}%`:st==='off'?'unreachable':'connecting…';
+  return `<button type="button" class="gl" data-act="goto" data-tab="res" data-target="srv-${esc(s.id)}"><span class="srv-st ${st}"><i></i></span><b>${esc(s.name)}</b><span>${txt}</span></button>`}).join('')}
+function paintGlance(){const el=document.getElementById('res-glance');if(el)el.innerHTML=glanceHtml()}
+function paintServer(s){if(T.editSrv||U.tab!=='res')return;const el=document.getElementById('srv-'+s.id);if(el)el.innerHTML=serverInner(s)}
+const RAW_INSTALL='https://raw.githubusercontent.com/H-tr/PhD-Plan/main/tools/server-monitor/install.sh';
+function setupGuide(){return `<ol class="steps">
+  <li><strong>Once for the tailnet.</strong> In the <a href="https://login.tailscale.com/admin/dns" target="_blank" rel="noopener noreferrer">Tailscale admin console → DNS</a>, turn on MagicDNS and HTTPS certificates. Keep Tailscale switched on on every device you open this page from.</li>
+  <li><strong>On each server</strong> (no root needed):<pre><code>curl -fsSL ${RAW_INSTALL} | bash -s -- --userspace-tailscale</code></pre>Leave out <code>--userspace-tailscale</code> where Tailscale is already installed system-wide, such as a server you have root on.</li>
+  <li><strong>Join the tailnet and publish the agent</strong> with the two commands the installer prints: <code>… up --hostname=antares</code> (open the login link it shows), then <code>… serve --bg 9101</code>.</li>
+  <li>In the admin console, <strong>disable key expiry</strong> for each server so it does not drop off after 180 days.</li>
+  <li><strong>Add it here:</strong> <code>antares https://antares.&lt;your-tailnet&gt;.ts.net</code></li></ol>
+  <p class="hint">The agent only reads usage numbers, listens on 127.0.0.1, and answers this site alone; <code>tailscale serve</code> publishes it to your tailnet and nowhere else. Cron restarts it after a reboot. Shared lab machines fall under the lab’s and NUS IT’s rules, so check that running Tailscale there is allowed. Without Tailscale, an SSH tunnel works from one laptop: <code>ssh -L 9102:localhost:9101 antares</code>, then add <code>antares http://localhost:9102</code>.</p>`}
+function renderRes(){const S=D.servers||[];const editing=T.editSrv||!S.length;
+  const editor=editing?`<form class="edit" data-form="servers">
+      <label>Servers, one per line: a name, then the address, then an optional note after #
+      <textarea class="field code" name="text" id="srv-text" rows="${Math.max(4,S.length+2)}" placeholder="antares https://antares.your-tailnet.ts.net&#10;epsilon https://epsilon.your-tailnet.ts.net   # 8 × A6000">${esc(S.map(s=>`${s.name} ${s.url}${s.note?'   # '+s.note:''}`).join('\n'))}</textarea></label>
+      <div class="btnrow"><button class="btn" type="submit">Save</button>${S.length?'<button class="btn ghost" type="button" data-act="srv-cancel">Cancel</button>':''}</div></form>`:'';
+  return `<div class="stack">
+  ${pageHead('Resources',S.length&&!T.editSrv?`<button class="btn ghost sm" type="button" data-act="srv-edit">Edit servers</button>`:'')}
+  <p class="lede">${S.length?`Live usage, refreshed every ${LIVE.POLL/1000} seconds while this tab is open. Reachable only from devices on your tailnet.`:'Live CPU, memory, disk and GPU usage of your servers, and who is running what. Add the servers once the agent runs on them.'}</p>
+  ${editor}
+  ${S.length?`<div class="glance" id="res-glance">${glanceHtml()}</div><div class="srvs">${S.map(s=>`<section class="box srv" id="srv-${esc(s.id)}">${serverInner(s)}</section>`).join('')}</div>`:''}
+  ${group('res-setup','Connecting a server',setupGuide(),{closed:S.length>0})}
+  </div>`}
+
 /* ============================== sign-in, setup and recovery screens ============================== */
 function shellBare(){document.getElementById('tabs').innerHTML='';moveInd(null);document.querySelector('.search').hidden=true;document.getElementById('sync').hidden=true;document.getElementById('settings-btn').hidden=true;
   const p=document.getElementById('panels');p.dataset.ready='';return p}
@@ -1452,7 +1574,7 @@ async function signOut(){if(Sync.pending){try{await Sync.push()}catch(e){}}
   sec.del(CFG_KEY);sec.del(CACHE_KEY);sec.del(DRAFT_KEY);location.reload()}
 
 /* ============================== app shell ============================== */
-const PANELS={week:renderWeek,roadmap:renderRoadmap,research:renderResearch,exp:renderExp,admin:renderAdmin,think:renderThink,log:renderLog,settings:renderSettings};
+const PANELS={week:renderWeek,roadmap:renderRoadmap,research:renderResearch,exp:renderExp,admin:renderAdmin,res:renderRes,think:renderThink,log:renderLog,settings:renderSettings};
 const PANEL_IDS=Object.keys(PANELS);
 /* the ink underline: sits under the current section, follows the pointer across the nav */
 function moveInd(el){const ind=document.getElementById('tab-ind');if(el===undefined)el=document.querySelector('#tabs .tab[aria-selected="true"]');
@@ -1482,6 +1604,7 @@ function render(){
   let el=aid&&document.getElementById(aid);
   if(!el&&key){const sel=`[data-act="${key[0]}"]`+(key[1]?`[data-id="${CSS.escape(key[1])}"]`:'')+(key[2]?`[data-v="${CSS.escape(key[2])}"]`:'');el=document.getElementById('p-'+U.tab).querySelector(sel)}
   if(el&&el!==document.body)el.focus({preventScroll:true});
+  monSync();
 }
 function renderAllPanels(){for(const id of PANEL_IDS)if(T.stale[id]!==false)renderPanel(id)}
 let softPending=false;
@@ -1602,6 +1725,12 @@ document.addEventListener('submit',e=>{
     case 'ms':{const id=f.dataset.id;const fields={t:v('t'),d:v('d'),kind:v('kind'),est:v('est'),url:v('url'),note:v('note')};if(!fields.t||!parseD(fields.d))return;
       if(id==='new')D.milestones.push(Object.assign({id:'m'+uid(),done:false},fields));else{const m=D.milestones.find(x=>x.id===id);if(!m)return;Object.assign(m,fields)}
       T.editMs='';commit('milestone');return}
+    case 'servers':{const old=D.servers||[];const out=[];let bad=0;
+      for(const raw of f.elements.text.value.split('\n')){const line=raw.trim();if(!line)continue;const cut=line.indexOf(' #');
+        const main=(cut<0?line:line.slice(0,cut)).trim(),note=cut<0?'':line.slice(cut+2).trim();const [name,url]=main.split(/\s+/);
+        if(!name||!/^https?:\/\/[^\s]+$/.test(url||'')){bad++;continue}
+        const prev=old.find(s=>s.name===name);out.push({id:prev?prev.id:'s'+uid(),name,url,note})}
+      D.servers=out;T.editSrv=false;LIVE.hist={};LIVE.st={};commit('servers');if(bad)toast(bad+(bad===1?' line was':' lines were')+' skipped: each needs a name and an http(s) address');return}
     case 'phd':{Object.assign(D.phd,{who:v('who'),zh:v('zh'),prog:v('prog'),start:v('start'),end:v('end')});T.editPhd=false;commit('PhD details');return}
     case 'student-new':{if(!v('name'))return;(D.students=D.students||[]).push({id:'st'+uid(),name:v('name'),projects:[],note:''});T.addingStudent=false;commit('students');return}
     case 'student':{const s=(D.students||[]).find(x=>x.id===f.dataset.id);if(!s)return;s.name=v('name')||s.name;s.note=v('note');T.editStudent='';commit('students');return}
@@ -1669,6 +1798,8 @@ document.addEventListener('click',async e=>{
     case 'ms-cancel':T.editMs='';render();return;
     case 'ms-del':snapshot();D.milestones=D.milestones.filter(m=>m.id!==id);commit('delete milestone');toast('Milestone deleted',true);return;
     case 'phd-edit':T.editPhd=!T.editPhd;render();return;
+    case 'srv-edit':T.editSrv=true;render();{const n=document.getElementById('srv-text');if(n)n.focus()}return;
+    case 'srv-cancel':T.editSrv=false;render();return;
     case 'mon-more':U.exp[id]=!U.exp[id];break;
     case 'phd-cancel':T.editPhd=false;render();return;
     case 'stu-proj':{const s=(D.students||[]).find(x=>x.id===id);if(!s)return;const p=s.projects||[];s.projects=p.includes(v)?p.filter(x=>x!==v):[...p,v];commit('students');return}
@@ -1695,7 +1826,7 @@ document.addEventListener('click',async e=>{
 document.getElementById('sync').addEventListener('click',async()=>{if(!D)return;if(/error|offline/.test(Sync.status)){Sync.push();return}
   if(Sync.status==='auth'){sec.del(CFG_KEY);T.vault=T.vault||await fetchVault();T.connectStage='';T.connectErr='GitHub refused the saved access. Sign in again.';screen(T.vault?'login':'setup');return}
   setTab('settings')});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
+document.addEventListener('visibilitychange',()=>{monSync();if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
 addEventListener('online',()=>{if(Sync.pending)Sync.push()});
 
 function saveTodoEdit(inp){T.editTodo='';const val=inp.value.trim();

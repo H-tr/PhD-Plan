@@ -42,7 +42,7 @@ This repository is public, but the plans in it are not readable. They are encryp
 
 - The encrypted files are public, so they are only as strong as the password. Use at least 12 characters (four or five random words make a good passphrase) and use it nowhere else.
 - **Same origin.** Every page on `h-tr.github.io` (the homepage and the project docs sites) shares one browser origin, so scripts there could read this site's `localStorage`. For that reason, after sign-in the keys and the decrypted plans are kept in `sessionStorage` (this tab only, gone when it closes). *Keep me signed in* moves them to `localStorage`; use it only on your own devices.
-- The page sets a Content Security Policy that allows network requests only to itself and `api.github.com`.
+- The page sets a Content Security Policy that allows network requests only to itself, `api.github.com`, tailnet hosts (`*.ts.net`, for the Resources tab) and `localhost` (for an SSH tunnel to a server).
 - **Token leaked:** delete it on GitHub (that alone stops writes), make a new one, and use *Replace the token* in Settings.
 - **Password forgotten:** type the recovery code into the password box, then choose a new password.
 - **Token expired:** after the password, the page asks for a new token and locks it under the same password.
@@ -60,6 +60,7 @@ This repository is public, but the plans in it are not readable. They are encryp
   - the half-step-back (research) and full-step-back (career) checklists;
   - fellowships and awards, channels, the paper-launch checklist;
   - the reading list, career notes, inbox and conversation notes.
+- **Resources:** live CPU, memory, disk and per-GPU usage of the lab servers, with who is running what, refreshed every 3 seconds while the tab is open. Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md). The server list is stored with the (encrypted) plans.
 - **Logbook:** a year-long activity heatmap and every note, completed to-do, status change and weekly review, by month.
 - `/` focuses search. Everything is editable, and deletions can be undone. Settings has sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
 
