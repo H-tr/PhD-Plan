@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs the PhD Plan usage agent for the current user (no root) and keeps it running with cron.
+# Installs the Control Panel usage agent for the current user (no root) and keeps it running with cron.
 #
 #   bash install.sh [--userspace-tailscale] [--hostname NAME] [--port 9101] [--origin https://h-tr.github.io]
 #

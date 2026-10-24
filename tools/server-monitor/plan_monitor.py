@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only usage agent for the Resources page of PhD Plan.
+"""Read-only usage agent for the Resources page of the Control Panel.
 
 Samples CPU, memory, disks, GPUs (through nvidia-smi) and who is using them, and serves the
 numbers as JSON on 127.0.0.1 only. Publish it to your tailnet, and nowhere else, with
@@ -254,7 +254,7 @@ def serve(sampler, bind, port, origins):
 
 
 def main():
-    ap = argparse.ArgumentParser(description='Read-only usage agent for the Resources page of PhD Plan.')
+    ap = argparse.ArgumentParser(description='Read-only usage agent for the Resources page of the Control Panel.')
     ap.add_argument('--port', type=int, default=9101)
     ap.add_argument('--bind', default='127.0.0.1', help='keep 127.0.0.1; tailscale serve does the publishing')
     ap.add_argument('--origin', action='append', default=None,
