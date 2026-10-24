@@ -17,6 +17,7 @@ This repository is public, but your data in it is not readable. It is encrypted 
 | `main` → `docs/index.html` | The whole app: one HTML file with its CSS and JavaScript, served by GitHub Pages |
 | `main` → `docs/vault.json` | The data key and the GitHub token, wrapped under the password and, separately, under a recovery code |
 | `data` branch → `data.json` | All plans, encrypted with the data key |
+| `projects` branch → `projects.json` | Each project's open problems and solved items, read from its code repository and encrypted to the panel's key ([tools/project-sync](tools/project-sync/README.md)) |
 
 **Encryption:**
 - A random 256-bit data key encrypts `data.json` with AES-256-GCM.
@@ -56,12 +57,13 @@ This repository is public, but your data in it is not readable. It is encrypted 
 - **Research:**
   - The deadlines you keep in view are at the top, as a countdown (*edit* changes them).
   - Each project has a status, to-dos with due dates, and a progress log.
+  - Under each project, *from the code* lists the open problems in its repository's to-do file and what was solved: fixed items and pull requests merged in the last 60 days. A GitHub Action refreshes it every 30 minutes; see [tools/project-sync](tools/project-sync/README.md) for the setup.
   - Click a to-do's text to edit it; ✎ edits the project.
 - **Resources:** live GPU, CPU and memory use of the lab servers, refreshed every 3 seconds while the tab is open.
   - Each GPU row shows who is using it, and the CPU and memory bars show their top users.
   - Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md).
 - **Shortcuts:** `/` focuses search, and deletions can be undone.
-- **Settings:** sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
+- **Settings:** sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code, sign-out and the state of the project sync.
 
 ## Changing the page
 
