@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1549-d36fa5">
+<meta name="app-build" content="1024-1552-e92766">
 <title>PhD Plan</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M8 23V9h7a4.5 4.5 0 0 1 0 9H8' fill='none' stroke='%23111' stroke-width='2.2'/%3E%3Ccircle cx='23.5' cy='21.5' r='2.2' fill='%23a8281e'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -446,7 +446,7 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .gl:hover{border-color:var(--line-strong)}
 .gl b{font-weight:600}
 .gl>span:last-child{grid-column:2;color:var(--muted);font-size:14.5px}
-.srvs{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));align-items:start}
+.srvs{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
 .srv{gap:12px}
 .srv-h{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
 .srv-h h3{font-size:1.4rem}
@@ -458,7 +458,7 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 @media (prefers-reduced-motion: no-preference){.srv-st.live i{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.3}}}
 .srv-meta{font-size:14px;color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
 .rrows{display:grid;gap:5px}
-.rrow{display:grid;grid-template-columns:6.5em minmax(60px,1fr) auto 90px;gap:10px;align-items:center;font-size:14.5px}
+.rrow{display:grid;grid-template-columns:6.5em minmax(70px,1fr) 10.5em 90px minmax(170px,1.5fr);gap:10px;align-items:center;font-size:14.5px}
 .rk{font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk span{color:var(--soft);margin-left:6px}
 .rv{font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap}
@@ -468,27 +468,20 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .spark{color:var(--faint);display:block}
 .spark path{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
 .gpus{display:grid;gap:0}
-.gpu{display:grid;grid-template-columns:1.2em 6.5em minmax(60px,1fr) minmax(120px,1.3fr) 2.3em 60px;gap:2px 10px;align-items:center;font-size:14.5px;padding:4px 0;border-top:1px dotted var(--line)}
+.gpu{display:grid;grid-template-columns:1.2em 6.5em minmax(60px,.8fr) minmax(110px,1fr) 2.3em 60px minmax(170px,1.5fr);gap:2px 10px;align-items:center;font-size:14.5px;padding:4px 0;border-top:1px dotted var(--line)}
 .gpus>.rk{padding-bottom:3px}
 .gi{color:var(--faint);font-variant-numeric:tabular-nums}
 .gn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gm{display:grid;grid-template-columns:minmax(24px,1fr) auto;gap:6px;align-items:center;font-variant-numeric:tabular-nums;color:var(--soft);white-space:nowrap}
 .gt{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right} .gt.warm{color:var(--warn)} .gt.hot{color:var(--hl)}
-.gw{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:0 14px;font-size:14px;color:var(--muted);font-style:italic}
-.gw .free{color:var(--ok);font-style:normal;font-variant-caps:all-small-caps;letter-spacing:.06em}
-.usewho{display:grid;gap:3px}
-.whot-wrap{overflow-x:auto}
-.whot{width:100%;border-collapse:collapse;font-size:14.5px;font-variant-numeric:tabular-nums}
-.whot th{font-weight:400;text-align:left;font-variant-caps:all-small-caps;letter-spacing:.06em;font-size:15px;color:var(--muted);padding:2px 12px 4px 0;border-bottom:1px solid var(--line);white-space:nowrap}
-.whot td{padding:4px 12px 4px 0;border-bottom:1px dotted var(--line);vertical-align:baseline;color:var(--soft)}
-.whot td:first-child b{color:var(--ink);font-weight:600}
-.whot .num{text-align:right;white-space:nowrap}
-.whot tr:last-child td{border-bottom:0}
+.gu{display:flex;flex-wrap:wrap;gap:0 12px;font-size:14px;color:var(--muted);min-width:0;line-height:1.35}
+.gu b{font-weight:600;color:var(--soft)}
+.gu .free{color:var(--ok);font-variant-caps:all-small-caps;letter-spacing:.06em}
 ol.steps{margin:0;padding-left:1.3em;display:grid;gap:10px;font-size:15.5px}
 ol.steps pre{margin:6px 0;padding:8px 10px;background:var(--sunk);border-radius:3px;overflow-x:auto}
 ol.steps pre code{font:13px var(--f-code);background:none;padding:0;white-space:pre}
-@media (max-width:560px){.rrow{grid-template-columns:5.2em minmax(40px,1fr) auto}.rrow>.spark,.rrow>span:last-child:empty{display:none}
-  .gpu{grid-template-columns:1.1em minmax(40px,1fr) minmax(100px,1.3fr) 2.2em}.gpu .gn,.gpu .spark{display:none}.gw{grid-column:2/-1}.srv-meta{margin-left:0}}
+@media (max-width:700px){.rrow{grid-template-columns:5.2em minmax(40px,1fr) auto}.rrow>.spark,.rrow>span:empty{display:none}.rrow>.gu{grid-column:2/-1}
+  .gpu{grid-template-columns:1.1em minmax(40px,1fr) minmax(100px,1.3fr) 2.2em}.gpu .gn,.gpu .spark{display:none}.gpu>.gu{grid-column:2/-1}.srv-meta{margin-left:0}}
 
 .site-foot{padding-block:8px 36px;color:var(--faint);font-size:14.5px;font-style:italic;display:flex;gap:6px 18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .site-foot a{color:var(--muted)}
@@ -1393,7 +1386,8 @@ const srvUrl=s=>String(s.url||'').trim().replace(/\/+$/,'');
 const pctOf=(a,b)=>a!=null&&b?Math.round(a/b*1000)/10:null;
 const gib=b=>b==null?'—':b/2**30>=100?String(Math.round(b/2**30)):(b/2**30).toFixed(1);
 /* a used / total pair in one unit: GB, or TB from 1000 GB */
-const size2=(u,t)=>t/2**30>=1000?`${(u/2**40).toFixed(1)} / ${(t/2**40).toFixed(1)} TB`:`${gib(u)} / ${gib(t)} GB`;
+const sz=b=>b/2**30>=1000?[(b/2**40).toFixed(1),'TB']:[gib(b),'GB'];
+const size2=(u,t)=>{const a=sz(u),b=sz(t);return a[1]===b[1]?`${a[0]} / ${b[0]} ${b[1]}`:`${a[0]} ${a[1]} / ${b[0]} ${b[1]}`};
 const mibG=m=>m==null?'—':m/1024>=10?String(Math.round(m/1024)):(m/1024).toFixed(1);
 const dur=s=>s>=86400?Math.floor(s/86400)+'d':s>=3600?Math.floor(s/3600)+'h':Math.max(1,Math.floor(s/60))+'m';
 const bar=p=>`<span class="rbar${p>=90?' hot':p>=70?' warm':''}"><i style="width:${p==null?0:Math.max(0,Math.min(100,p))}%"></i></span>`;
@@ -1417,15 +1411,24 @@ function srvState(s){const m=LIVE.st[s.id]||{};if(!m.ok&&!m.err)return 'wait';
 function spark(vals,w,h){w=w||90;h=h||20;const v=vals.map(x=>x==null?null:Math.max(0,Math.min(100,x)));const n=v.length;let d='',pen=false;
   if(v.filter(x=>x!=null).length>1)v.forEach((y,i)=>{if(y==null){pen=false;return}d+=(pen?'L':'M')+(i/(n-1)*w).toFixed(1)+' '+(h-1-y/100*(h-2)).toFixed(1);pen=true});
   return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${d?`<path d="${d}"/>`:''}</svg>`}
-const rrow=(k,p,txt,sp)=>`<div class="rrow"><span class="rk">${k}</span>${bar(p)}<span class="rv">${txt}</span>${sp||''}</div>`;
+/* every bar carries its own "who": GPU bars list the people with processes on that GPU,
+   the CPU and memory bars list the heaviest users of each */
+const SYS_USERS=/^(root|gdm|nobody|messagebus|syslog|colord|polkitd|rtkit|avahi|systemd-.*|_.*|\d+)$/;
+const uname=u=>u==='?'?'unknown':u;
+const whoCell=items=>`<span class="gu">${items}</span>`;
+function topUsers(x,key,min,fmt){
+  const us=(x.users||[]).filter(u=>u[key]>=min&&(!SYS_USERS.test(u.user)||key==='cpu'&&u.cpu>=2)).sort((a,b)=>b[key]-a[key]);
+  const shown=us.slice(0,3).map(u=>`<span><b>${esc(uname(u.user))}</b> ${fmt(u[key])}</span>`).join('');
+  return whoCell(shown+(us.length>3?`<span title="${esc(us.slice(3).map(u=>u.user+' '+fmt(u[key])).join(', '))}">+${us.length-3} more</span>`:''))}
+const rrow=(k,p,txt,sp,who)=>`<div class="rrow"><span class="rk">${k}</span>${bar(p)}<span class="rv">${txt}</span>${sp||'<span></span>'}${who||'<span></span>'}</div>`;
 function gpuRow(g,hist){const mp=pctOf(g.mem_used,g.mem_total);const procs=g.procs||[];
   const agg={};for(const p of procs){const a=agg[p.user]||(agg[p.user]={n:0,mem:0,el:null,cmds:[]});a.n++;a.mem+=p.mem||0;if(p.elapsed!=null)a.el=Math.max(a.el||0,p.elapsed);if(a.cmds.length<4&&(p.cmd||p.name))a.cmds.push(p.cmd||p.name)}
-  const who=procs.length?Object.entries(agg).sort((a,b)=>b[1].mem-a[1].mem).map(([u,a])=>`<span title="${esc(a.cmds.join('\n'))}">${esc(uname(u))}${a.n>1?' ×'+a.n:''} · ${mibG(a.mem)} GB${a.el!=null?' · '+dur(a.el):''}</span>`).join(''):gpuFree(g)?'<span class="free">free</span>':'';
-  return `<div class="gpu"><span class="gi">${g.i}</span><span class="gn" title="${esc(g.name)}">${esc(String(g.name).replace(/^NVIDIA\s+|GeForce\s+/g,''))}</span>
+  const who=procs.length?Object.entries(agg).sort((a,b)=>b[1].mem-a[1].mem).map(([u,a])=>`<span title="${esc(a.cmds.join('\n'))}"><b>${esc(uname(u))}</b>${a.n>1?' ×'+a.n:''} · ${mibG(a.mem)} GB${a.el!=null?' · '+dur(a.el):''}</span>`).join('')
+    :gpuFree(g)?'<span class="free">free</span>':'';
+  return `<div class="gpu"><span class="gi">${g.i}</span><span class="gn" title="${esc(g.name)}">${esc(String(g.name).replace(/^NVIDIA\s+|GeForce\s+|\s+PCIe$/g,''))}</span>
     <span class="gm">${bar(g.util)}<span>${g.util==null?'—':Math.round(g.util)+'%'}</span></span>
     <span class="gm">${bar(mp)}<span>${mibG(g.mem_used)} / ${mibG(g.mem_total)} GB</span></span>
-    <span class="gt${g.temp>=85?' hot':g.temp>=75?' warm':''}">${g.temp==null?'':Math.round(g.temp)+'°'}</span>${spark(hist,60,16)}
-    ${who?`<span class="gw">${who}</span>`:''}</div>`}
+    <span class="gt${g.temp>=85?' hot':g.temp>=75?' warm':''}">${g.temp==null?'':Math.round(g.temp)+'°'}</span>${spark(hist,60,16)}${whoCell(who)}</div>`}
 function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[],state=srvState(s);
   const label={wait:'connecting…',live:'live',stale:'stale · '+(m.ok?Math.round((Date.now()-m.ok)/1000)+' s ago':''),off:'unreachable'}[state];
   let h=`<div class="srv-h"><h3 data-find>${esc(s.name)}</h3><span class="srv-st ${state}"><i></i>${label}</span>${x?`<span class="srv-meta">${esc(x.host)} · up ${dur(x.uptime)} · load ${x.load.map(n=>n.toFixed(1)).join(' ')}</span>`:''}</div>`;
@@ -1434,37 +1437,16 @@ function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[]
     :LIVE.lna==='denied'?`<p class="err small">Chrome is blocking access to devices on your network for this site.</p><p class="hint">Click the site-settings icon left of the address and set <em>Local network access</em> to Allow, then reload.</p>`
     :`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)?</p>`):'');
   const G=x.gpus||[];
-  h+=`<div class="rrows">${rrow('cpu',x.cpu,`${x.cpu==null?'—':Math.round(x.cpu)+'%'} of ${x.cores} cores`,spark(H.map(p=>p[1])))}
-    ${rrow('memory',pctOf(x.mem.used,x.mem.total),`${size2(x.mem.used,x.mem.total)}${x.swap&&x.swap.used>2**28?` · swap ${gib(x.swap.used)}`:''}`,spark(H.map(p=>p[2])))}
-    ${(x.disks||[]).map(d=>rrow(esc(d.mount),pctOf(d.used,d.used+d.avail),size2(d.used,d.used+d.avail),'<span></span>')).join('')}</div>`;
+  h+=`<div class="rrows">${rrow('cpu',x.cpu,`${x.cpu==null?'—':Math.round(x.cpu)+'%'} of ${x.cores} cores`,spark(H.map(p=>p[1])),topUsers(x,'cpu',0.5,c=>(c>=10?Math.round(c):c.toFixed(1))+' cores'))}
+    ${rrow('memory',pctOf(x.mem.used,x.mem.total),`${size2(x.mem.used,x.mem.total)}${x.swap&&x.swap.used>2**28?` · swap ${gib(x.swap.used)}`:''}`,spark(H.map(p=>p[2])),topUsers(x,'rss',4*2**30,b=>gib(b)+' GB'))}
+    ${(x.disks||[]).map(d=>rrow(esc(d.mount),pctOf(d.used,d.used+d.avail),size2(d.used,d.used+d.avail))).join('')}</div>`;
   if(G.length)h+=`<div class="gpus"><div class="rk">gpus <span>${G.filter(gpuFree).length} of ${G.length} free</span></div>${G.map((g,i)=>gpuRow(g,H.map(p=>(p[3]||[])[i]))).join('')}</div>`;
   else if(x.errors&&x.errors.gpu)h+=`<p class="hint">GPU: ${esc(x.errors.gpu)}</p>`;
-  const W=whoOn(x);
-  if(W.length)h+=`<div class="usewho"><div class="rk">who is using it</div>${whoTable(W.map(w=>Object.assign({},w,{where:idxRange(w.gpus)})),false)}</div>`;
   return h}
-/* who is using the compute: GPU holders from nvidia-smi, plus anyone with real CPU or memory use */
-const SYS_USERS=/^(root|gdm|nobody|messagebus|syslog|colord|polkitd|rtkit|avahi|systemd-.*|_.*|\d+)$/;
-const uname=u=>u==='?'?'unknown':u;
-function whoOn(x){const by={};const get=u=>by[u]||(by[u]={user:u,gpus:[],vram:0,cpu:0,rss:0,since:null});
-  for(const g of x.gpus||[])for(const p of g.procs||[]){const w=get(p.user);if(!w.gpus.includes(g.i))w.gpus.push(g.i);w.vram+=p.mem||0;if(p.elapsed!=null)w.since=Math.max(w.since||0,p.elapsed)}
-  for(const u of x.users||[]){const w=get(u.user);w.cpu+=u.cpu||0;w.rss+=u.rss||0}
-  return Object.values(by).filter(w=>w.gpus.length||((w.cpu>=0.5||w.rss>=4*2**30)&&(!SYS_USERS.test(w.user)||w.cpu>=2)))
-    .sort((a,b)=>b.gpus.length-a.gpus.length||b.vram-a.vram||b.cpu-a.cpu||b.rss-a.rss)}
-function idxRange(a){const s=[...a].sort((x,y)=>x-y),out=[];for(let i=0;i<s.length;i++){let j=i;while(j+1<s.length&&s[j+1]===s[j]+1)j++;out.push(j>i+1?s[i]+'–'+s[j]:j===i+1?s[i]+', '+s[j]:String(s[i]));i=j}return out.join(', ')}
-function whoTable(rows,lab){
-  return `<div class="whot-wrap"><table class="whot"><thead><tr><th>${lab?'person':'user'}</th><th>${lab?'GPUs held':'GPUs'}</th><th class="num">GPU mem</th><th class="num">CPU</th><th class="num">RAM</th>${lab?'':'<th class="num">running</th>'}</tr></thead><tbody>${rows.map(w=>`<tr><td><b>${esc(uname(w.user))}</b></td><td>${w.where?esc(w.where):'<span class="muted">—</span>'}${lab&&w.n?` <span class="muted">(${w.n})</span>`:''}</td><td class="num">${w.vram?mibG(w.vram)+' GB':'—'}</td><td class="num">${w.cpu>=0.1?w.cpu.toFixed(1)+' cores':'—'}</td><td class="num">${w.rss?gib(w.rss)+' GB':'—'}</td>${lab?'':`<td class="num">${w.since!=null?dur(w.since):'—'}</td>`}</tr>`).join('')}</tbody></table></div>`}
-/* the same, summed over every reachable server */
-function whoAll(){const by={};
-  for(const s of D.servers||[]){const x=(LIVE.st[s.id]||{}).snap;if(!x||srvState(s)==='off')continue;
-    for(const w of whoOn(x)){const a=by[w.user]||(by[w.user]={user:w.user,parts:[],n:0,vram:0,cpu:0,rss:0});
-      if(w.gpus.length){a.parts.push(s.name+' '+idxRange(w.gpus));a.n+=w.gpus.length}a.vram+=w.vram;a.cpu+=w.cpu;a.rss+=w.rss}}
-  return Object.values(by).map(a=>Object.assign(a,{where:a.parts.join(' · ')})).sort((a,b)=>b.n-a.n||b.vram-a.vram||b.cpu-a.cpu||b.rss-a.rss)}
-function whoAllHtml(){const rows=whoAll();const any=(D.servers||[]).some(s=>(LIVE.st[s.id]||{}).snap);
-  return rows.length?whoTable(rows,true):`<p class="blank">${any?'Nobody is using the servers right now.':'Waiting for the servers…'}</p>`}
 function glanceHtml(){return (D.servers||[]).map(s=>{const m=LIVE.st[s.id]||{},x=m.snap,st=srvState(s);const G=x&&x.gpus||[];
   const txt=x?(G.length?`${G.filter(gpuFree).length}/${G.length} GPUs free · `:'')+`cpu ${x.cpu==null?'—':Math.round(x.cpu)+'%'} · mem ${Math.round(pctOf(x.mem.used,x.mem.total))}%`:st==='off'?'unreachable':'connecting…';
   return `<button type="button" class="gl" data-act="goto" data-tab="res" data-target="srv-${esc(s.id)}"><span class="srv-st ${st}"><i></i></span><b>${esc(s.name)}</b><span>${txt}</span></button>`}).join('')}
-function paintGlance(){const el=document.getElementById('res-glance');if(el)el.innerHTML=glanceHtml();const w=document.getElementById('res-who');if(w&&!T.editSrv)w.innerHTML=whoAllHtml()}
+function paintGlance(){const el=document.getElementById('res-glance');if(el)el.innerHTML=glanceHtml()}
 function paintServer(s){if(T.editSrv||U.tab!=='res')return;const el=document.getElementById('srv-'+s.id);if(el)el.innerHTML=serverInner(s)}
 const RAW_INSTALL='https://raw.githubusercontent.com/H-tr/PhD-Plan/main/tools/server-monitor/install.sh';
 function setupGuide(){return `<ol class="steps">
@@ -1483,9 +1465,7 @@ function renderRes(){const S=D.servers||[];const editing=T.editSrv||!S.length;
   ${pageHead('Resources',S.length&&!T.editSrv?`<button class="btn ghost sm" type="button" data-act="srv-edit">Edit servers</button>`:'')}
   <p class="lede">${S.length?`Live usage, refreshed every ${LIVE.POLL/1000} seconds while this tab is open. Reachable only from devices on your tailnet.`:'Live CPU, memory, disk and GPU usage of your servers, and who is running what. Add the servers once the agent runs on them.'}</p>
   ${editor}
-  ${S.length?`<div class="glance" id="res-glance">${glanceHtml()}</div>
-  <section class="box"><h2 class="h-sm">Who is using the compute</h2><div id="res-who">${whoAllHtml()}</div><p class="hint">Live, across every reachable server: GPUs held (by any process), their memory, CPU cores and RAM in use. Hover a GPU’s user for the commands.</p></section>
-  <div class="srvs">${S.map(s=>`<section class="box srv" id="srv-${esc(s.id)}">${serverInner(s)}</section>`).join('')}</div>`:''}
+  ${S.length?`<div class="glance" id="res-glance">${glanceHtml()}</div><div class="srvs">${S.map(s=>`<section class="box srv" id="srv-${esc(s.id)}">${serverInner(s)}</section>`).join('')}</div>`:''}
   ${group('res-setup','Connecting a server',setupGuide(),{closed:S.length>0})}
   </div>`}
 
