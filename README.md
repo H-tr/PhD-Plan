@@ -4,13 +4,11 @@ A password-protected personal control panel:
 - **Research:** where each project stands.
 - **Resources:** live use of the lab's GPU servers.
 
-A weekly **Plan** is also there, hidden by default.
-
 It is styled after [h-tr.github.io](https://h-tr.github.io/) and shares that site's light/dark choice.
 
 Live page: <https://h-tr.github.io/PhD-Plan/>
 
-This repository is public, but your data in it is not readable. They are encrypted in the browser before they are saved, so GitHub only ever stores ciphertext. Without the password (or the recovery code) the page shows a sign-in box and the repository shows noise.
+This repository is public, but your data in it is not readable. It is encrypted in the browser before they are saved, so GitHub only ever stores ciphertext. Without the password (or the recovery code) the page shows a sign-in box and the repository shows noise.
 
 ## How it is put together
 
@@ -19,7 +17,6 @@ This repository is public, but your data in it is not readable. They are encrypt
 | `main` → `docs/index.html` | The whole app: one HTML file with its CSS and JavaScript, served by GitHub Pages |
 | `main` → `docs/vault.json` | The data key and the GitHub token, wrapped under the password and, separately, under a recovery code |
 | `data` branch → `data.json` | All plans, encrypted with the data key |
-| `calendar` branch → `calendar.json` | Meetings from your calendars, encrypted for the panel by [the calendar sync](tools/calendar-sync/README.md) |
 
 **Encryption:**
 - A random 256-bit data key encrypts `data.json` with AES-256-GCM.
@@ -56,18 +53,15 @@ This repository is public, but your data in it is not readable. They are encrypt
 
 ## Using it
 
-- **Plan** (hidden by default; Settings → Sections shows it): the week's plan in three steps. On weekends it opens on next week; on weekdays, on the current one.
-  1. **Last week:** what got done, what didn't, and one click to carry the rest over, plus a short note.
-  2. **Time:** free hours per day for focused work, which is your working window minus your meetings. Meetings come from your calendars (Settings → Calendar, see [tools/calendar-sync](tools/calendar-sync/README.md)), and the deadlines you keep in view are listed too.
-  3. **Outcomes:** for each project, what it should have to show by the end of the week. Pick from its open to-dos or add new ones, each with rough hours; a bar compares planned hours with free hours. Projects with nothing planned collapse to one line.
-
-  During the week, tick outcomes off on the same page.
-- **Research:** each project has a status, to-dos with due dates, and a progress log. Click a to-do's text to edit it; ✎ edits the project.
+- **Research:**
+  - The deadlines you keep in view are at the top, as a countdown (*edit* changes them).
+  - Each project has a status, to-dos with due dates, and a progress log.
+  - Click a to-do's text to edit it; ✎ edits the project.
 - **Resources:** live GPU, CPU and memory use of the lab servers, refreshed every 3 seconds while the tab is open.
-  - Each GPU row shows who is using it; the CPU and memory bars show their top users.
+  - Each GPU row shows who is using it, and the CPU and memory bars show their top users.
   - Each server runs a small agent published to the tailnet with `tailscale serve`; see [tools/server-monitor](tools/server-monitor/README.md).
-- **Hidden sections:** Plan, Roadmap, Experience, Admin, Thinking and Logbook still exist, hidden by default. Settings → Sections brings any of them back, and their data is kept either way.
-- **Shortcuts and settings:** `/` focuses search, and deletions can be undone. Settings has sections, calendar, sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
+- **Shortcuts:** `/` focuses search, and deletions can be undone.
+- **Settings:** sync, backups (plain JSON, downloaded locally), theme, password, token, recovery code and sign-out.
 
 ## Changing the page
 

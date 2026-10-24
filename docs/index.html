@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1653-441ed2">
+<meta name="app-build" content="1024-1700-745cfe">
 <title>Control Panel</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M7 10h18M7 16h18M7 22h18' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='10' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='21' cy='16' r='2.6' fill='%23a8281e'/%3E%3Ccircle cx='15' cy='22' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -322,6 +322,8 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .open>.it-row .car,.open>.grp-hd .car,.sub-x.open .mini-h .car{transform:rotate(90deg);color:var(--ink)}
 @media (prefers-reduced-motion: reduce){.car{transition:none}}
 .xb{display:grid;gap:10px;min-width:0}
+/* grid tracks that may shrink below their content, so long notes and to-dos wrap instead of overflowing on phones */
+.xb,.stack,.list-i,.grp-s,.todos{grid-template-columns:minmax(0,1fr)}
 .it>.xb{border-top:1px dotted var(--line);padding:12px 16px 14px 32px}
 .grp-s{display:grid;gap:12px;min-width:0}
 .grp-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -361,84 +363,6 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .it-row:hover select.st,.it-row select.st:focus-visible{border-color:var(--line)}
 .gbar{display:inline-block;width:56px;height:3px;border-radius:2px;background:var(--line);overflow:hidden;vertical-align:middle}
 .gbar i{display:block;height:100%;background:var(--accent)}
-
-/* roadmap: the PhD arc */
-.arc{position:relative;padding:50px 0 6px;margin:0 6px}
-.arc-bar{position:relative;height:12px;border:1px solid var(--line-strong);border-radius:2px;background:var(--bg)}
-.arc-fill{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(135deg,var(--line-strong) 0 1px,transparent 1px 5px)}
-.arc-yr{position:absolute;top:-1px;bottom:-1px;border-left:1px solid var(--line-strong)}
-.arc-yl{position:absolute;top:-26px;font-size:15px;font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);white-space:nowrap;padding-left:6px}
-.arc-yl.cur{color:var(--ink);font-weight:600}
-.arc-now{position:absolute;top:-32px;bottom:-9px;width:0;border-left:1.5px solid var(--hl);z-index:2}
-.arc-now span{position:absolute;bottom:calc(100% + 1px);left:0;transform:translateX(-50%);font-size:14px;font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--hl);white-space:nowrap;background:var(--bg);padding:0 3px}
-.arc-m{position:absolute;top:50%;width:10px;height:10px;padding:0;margin:0;border:1.5px solid var(--ink);background:var(--bg);transform:translate(-50%,-50%) rotate(45deg);cursor:pointer;z-index:3}
-.arc-m.done{background:var(--ink)}
-.arc-m.done:not(.k-phd){opacity:.35}
-.box.tight{padding:4px 16px}
-.arc-m.k-venue,.arc-m.k-fellow,.arc-m.k-career,.arc-m.k-life{width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);border-width:0;z-index:1}
-.arc-labs{position:relative;height:92px;margin:0 6px}
-.arc-lab{position:absolute;font-size:14px;line-height:1.25;color:var(--soft);white-space:nowrap;border:0;background:none;padding:0;cursor:pointer;text-align:left;font-family:var(--f-body)}
-.arc-lab::before{content:"";position:absolute;left:0;bottom:100%;height:var(--lh,6px);border-left:1px dotted var(--line-strong)}
-.arc-lab.r::before{left:auto;right:0}
-.arc-lab small{display:block;color:var(--faint);font-variant-caps:all-small-caps;letter-spacing:.05em;font-size:13.5px}
-.arc-lab:hover{color:var(--ink)}
-.arc-sum{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:15.5px;color:var(--muted);align-items:baseline}
-.arc-sum b{font-weight:400;color:var(--ink);font-style:italic}
-.kd{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none;vertical-align:1px}
-.k-phd .kd,.kd.k-phd{border-radius:0;transform:rotate(45deg)}
-.kd.k-phd,.k-phd .kd{background:var(--ink)}
-.kd.k-venue,.k-venue .kd,.arc-m.k-venue{background:var(--hl)}
-.kd.k-fellow,.k-fellow .kd,.arc-m.k-fellow{background:var(--warn)}
-.kd.k-career,.k-career .kd,.arc-m.k-career{background:var(--ok)}
-.kd.k-life,.k-life .kd,.arc-m.k-life{background:var(--faint)}
-.kd.k-todo,.k-todo .kd{background:transparent;border:1px solid var(--muted)}
-.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14.5px;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.mon{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px 10px 10px;min-height:92px;display:grid;align-content:start;gap:3px;min-width:0}
-.mon-h{display:flex;justify-content:space-between;align-items:baseline;font-variant-caps:all-small-caps;letter-spacing:.08em;color:var(--muted);font-size:15.5px}
-.mon-h small{font-size:14px;color:var(--faint)}
-.mon.now{background:var(--accent-soft)}
-.mon.now .mon-h{color:var(--ink);font-weight:600}
-.mev{display:flex;gap:6px;align-items:baseline;border:0;background:none;padding:1px 0;text-align:left;color:var(--soft);font:14px/1.35 var(--f-body);cursor:pointer;min-width:0}
-.mev:hover .t{text-decoration:underline;text-decoration-color:var(--underline);text-underline-offset:2px}
-.mev .dt{color:var(--faint);flex:none;min-width:1.3em;font-variant-numeric:tabular-nums}
-.mev .t{min-width:0;overflow-wrap:anywhere}
-.mev.est .t{font-style:italic}
-.mev.done .t{text-decoration:line-through;color:var(--faint)}
-.mev.over{color:var(--hl)}
-.mon .linkbtn{font-size:14px;justify-self:start}
-.ms{display:grid;grid-template-columns:auto 118px minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;padding:7px 0;border-top:1px dotted var(--line);min-width:0}
-.ms:first-child{border-top:0}
-.ms-d{font-variant-numeric:tabular-nums;font-size:15px;color:var(--muted)}
-.ms-t{min-width:0;overflow-wrap:anywhere;display:flex;gap:8px;align-items:baseline}
-.ms-t small{display:block;color:var(--muted);font-style:italic;font-size:14.5px}
-.ms-r{display:flex;gap:4px;align-items:center;white-space:nowrap}
-.ms.done .ms-t>span:last-child>span:first-child,.ms.done .ms-t a{color:var(--faint);text-decoration:line-through}
-.ms.est .ms-d{font-style:italic}
-@media (hover:hover){.ms .pen,.ms .x{opacity:0}.ms:hover .pen,.ms:hover .x,.ms:focus-within .pen,.ms:focus-within .x{opacity:1}}
-
-/* logbook */
-.stats{display:flex;flex-wrap:wrap;gap:14px 34px}
-.stat b{display:block;font-weight:400;font-size:2.2rem;line-height:1.05;color:var(--ink)}
-.stat span{font-variant-caps:all-small-caps;letter-spacing:.07em;color:var(--muted);font-size:15.5px}
-.heat{display:flex;gap:3px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
-.hcol{display:grid;grid-template-rows:16px repeat(7,11px);gap:3px;flex:none}
-.hm{font-size:13px;color:var(--faint);font-variant-caps:all-small-caps;letter-spacing:.05em;white-space:nowrap;width:11px;overflow:visible;line-height:16px}
-.hc{width:11px;height:11px;border-radius:2px;border:0;padding:0;background:var(--heat0);cursor:pointer}
-.hc.l1{background:rgba(var(--heat),.22)} .hc.l2{background:rgba(var(--heat),.42)} .hc.l3{background:rgba(var(--heat),.66)} .hc.l4{background:rgba(var(--heat),.92)}
-.hc.fut{visibility:hidden}
-.hc.today{box-shadow:0 0 0 1.5px var(--hl)}
-.hc.sel{outline:1.5px solid var(--ink);outline-offset:1px}
-.hdays{display:grid;grid-template-rows:16px repeat(7,11px);gap:3px;font-size:12.5px;color:var(--faint);line-height:11px;padding-right:4px;flex:none}
-.heat-wrap{display:flex}
-.heat-key{display:flex;gap:3px;align-items:center;font-size:14px;color:var(--faint);justify-content:flex-end}
-.heat-key .hc{cursor:default}
-.lmonth{display:grid;gap:4px}
-.lmonth h3{display:flex;gap:10px;align-items:baseline}
-.lmonth h3 .cnt{font-style:normal}
-.log-e.review .t{white-space:pre-wrap}
-.log-e .tagk{margin-right:6px}
 
 /* resources: live server usage */
 .glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
@@ -485,70 +409,16 @@ ol.steps pre code{font:13px var(--f-code);background:none;padding:0;white-space:
 @media (max-width:700px){.rrow{grid-template-columns:5.2em minmax(40px,1fr) auto}.rrow>.spark,.rrow>span:empty{display:none}.rrow>.gu{grid-column:2/-1}
   .gpu{grid-template-columns:1.1em minmax(40px,1fr) minmax(100px,1.3fr) 2.2em}.gpu .gn,.gpu .spark{display:none}.gpu>.gu{grid-column:2/-1}.srv-meta{margin-left:0}}
 
-:root{--c0:#3d6b9e;--c1:#2f7a57;--c2:#8e4a86;--c3:#8a5a00;--c4:#5a6776;--c5:#a8281e}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c0:#86aee0;--c1:#7cc49b;--c2:#d29bd0;--c3:#e3b965;--c4:#a7b1bd;--c5:#e8806f}}
-:root[data-theme="dark"]{--c0:#86aee0;--c1:#7cc49b;--c2:#d29bd0;--c3:#e3b965;--c4:#a7b1bd;--c5:#e8806f}
-.src{display:inline-flex;align-items:center;gap:5px;font-style:normal;color:var(--muted)}
-.src i{width:8px;height:8px;border-radius:2px;background:var(--c)}
-details.howto summary{cursor:pointer;color:var(--soft);font-size:15px}
-details.howto[open] summary{margin-bottom:8px}
-/* plan */
-.plan .wknav .chips{margin-left:auto}
-.pstep{display:grid;gap:10px;padding-top:4px}
-.ph{display:flex;align-items:center;gap:10px;font-weight:400;font-style:italic;font-size:1.5rem;line-height:1.25;margin:0;color:var(--ink)}
-.ph small{font-style:normal;font-size:15px;color:var(--faint);font-variant-caps:all-small-caps;letter-spacing:.06em}
-.pn{font-style:normal;font-size:14px;width:1.7em;height:1.7em;border-radius:50%;border:1px solid var(--line-strong);display:inline-flex;align-items:center;justify-content:center;color:var(--muted);flex:none}
-.lw-sum{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;color:var(--soft)}
-.lw-sum b{font-weight:600;color:var(--ink)}
-textarea.lw-note{min-height:0;font-style:italic}
-details.lw-done summary{cursor:pointer;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.06em}
-.olist{display:grid}
-.orow{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;padding:5px 0;border-top:1px dotted var(--line);min-width:0}
-.olist>.orow:first-child{border-top:0}
-.orow input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;margin:0;flex:none}
-.orow .td-t{flex:1 1 0;min-width:8em}
-.orow.done .td-t{text-decoration:line-through;text-decoration-color:var(--faint);color:var(--faint)}
-.hrs{display:inline-flex;align-items:center;gap:3px;color:var(--muted);font-size:14px;flex:none}
-.hrs input{width:3.4em;font:14px var(--f-body);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:3px;padding:1px 4px;text-align:right}
-.hrs input:focus{outline:none;border-color:var(--ink)}
-form.add input.hrs-in{flex:0 0 4.6em;width:4.6em}
-.tsum{font-size:16px;color:var(--soft)}
-.tsum b{font-weight:400;font-size:1.7rem;color:var(--ink)}
-.tdays{display:grid;gap:5px}
-.tday{display:grid;grid-template-columns:4.4em minmax(80px,1fr) 14em;gap:4px 12px;align-items:center;font-size:15px}
-.tday.off{color:var(--faint)} .tday.past{opacity:.55}
-.tdl{font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.tday.today .tdl{color:var(--hl)}
-.tbar{height:8px;border-radius:2px;background:var(--ok-bg);overflow:hidden}
-.tday.off .tbar{background:var(--sunk)}
-.tbar i{display:block;height:100%;background:var(--muted)}
-.tdv{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.tdv b{font-weight:600;color:var(--ok)}
-.tdn{grid-column:2/-1;font-size:13.5px;color:var(--faint);font-style:italic;margin-top:-3px}
-.pdl{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:15px;color:var(--muted);align-items:baseline}
-.pdl strong{color:var(--ink);font-weight:600}
-.pdl .soon,.pdl .soon strong,.tgt.soon{color:var(--hl)}
-.pdue{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:15px;align-items:baseline}
-.cap{display:grid;gap:6px;padding:10px 14px;border:1px solid var(--line);border-radius:4px;background:var(--surface);position:sticky;top:50px;z-index:5}
-.cap-t{font-size:15.5px;color:var(--soft)}
-.cap-t b{font-weight:600;color:var(--ink)}
-.cap-bar{position:relative;height:8px;border-radius:2px;background:var(--line);overflow:hidden;display:flex}
-.cap-done{background:var(--ok)} .cap-plan{background:var(--ink)} .cap.over .cap-plan{background:var(--hl)}
-.cap-line{position:absolute;top:0;bottom:0;border-left:2px solid var(--surface)}
-.og{display:grid;gap:4px;padding:12px 0 4px;border-top:1px solid var(--line)}
-.og-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.og-h b{font-weight:600;color:var(--ink);font-size:16.5px}
-.og-hrs{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums}
-.og.compact{padding:8px 0}
-.og.compact .og-h b{font-weight:400;color:var(--soft)}
-.og-n{margin-left:auto;font-size:14.5px;color:var(--faint);font-style:italic}
-.cands{display:grid;padding-top:2px}
-.cands>.k{font-size:14.5px}
-.crow{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;padding:2px 0;color:var(--muted);font-size:15px}
-.crow .td-t{cursor:default;flex:1 1 0;min-width:8em}
-.wkb.add{color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:0 9px 2px}
-.wkb.add:hover{border-color:var(--ink)}
-@media (max-width:700px){.tday{grid-template-columns:3.8em minmax(50px,1fr)}.tdv,.tdn{grid-column:2/-1}.cap{top:44px}.plan .wknav .chips{margin-left:0}}
+/* deadlines kept in view */
+.dls{display:flex;flex-wrap:wrap;gap:10px 36px;align-items:flex-end}
+.dl{display:flex;gap:12px;align-items:baseline}
+.dl b{font-weight:400;font-size:2.6rem;line-height:1;color:var(--ink);font-variant-numeric:lining-nums}
+.dl.soon b{color:var(--hl)}
+.dl span{color:var(--muted);font-size:15.5px;line-height:1.35}
+.dl strong{color:var(--ink);font-weight:600}
+.dl small{display:block;font-size:14px;color:var(--faint);font-style:italic}
+.dl-ed{align-self:center}
+@media (max-width:700px){.dl b{font-size:2.1rem}}
 
 .site-foot{padding-block:8px 36px;color:var(--faint);font-size:14.5px;font-style:italic;display:flex;gap:6px 18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .site-foot a{color:var(--muted)}
@@ -622,7 +492,7 @@ form.add input.hrs-in{flex:0 0 4.6em;width:4.6em}
 'use strict';
 
 /* ============================== constants ============================== */
-const TABS=[['week','Plan'],['roadmap','Roadmap'],['research','Research'],['exp','Experience'],['admin','Admin'],['res','Resources'],['think','Thinking'],['log','Logbook']];
+const TABS=[['research','Research'],['res','Resources']];
 const TABNAME=Object.fromEntries(TABS);
 const AREAS=['goal','research','exp','admin','career','profile','step'];
 const AREANAME={goal:'Goals',research:'Research',exp:'Experience',intern:'Experience',visit:'Experience',career:'Career',profile:'Visibility',admin:'Admin',step:'Step back'};
@@ -636,16 +506,7 @@ const SETS={
   goal:['Not started','On track','At risk','Done','Dropped'],
 };
 const KIND_SET={proj:'proj',collab:'collab',lead:'collab',intern:'intern',visit:'visit',app:'app',todo:'todo',step:'todo',goal:'goal'};
-const HZ=[['long','Long-term','Where the PhD should end up.'],['year','This year','What the next twelve months should deliver.'],['term','Short-term','This semester: concrete, checkable outcomes.']];
-const MSK={phd:'PhD milestone',venue:'Paper deadline',fellow:'Fellowship / award',career:'Internship / career',life:'Personal'};
-const TAGS={r:'Research',i:'Internship',v:'Visiting',c:'Career',p:'Visibility',m:'Mindset'};
-const TAGCODE={research:'r',internship:'i',intern:'i',visiting:'v',visit:'v',career:'c',visibility:'p',exposure:'p',mindset:'m'};
-const EMPTY={v:5,items:[],todos:[],logs:[],weeks:{},routines:[],
-  steps:[{id:'hb',title:'Half step back',en:'Research',desc:'',items:[],checks:{},history:[]},{id:'fb',title:'Full step back',en:'Career',desc:'',items:[],checks:{},history:[]}],
-  timeline:{version:'',periods:[],always:[]},blocks:{},abilities:[],rate:{},rateAt:'',channels:[],
-  launchTpl:[{g:'Open source',items:['GitHub code']},{g:'Advertise',items:['arXiv','Personal homepage','Social media']},{g:'Connect',items:['Email related researchers']}],
-  launch:{},letters:['','',''],absorb:[],checks:{},inbox:[],convs:[],hidden:{},students:[],
-  milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''},servers:[],hiddenTabs:['week','roadmap','exp','admin','think','log'],cal:null};
+const EMPTY={v:5,items:[],todos:[],logs:[],weeks:{},blocks:{},checks:{},hidden:{},students:[],milestones:[],phd:{who:'',zh:'',prog:'',start:'',end:''},servers:[]};
 
 /* ============================== utilities ============================== */
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -735,7 +596,7 @@ function ulTree(list){return `<ul class="list">${list.map(n=>`<li data-find>${md
 /* ============================== state ============================== */
 let D=null;                       // synced data (lives in the private repo)
 const CFG_KEY='phd-plan.github',CACHE_KEY='phd-plan.cache',UI_KEY='phd-plan.ui',PREVIEW_KEY='phd-plan.preview',DRAFT_KEY='phd-plan.draft',THEME_KEY='theme';
-const U=Object.assign({tab:'week',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
+const U=Object.assign({tab:'research',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
 U.exp=U.exp||{};U.selView=U.selView||{};
 const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null,editSrv:false,editDl:false,calSel:'',editHours:false,peek:''};
 const saveUI=()=>ls.set(UI_KEY,U);
@@ -744,22 +605,6 @@ const adopt=x=>normalize(clone(x));
 function normalize(d){const out=Object.assign(clone(EMPTY),d||{});for(const k of Object.keys(EMPTY))if(out[k]==null)out[k]=clone(EMPTY[k]);
   for(const it of out.items){if(it.kind==='lead'){it.kind='collab';it.set='collab'}if(it.area==='intern'||it.area==='visit')it.area='exp'}
   out.phd=Object.assign(clone(EMPTY.phd),out.phd||{});
-  /* v4 (25 Oct 2026): a simpler planner. Deterministic, so every device migrates to the same result. */
-  if(!(out.v>=4)){out.v=4;
-    if(!Array.isArray(d&&d.hiddenTabs))out.hiddenTabs=['roadmap','exp','admin','think','log'];
-    const A=out.items.find(i=>i.id==='A');if(A&&A.target==='RSS 2027 or CoRL 2027')A.target='RSS 2027';
-    if(!out.items.some(i=>i.kind==='proj'&&/HADR|topolog/i.test(i.title))){
-      const id=['E','F','G','H','I'].find(x=>!out.items.some(i=>i.id===x))||'HADR';
-      out.items.push({id,area:'research',kind:'proj',set:'proj',title:'HADR search with a topological map',st:'Pushing',target:'RSS 2027',sel:true,created:'2026-10-25',
-        people:'With Yiqing Xu and Jiajun Wu (Stanford)',notes:'- Search for humanitarian assistance and disaster relief, planned over a topological map.'});
-      const c4=out.items.find(i=>i.id==='c4'&&i.title==='Robot navigation for disaster relief (Stanford)');
-      if(c4&&!out.todos.some(t=>t.item==='c4'))out.items=out.items.filter(i=>i!==c4)}
-    for(const [t,dd] of [['RSS 2027 extended abstract','2026-12-04'],['RSS 2027 final paper','2027-04-16']]){
-      const m=out.milestones.find(x=>x.t===t);if(m){if(m.pin==null)m.pin=true}
-      else out.milestones.push({id:'m-'+hash(t),t,d:dd,kind:'venue',pin:true,est:false,url:'https://roboticsconference.org/information/cfp/',note:'',done:false})}}
-  /* v5 (25 Oct 2026): Plan is not needed day to day; hide it (Settings → Sections brings it back) */
-  if(!(out.v>=5)){out.v=5;if(Array.isArray(out.hiddenTabs)&&!out.hiddenTabs.includes('week'))out.hiddenTabs=['week',...out.hiddenTabs]}
-  if(!Array.isArray(out.hiddenTabs))out.hiddenTabs=[];
   return out}
 function reindex(){
   IX={items:new Map(D.items.map(x=>[x.id,x])),todos:new Map(D.todos.map(t=>[t.id,t])),byItem:new Map()};
@@ -778,7 +623,6 @@ function ensureWeek(wk){if(!D.weeks[wk])D.weeks[wk]={plan:[],goals:'',review:''}
 const inWeek=(id,wk)=>(week(wk).plan||[]).includes(id);
 const addLog=(item,t,extra)=>D.logs.push(Object.assign({id:uid(),item,d:TODAY_ISO,t},extra||{}));
 const logOk=l=>!l.item||IX.items.has(l.item);
-function progressOf(it){const ts=todosOf(it);const n=ts.length,d=ts.filter(t=>t.done).length;return {n,d,p:n?Math.round(d/n*100):(st(it)==='Done'?100:0)}}
 
 /* ============================== PhD span ============================== */
 function phdSpan(){const p=D&&D.phd||{};const s=parseD(p.start)||new Date(TODAY.getFullYear()-(TODAY.getMonth()<7?1:0),7,1);
@@ -941,43 +785,23 @@ function nextProjId(){for(let c=65;c<91;c++){const id=String.fromCharCode(c);if(
 const isHidden=k=>!!(D.hidden&&D.hidden[k]);
 const isOpen=(k,def)=>k in U.exp?!!U.exp[k]:!!def;
 const hasContent=h=>/<(input|textarea|select|button)\b/.test(h)||h.replace(/<[^>]+>/g,'').trim()!=='';
-const AREA_TAB={goal:['roadmap',''],research:['research',''],exp:['exp',''],intern:['exp',''],visit:['exp',''],admin:['admin',''],career:['think','full'],profile:['think','full'],step:['think','full']};
 const plain=s=>String(s||'').replace(/\*\*/g,'');
 function stSel(it){const v=st(it);const opts=SETS[setOf(it)];return `<select class="pill st" data-act="st" data-id="${esc(it.id)}" aria-label="Status: ${esc(it.title)}">${(opts.includes(v)?opts:[v,...opts]).map(k=>`<option${k===v?' selected':''}>${esc(k)}</option>`).join('')}</select>`}
 function dueBadge(t){if(t.done||!t.ddl)return '';const n=daysTo(t.ddl);if(n===null)return '';
   if(n<0)return `<span class="due over">overdue ${-n}d</span>`;if(n===0)return `<span class="due over">today</span>`;
   return `<span class="due ${n<=7?'soon':'later'}">${n<=7?n+(n===1?' day left':' days left'):mdShort(t.ddl)}</span>`}
-function itemChip(it){const [tab,sub]=tabFor(it);return `<button class="ichip" type="button" data-act="goto" data-tab="${tab}" data-sub="${sub}" data-target="it-${esc(it.id)}" title="${esc(label(it))}">${esc(label(it))}</button>`}
-function wkBtn(t,wk){const on=inWeek(t.id,wk);return `<button type="button" class="wkb${on?' on':''}" data-act="wk-toggle" data-id="${esc(t.id)}" data-v="${wk}" aria-pressed="${on}" title="${on?'Take out of this week’s plan':'Add to this week’s plan'}">${on?(wk===CUR_WK?'this week':'planned'):'+ week'}</button>`}
-function todoLine(t,ctx,o={}){
-  const it=itemById(t.item);const cid=`cb-${ctx}-${t.id}`;const wk=o.wk||CUR_WK;
-  const ddl=o.noDdl?'':(t.ddl||T.ddlOpen[t.id])?`<input type="date" id="dd-${ctx}-${t.id}" class="ddl${t.ddl?' has':''}" data-act="ddl" data-id="${esc(t.id)}" value="${esc(t.ddl||'')}" aria-label="Due date: ${esc(t.t)}">`:(t.done?'':`<button type="button" class="wkb" data-act="ddl-open" data-id="${esc(t.id)}" data-v="${ctx}">due</button>`);
-  const inW=!o.noWeek&&!t.del&&inWeek(t.id,wk);const foc=o.focus&&isFocus(wk,t.id);
-  return `<div class="td${t.done?' done':''}${foc?' focus':''}"${o.find?' data-find':''}>
+function todoLine(t,ctx){
+  const cid=`cb-${ctx}-${t.id}`;
+  const ddl=(t.ddl||T.ddlOpen[t.id])?`<input type="date" id="dd-${ctx}-${t.id}" class="ddl${t.ddl?' has':''}" data-act="ddl" data-id="${esc(t.id)}" value="${esc(t.ddl||'')}" aria-label="Due date: ${esc(t.t)}">`:(t.done?'':`<button type="button" class="wkb" data-act="ddl-open" data-id="${esc(t.id)}" data-v="${ctx}">due</button>`);
+  return `<div class="td${t.done?' done':''}">
     <input type="checkbox" id="${cid}" data-act="done" data-id="${esc(t.id)}"${t.done?' checked':''} aria-label="Done: ${esc(t.t)}">
     ${T.editTodo===ctx+':'+t.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-${ctx}-${t.id}" name="t" value="${esc(t.t)}" aria-label="Edit to-do" data-edit="todo" data-key="${ctx}:${esc(t.id)}" data-id="${esc(t.id)}" autocomplete="off"></form>`
-      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(t.id)}" data-v="${ctx}" title="Click to edit">${md(t.t)}${t.del?' <span class="tag">deleted</span>':''}</button>`}
-    ${o.chip&&it?itemChip(it):''}${dueBadge(t)}${inW?wkBtn(t,wk):''}${foc?focBtn(t.id,wk,true):''}${o.focus?'':focTag(t.id)}
-    <span class="act">${o.focus&&!foc&&!t.done?focBtn(t.id,wk,false):''}${ddl}${o.noWeek||t.del||inW||t.done?'':wkBtn(t,wk)}${o.remove?`<button class="x" type="button" data-act="wk-remove" data-id="${esc(t.id)}" data-v="${o.wk}" aria-label="Take out of this week" title="Take out of this week">−</button>`:''}${t.done||t.del?'':`<button type="button" class="wkb" data-act="to-weekly" data-id="${esc(t.id)}" title="Make it a weekly task">↻ weekly</button>`}${o.noDel||t.del?'':`<button class="x" type="button" data-act="todo-del" data-id="${esc(t.id)}" aria-label="Delete to-do: ${esc(t.t)}">×</button>`}</span><button class="more" type="button" data-act="more" aria-label="More actions">⋯</button>
-  </div>`}
-/* weekly tasks: belong to an item, show up every week, done state kept per week */
-const isFocus=(wk,id)=>!!(D.weeks[wk]&&D.weeks[wk].focus&&D.weeks[wk].focus[id]);
-const focBtn=(id,wk,on)=>`<button type="button" class="wkb foc${on?' on':''}" data-act="focus" data-id="${esc(id)}" data-v="${wk}" aria-pressed="${on}" title="${on?'Remove from this week’s focus':'Make it a focus this week'}">${on?'focus':'set focus'}</button>`;
-const focTag=id=>isFocus(CUR_WK,id)?'<span class="tag foc">week focus</span>':'';
-const recOn=(wk,id)=>!!(D.weeks[wk]&&D.weeks[wk].rec&&D.weeks[wk].rec[id]);
-const weeklyFor=wk=>{const end=weekRange(wk)[1];return D.items.flatMap(it=>(it.weekly||[]).filter(w=>!w.created||w.created<=end).map(w=>({it,w})))};
-function weeklyLine(it,w,ctx,o={}){const wk=o.wk||CUR_WK;const on=recOn(wk,w.id);const cid=`wr-${ctx}-${w.id}`;const foc=o.focus&&isFocus(wk,w.id);
-  return `<div class="td${on?' done':''}${foc?' focus':''}"${o.find?' data-find':''}>
-    <input type="checkbox" id="${cid}" data-act="rec" data-id="${esc(w.id)}" data-item="${esc(it.id)}" data-v="${wk}"${on?' checked':''} aria-label="Done this week: ${esc(w.t)}">
-    ${T.editTodo===ctx+':'+w.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-${ctx}-${w.id}" name="t" value="${esc(w.t)}" aria-label="Edit weekly task" data-edit="wkly" data-key="${ctx}:${esc(w.id)}" data-id="${esc(w.id)}" data-item="${esc(it.id)}" autocomplete="off"></form>`
-      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(w.id)}" data-v="${ctx}" title="Click to edit">${md(w.t)}</button>`}
-    ${o.chip?itemChip(it):''}<span class="tag rep" title="Shows up every week">weekly</span>${foc?focBtn(w.id,wk,true):''}${o.focus?'':focTag(w.id)}
-    <span class="act">${o.focus&&!foc&&!on?focBtn(w.id,wk,false):''}<button type="button" class="wkb" data-act="to-once" data-id="${esc(w.id)}" data-item="${esc(it.id)}" title="Turn into a one-off to-do (placed in this week)">make one-off</button>${o.noDel?'':`<button class="x" type="button" data-act="wkly-del" data-id="${esc(w.id)}" data-item="${esc(it.id)}" aria-label="Delete weekly task: ${esc(w.t)}">×</button>`}</span><button class="more" type="button" data-act="more" aria-label="More actions">⋯</button>
+      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(t.id)}" data-v="${ctx}" title="Click to edit">${md(t.t)}</button>`}
+    ${dueBadge(t)}<span class="act">${ddl}<button class="x" type="button" data-act="todo-del" data-id="${esc(t.id)}" aria-label="Delete to-do: ${esc(t.t)}">×</button></span><button class="more" type="button" data-act="more" aria-label="More actions">⋯</button>
   </div>`}
 function todoAdd(it){return `<form class="add slim" data-form="todo-add" data-item="${esc(it.id)}">
     <input type="text" class="field" id="add-t-${esc(it.id)}" name="t" placeholder="+ Add a to-do" aria-label="New to-do" required>
     <input type="date" class="field" id="add-d-${esc(it.id)}" name="d" aria-label="Due date (optional)">
-    <label class="rep-l" title="Shows up once every week, checked off week by week"><input type="checkbox" name="rep" id="add-r-${esc(it.id)}"> weekly</label>
     <button class="btn sm" type="submit">Add</button></form>`}
 function logPart(it){
   const logs=D.logs.filter(l=>l.item===it.id).sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);const k='log:'+it.id;const open=isOpen(k);
@@ -991,7 +815,6 @@ function logPart(it){
         <button class="btn sm" type="submit">Log</button></form>
       <div class="log">${logs.map(l=>`<div class="log-e${l.auto?' auto':''}" data-find><span class="d">${esc(mdShort(l.d))}</span><span class="t">${md(l.t)}</span><button class="x" type="button" data-act="log-del" data-id="${esc(l.id)}" aria-label="Delete this entry">×</button></div>`).join('')}</div>
     </div></div>`}
-const hzSel=(name,id,v)=>`<select class="field" name="${name}" id="${id}">${HZ.map(([k,l])=>`<option value="${k}"${k===v?' selected':''}>${l}</option>`).join('')}</select>`;
 function itemEdit(it){const id=esc(it.id);
   return `<form class="edit" data-form="item-edit" data-id="${id}">
     <label>Name<input class="field" name="title" id="ie-title-${id}" value="${esc(it.title)}" required></label>
@@ -999,21 +822,19 @@ function itemEdit(it){const id=esc(it.id);
       <label>People (one per line)<textarea class="field" name="people" id="ie-people-${id}">${esc(it.people||'')}</textarea></label>
       <label>Notes (lines starting with “- ” become a list)<textarea class="field code" name="notes" id="ie-notes-${id}">${esc(it.notes||'')}</textarea></label>`
     :`<label>Description<textarea class="field code" name="sub" id="ie-sub-${id}">${esc(it.sub||'')}</textarea></label>`}
-    ${it.kind==='goal'?`<div class="row2"><label>Horizon${hzSel('hz','ie-hz-'+id,it.hz||'long')}</label><label>Aim to finish by<input type="date" class="field" name="by" id="ie-by-${id}" value="${esc(it.by||'')}"></label></div>`:''}
     <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="item-edit-cancel">Cancel</button></div>
   </form>`}
 /* one tracked item: a single line when collapsed */
 function itemView(it,o={}){
   const id=esc(it.id);
   if(T.editItem===it.id)return `<div class="it open" id="it-${id}"><div class="xb">${itemEdit(it)}</div></div>`;
-  const todos=todosOf(it);const openT=todos.filter(t=>!t.done);const wkly=it.weekly||[];const wOpen=wkly.filter(w=>!recOn(CUR_WK,w.id)).length;
+  const todos=todosOf(it);const openT=todos.filter(t=>!t.done);
   const next=openT.filter(t=>t.ddl).sort((a,b)=>a.ddl<b.ddl?-1:1)[0];
-  const exp=isOpen(it.id);const proj=it.kind==='proj',goal=it.kind==='goal';
-  const stu=studentsOf(it);const pr=goal?progressOf(it):null;
+  const exp=isOpen(it.id);const proj=it.kind==='proj';
+  const stu=studentsOf(it);
   const body=(stu.length?`<div class="meta" data-find>Students: ${esc(stu.join(', '))}</div>`:'')+(proj?`${(it.people||'').split('\n').filter(Boolean).map(l=>`<div class="meta" data-find>${md(l)}</div>`).join('')}${it.notes?`<div class="notes">${renderText(it.notes)}</div>`:''}`
     :(it.sub?`<div class="row-sub">${renderText(it.sub)}</div>`:''));
-  const meta=goal?`${it.by?`<span title="Aim to finish by">by ${esc(monYear(it.by))}</span>`:''}${pr.n?`<span class="gbar" title="${pr.d} of ${pr.n} to-dos done"><i style="width:${pr.p}%"></i></span><span>${pr.d}/${pr.n}</span>`:''}`
-    :`${openT.length+wOpen?`<span>${openT.length+wOpen} open</span>`:''}${next?dueBadge(next):''}`;
+  const meta=`${openT.length?`<span>${openT.length} open</span>`:''}${next?dueBadge(next):''}`;
   return `<div class="it${exp?' open':''}${proj?' proj':''}" id="it-${id}" data-key="${id}">
     <div class="it-row">
       <button class="it-h" type="button" data-act="exp" data-id="${id}" aria-expanded="${exp}"><span class="car"></span>${proj?`<span class="proj-id">${id}</span>`:''}<span class="it-t" data-find>${esc(it.title)}</span>${proj&&it.target?`<span class="tgt">${esc(it.target)}</span>`:''}</button>
@@ -1022,7 +843,7 @@ function itemView(it,o={}){
     </div>
     <div class="xb"${exp?'':' hidden'}>
       ${body}
-      <div class="todos">${[false,true].map(fin=>wkly.filter(w=>recOn(CUR_WK,w.id)===fin).map(w=>weeklyLine(it,w,it.area)).join('')+todos.filter(t=>!!t.done===fin).map(t=>todoLine(t,it.area,{})).join('')).join('')}</div>
+      <div class="todos">${[...todos.filter(t=>!t.done),...todos.filter(t=>t.done)].map(t=>todoLine(t,it.area)).join('')}</div>
       ${todoAdd(it)}
       ${logPart(it)}
       ${o.extra||''}
@@ -1034,7 +855,6 @@ function addForm(area,kind,ph,hz){
   return `<form class="edit" data-form="item-add" data-area="${area}" data-kind="${kind}" data-hz="${hz||''}">
     <label>Name<input class="field" name="title" id="na-title-${kid}" placeholder="${esc(ph||'')}" required></label>
     <label>${kind==='proj'?'Target venue':'Description (optional)'}<input class="field" name="sub" id="na-sub-${kid}"></label>
-    ${kind==='goal'?`<label>Aim to finish by (optional)<input type="date" class="field" name="by" id="na-by-${kid}"></label>`:''}
     <div class="btnrow"><button class="btn" type="submit">Add</button><button class="btn ghost" type="button" data-act="add-cancel">Cancel</button></div>
   </form>`}
 const addBtn=(area,kind,txt,hz)=>`<button class="btn ghost sm" type="button" data-act="add-open" data-v="${area}|${kind}${hz?'|'+hz:''}">${txt}</button>`;
@@ -1077,108 +897,10 @@ function note(id,o={}){
   </div>`}
 const notes=(ids,o)=>{const h=ids.map(id=>note(id,o)).join('');return h?`<div class="list-i">${h}</div>`:''};
 function filterChips(act,cur,opts){return `<div class="chips" role="group">${opts.map(([k,l])=>`<button class="chipbtn" type="button" data-act="${act}" data-v="${esc(k)}" aria-pressed="${cur===k}">${esc(l)}</button>`).join('')}</div>`}
-function convCard(c,items){
-  if(T.editConv===c.id)return convForm(c);
-  return `<article class="conv box"><header class="conv-h"><span class="who">${esc(c.who)}</span>${c.date?`<span class="date">${esc(c.date)}</span>`:''}
-    <span style="margin-left:auto;display:flex;gap:12px;align-items:center"><button class="linkbtn muted" type="button" data-act="conv-edit" data-id="${esc(c.id)}">Edit</button><button class="linkbtn danger" type="button" data-act="conv-del" data-id="${esc(c.id)}">Delete</button></span></header>
-  <ul class="list">${items.map(x=>`<li data-find>${md(x.t)}${(x.tags||[]).length?`<span class="tags">${x.tags.map(t=>`<span class="tag">${esc(TAGS[t]||t)}</span>`).join('')}</span>`:''}${x.sub&&x.sub.length?`<ul class="list">${x.sub.map(s=>`<li>${md(s)}</li>`).join('')}</ul>`:''}</li>`).join('')}</ul></article>`}
-function convToText(c){return (c.items||[]).map(x=>`- ${x.t}${(x.tags||[]).map(t=>' #'+(TAGS[t]||t).toLowerCase()).join('')}`+((x.sub||[]).map(s=>`\n  - ${s}`).join(''))).join('\n')}
-function textToConvItems(text){const out=[];
-  for(const raw of String(text||'').split('\n')){if(!raw.trim())continue;
-    const m=/^(\s*)[-*]?\s*(.*)$/.exec(raw);const sub=m[1].length>=2&&out.length;let t=m[2];
-    if(sub){out[out.length-1].sub.push(t.trim());continue}
-    const tags=[];t=t.replace(/#(\S+)/g,(all,g)=>{const c=TAGCODE[g.toLowerCase()];if(c){if(!tags.includes(c))tags.push(c);return ''}return all}).trim();
-    out.push({t,sub:[],tags})}
-  return out}
-function convForm(c){const isNew=!c;c=c||{id:'new',who:'',date:'',items:[]};
-  return `<form class="edit conv" data-form="conv" data-id="${esc(c.id)}">
-    <label>With<input class="field" name="who" id="cv-who-${esc(c.id)}" value="${esc(c.who)}" required></label>
-    <label>Date (e.g. 22 Oct)<input class="field" name="date" id="cv-date-${esc(c.id)}" value="${esc(c.date)}"></label>
-    <label>Points (one per line; indent two spaces for a sub-point; end a line with #research #internship #visiting #career #visibility #mindset to filter later)<textarea class="field code" name="text" id="cv-text-${esc(c.id)}" rows="7">${esc(convToText(c))}</textarea></label>
-    <div class="btnrow"><button class="btn" type="submit">${isNew?'Add':'Save'}</button><button class="btn ghost" type="button" data-act="conv-cancel">Cancel</button></div></form>`}
-function ageBadge(date,ok,warn){const n=date?-daysTo(date):null;const cls=n===null?'na':n<=ok?'ok':n<=warn?'warn':'bad';return `<span class="age ${cls}">${n===null?'never':n===0?'today':n+'d ago'}</span>`}
-function freshRow(c){
-  return `<div class="fr" data-find><div class="fr-t">${c.url?`<a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(c.title)}</a>`:esc(c.title)}${c.note?`<small>${md(c.note)}</small>`:''}</div>${ageBadge(c.date,30,90)}
-    <span class="act"><input type="date" class="ddl has" id="ch-${esc(c.id)}" data-act="ch-date" data-id="${esc(c.id)}" value="${esc(c.date||'')}" aria-label="${esc(c.title)}: last updated"></span>
-    <button class="linkbtn" type="button" data-act="ch-today" data-id="${esc(c.id)}">updated today</button></div>`}
 const pageHead=(title,aside)=>`<div class="page-h"><h1>${title}</h1>${aside?`<div class="aside">${aside}</div>`:''}</div>`;
 
 /* ============================== panels ============================== */
-const byD=(a,b)=>a.d<b.d?-1:a.d>b.d?1:0;
-const itemOptions=(sel,vis)=>AREAS.map(a=>{if(vis&&!visArea(a))return '';const its=areaItems(a);return its.length?`<optgroup label="${AREANAME[a]}">${its.map(it=>`<option value="${esc(it.id)}"${it.id===sel?' selected':''}>${esc(label(it))}</option>`).join('')}</optgroup>`:''}).join('');
-/* ---------- roadmap: the PhD arc, the next twelve months, goals by horizon, milestones ---------- */
-function arcHtml(){
-  const [s,e]=phdSpan();const span=(e-s)||1;const pos=d=>Math.max(0,Math.min(100,(d-s)/span*100));const w=phdWhere();
-  let yrs='';const n=Math.ceil(w.total/12);
-  for(let i=0;i<n;i++){const ys=new Date(s.getFullYear()+i,s.getMonth(),s.getDate()),ye=new Date(s.getFullYear()+i+1,s.getMonth(),s.getDate());const l=pos(ys);const cur=TODAY>=ys&&TODAY<ye;
-    yrs+=`${i?`<span class="arc-yr" style="left:${l}%"></span>`:''}<span class="arc-yl${cur?' cur':''}" style="left:${l}%">Y<span class="yl-l">ear </span>${i+1}<span class="yl-l"> · ${String(ys.getFullYear()).slice(2)}/${String(ys.getFullYear()+1).slice(2)}</span></span>`}
-  const ms=D.milestones.filter(m=>{const d=parseD(m.d);return d&&d>=s&&d<=e}).sort(byD);
-  const tip=m=>esc((m.est?'≈ ':'')+dLong(m.d)+' · '+m.t);
-  const marks=ms.map(m=>`<button class="arc-m k-${esc(m.kind)}${m.done?' done':''}" style="left:${pos(parseD(m.d))}%" type="button" data-act="goto" data-tab="roadmap" data-target="ms-${esc(m.id)}" title="${tip(m)}" aria-label="${tip(m)}"></button>`).join('');
-  const ends=[-1,-1];
-  const labs=ms.filter(m=>m.kind==='phd').map(m=>{const x=pos(parseD(m.d));const wp=Math.max(m.t.length,9)*0.75;const r=x>66;const a=r?x-wp:x,b=r?x:x+wp;
-    const row=ends[0]<a?0:ends[1]<a?1:(ends[0]<=ends[1]?0:1);ends[row]=b+1.5;const top=row?46:8;
-    return `<button class="arc-lab${r?' r':''}" type="button" style="left:${x}%;top:${top}px;--lh:${top}px${r?';transform:translateX(-100%)':''}" data-act="goto" data-tab="roadmap" data-target="ms-${esc(m.id)}">${esc(m.t)}<small>${m.est?'≈ ':''}${esc(monYear(m.d))}</small></button>`}).join('');
-  const nx=D.milestones.filter(m=>m.kind==='phd'&&!m.done&&m.d>=TODAY_ISO).sort(byD)[0];
-  const sum=w.before?`<span>Starts ${esc(dLong(iso(s)))}</span>`:w.after?`<span>Planned span ended ${esc(dLong(iso(e)))}</span>`
-    :`<span>Month <b>${w.m}</b> of ${w.total}</span><span>Year ${w.yr} · ${w.sem}</span><span>${w.pct}% of the planned span</span>`;
-  return `<div class="arc"><div class="arc-bar">${yrs}<span class="arc-fill" style="width:${pos(TODAY)}%"></span>${TODAY>=s&&TODAY<=e?`<span class="arc-now" style="left:${pos(TODAY)}%"><span>today</span></span>`:''}${marks}</div></div>
-    ${labs?`<div class="arc-labs">${labs}</div>`:''}
-    <div class="arc-sum">${sum}${nx?`<span>Next milestone: <b>${esc(nx.t)}</b>, ${nx.est?'≈ ':''}${esc(monYear(nx.d))} (in ${inDays(daysTo(nx.d))})</span>`:''}</div>`}
-function monthsHtml(){
-  const y=TODAY.getFullYear(),m0=TODAY.getMonth();let html='';const todos=liveTodos().filter(t=>t.ddl&&!t.done&&itemById(t.item));
-  for(let i=0;i<12;i++){const d=new Date(y,m0+i,1);const ym=iso(d).slice(0,7);
-    const ev=[...D.milestones.filter(x=>(x.d||'').slice(0,7)===ym).map(x=>({d:x.d,t:x.t,k:x.kind,est:x.est,done:x.done,tab:'roadmap',sub:'',target:'ms-'+x.id})),
-      ...todos.filter(t=>t.ddl.slice(0,7)===ym||(i===0&&t.ddl<ym+'-01')).map(t=>{const it=itemById(t.item);const [tab,sub]=tabFor(it);return {d:t.ddl,t:t.t,k:'todo',over:t.ddl<TODAY_ISO,tab,sub,target:'it-'+it.id}})].sort(byD);
-    /* at most six entries per month unless expanded; milestones always show, to-dos fill the rest by date */
-    const key='mon:'+ym,all=!!U.exp[key],CAP=6;let shown=ev;
-    if(!all&&ev.length>CAP){const msN=ev.filter(e=>e.k!=='todo').length;let room=Math.max(0,CAP-msN);shown=ev.filter(e=>e.k!=='todo'||room-->0)}
-    html+=`<div class="mon${i===0?' now':''}"><div class="mon-h"><span>${MONTH[d.getMonth()]}</span><small>${d.getMonth()===0||i===0?d.getFullYear():''}</small></div>${shown.map(e=>`<button type="button" class="mev k-${esc(e.k)}${e.est?' est':''}${e.done?' done':''}${e.over?' over':''}" data-act="goto" data-tab="${e.tab}" data-sub="${e.sub}" data-target="${esc(e.target)}" title="${esc((e.est?'≈ ':'')+dLong(e.d)+' · '+e.t)}"><span class="kd"></span><span class="dt">${e.over?'!':parseD(e.d).getDate()}</span><span class="t">${esc(e.t)}</span></button>`).join('')||'<span class="blank small">—</span>'}${ev.length>shown.length||all&&ev.length>CAP?`<button type="button" class="linkbtn muted" data-act="mon-more" data-id="${key}">${all?'show fewer':'+ '+(ev.length-shown.length)+' more'}</button>`:''}</div>`}
-  return `<div class="legend">${Object.entries(MSK).map(([k,l])=>`<span class="k-${k}"><span class="kd"></span>${l}</span>`).join('')}<span class="k-todo"><span class="kd"></span>To-do due</span><span><i>italic: estimated date</i></span></div><div class="months">${html}</div>`}
-function msForm(m){const isNew=!m;m=m||{id:'new',t:'',d:'',kind:U.msKind||'phd',est:false,url:'',note:''};const id=esc(m.id);
-  return `<form class="edit" data-form="ms" data-id="${id}">
-    <label>What<input class="field" name="t" id="ms-t-${id}" value="${esc(m.t)}" required></label>
-    <div class="row2"><label>Date<input type="date" class="field" name="d" id="ms-d-${id}" value="${esc(m.d)}" required></label>
-    <label>Kind<select class="field" name="kind" id="ms-k-${id}">${Object.entries(MSK).map(([k,l])=>`<option value="${k}"${k===m.kind?' selected':''}>${l}</option>`).join('')}</select></label></div>
-    <label class="rep-l"><input type="checkbox" name="est" id="ms-e-${id}"${m.est?' checked':''}> The date is an estimate (for example, taken from last year’s schedule)</label>
-    <label>Link (optional)<input class="field" name="url" id="ms-u-${id}" value="${esc(m.url||'')}" placeholder="https://"></label>
-    <label>Note (optional)<input class="field" name="note" id="ms-n-${id}" value="${esc(m.note||'')}"></label>
-    <div class="btnrow"><button class="btn" type="submit">${isNew?'Add':'Save'}</button><button class="btn ghost" type="button" data-act="ms-cancel">Cancel</button></div></form>`}
-function msRow(m){
-  if(T.editMs===m.id)return msForm(m);
-  const n=daysTo(m.d);const id=esc(m.id);const safe=/^https?:\/\//.test(m.url||'');
-  return `<div class="ms k-${esc(m.kind)}${m.done?' done':''}${m.est?' est':''}" id="ms-${id}" data-find>
-    <input type="checkbox" data-act="ms-done" data-id="${id}"${m.done?' checked':''} aria-label="Done: ${esc(m.t)}">
-    <span class="ms-d">${m.est?'≈ ':''}${esc(dLong(m.d))}</span>
-    <span class="ms-t"><span class="kd" title="${esc(MSK[m.kind]||'')}"></span><span><span>${safe?`<a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">${esc(m.t)}</a>`:esc(m.t)}</span>${m.note?`<small>${md(m.note)}</small>`:''}</span></span>
-    <span class="ms-r">${!m.done&&n!==null&&n>=0?`<span class="due ${n<=14?'soon':'later'}">${n===0?'today':'in '+inDays(n)}</span>`:''}<button class="pen" type="button" data-act="ms-edit" data-id="${id}" aria-label="Edit: ${esc(m.t)}" title="Edit">✎</button><button class="x" type="button" data-act="ms-del" data-id="${id}" aria-label="Delete: ${esc(m.t)}">×</button></span>
-  </div>`}
-function milestonesHtml(){
-  const f=U.msKind;const all=[...D.milestones].sort(byD).filter(m=>!f||m.kind===f);
-  const up=all.filter(m=>!m.done&&m.d>=TODAY_ISO),past=all.filter(m=>m.done||m.d<TODAY_ISO).reverse();
-  return `${filterChips('ms-kind',f,[['','all'],...Object.entries(MSK).map(([k,l])=>[k,l.toLowerCase()])])}
-    ${T.editMs==='new'?msForm(null):''}
-    <div class="box tight">${up.map(msRow).join('')||'<p class="blank">Nothing ahead.</p>'}</div>
-    ${past.length?group('rm-past','Past and done',`<div class="box tight">${past.map(msRow).join('')}</div>`,{closed:true,count:past.length}):''}`}
-function phdForm(){const p=D.phd;
-  return `<form class="edit" data-form="phd">
-    <div class="row2"><label>Name<input class="field" name="who" id="phd-who" value="${esc(p.who)}"></label><label>Name in Chinese (optional)<input class="field" name="zh" id="phd-zh" value="${esc(p.zh)}"></label></div>
-    <label>Programme<input class="field" name="prog" id="phd-prog" value="${esc(p.prog)}"></label>
-    <div class="row2"><label>PhD start<input type="date" class="field" name="start" id="phd-start" value="${esc(p.start)}"></label><label>Planned end<input type="date" class="field" name="end" id="phd-end" value="${esc(p.end)}"></label></div>
-    <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="phd-cancel">Cancel</button></div></form>`}
-function renderRoadmap(){
-  const ms=D.milestones;const upN=ms.filter(m=>!m.done&&m.d>=TODAY_ISO).length;
-  return `<div class="stack">
-  ${pageHead('Roadmap',`<button class="btn ghost sm" type="button" data-act="phd-edit">Edit PhD details</button>`)}
-  ${T.editPhd?phdForm():''}
-  <section class="box" aria-label="The PhD at a glance">${arcHtml()}</section>
-  ${group('rm-12','The next twelve months',monthsHtml())}
-  ${HZ.map(([hz,l,desc])=>{const list=areaItems('goal').filter(g=>(g.hz||'long')===hz);
-    return group('g-'+hz,l+' goals',`<p class="lede">${desc}</p>${itemList(list,'goal','goal','e.g. a first-author paper at RSS',{},hz)}`,{count:list.length,aside:addBtn('goal','goal','+ Add',hz)})}).join('')}
-  ${group('rm-ms','Milestones and deadlines',milestonesHtml(),{count:upN,aside:`<button class="btn ghost sm" type="button" data-act="ms-new">+ Add</button>`})}
-  </div>`}
-
-/* ---------- research, experience, admin ---------- */
+/* ---------- research ---------- */
 /* students: who works on which project */
 const studentsOf=it=>(D.students||[]).filter(s=>(s.projects||[]).includes(it.id)).map(s=>s.name);
 function studentsSection(){
@@ -1208,148 +930,12 @@ function renderResearch(){
   const L=selList('lead',projs,'research','proj','e.g. a new research direction'),P=selList('part',cols,'research','collab','e.g. a collaboration');
   return `<div class="narrow stack">
   ${pageHead('Research')}
+  ${deadlineStrip()}
   ${group('r-proj','Lead projects',L.body||'<p class="blank">None yet.</p>',{count:projs.length,aside:L.switch+addBtn('research','proj','+ Add')})}
   ${group('r-collab','Collaborations',P.body||'<p class="blank">None yet.</p>',{count:cols.length,aside:P.switch+addBtn('research','collab','+ Add')})}
   ${studentsSection()}
   ${group('r-ref','Reference',notes(['hero','students','bottomline','authorship']),{closed:true})}
   </div>`}
-function renderExp(){const its=areaItems('exp');const ins=its.filter(x=>x.kind!=='visit'),vis=its.filter(x=>x.kind==='visit');
-  return `<div class="narrow stack">
-  ${pageHead('Experience')}
-  ${group('e-int','Internships',itemList(ins,'exp','intern','e.g. a research internship at a lab')||'<p class="blank">None yet.</p>',{count:ins.length,aside:addBtn('exp','intern','+ Add')})}
-  ${group('e-vis','Visits and collaborations abroad',itemList(vis,'exp','visit','e.g. a research visit to a lab')||'<p class="blank">None yet.</p>',{count:vis.length,aside:addBtn('exp','visit','+ Add')})}
-  ${group('e-ref','Reference',notes(['intern_intro','visit_intro']),{closed:true})}</div>`}
-function renderAdmin(){const its=areaItems('admin');
-  return `<div class="narrow stack">
-  ${pageHead('Admin',addBtn('admin','todo','+ Add'))}
-  ${itemList(its,'admin','todo','e.g. group meeting slides, a reimbursement')}
-  ${group('a-ref','Reference',notes(['nus_rules','ags_rules','dim_teaching']),{closed:true})}</div>`}
-
-/* ---------- thinking ---------- */
-const SUBS=[['half','Half step back · research'],['full','Full step back · career'],['notes','Notes']];
-const SUB_LEGACY={career:'full',profile:'full',opp:'full',expo:'full',lib:'full',step:'full'};
-const tabFor=it=>it.area==='step'?['think',it.id==='hb'?'half':'full']:(AREA_TAB[it.area]||['week','']);
-function renderThink(){
-  const want=SUB_LEGACY[U.sub]||U.sub;const sub=SUBS.some(s=>s[0]===want)?want:'half';
-  return `<div class="narrow stack">
-  ${pageHead('Thinking')}
-  <nav class="subtabs" aria-label="Thinking sections">${SUBS.map(([k,l])=>`<button type="button" class="chipbtn" data-act="sub" data-v="${k}" aria-pressed="${sub===k}">${l}</button>`).join('')}</nav>
-  ${SUBS.map(([k])=>`<div class="stack" data-sub="${k}"${k===sub?'':' hidden'}>${THINK[k]()}</div>`).join('')}
-  </div>`}
-const visibleNotes=ids=>ids.filter(id=>D.blocks[id]&&!isHidden('blk:'+id)).length;
-const noteGroup=(key,title,ids)=>group(key,title,notes(ids),{closed:true,count:visibleNotes(ids)||null});
-const cluster=(lbl,html)=>hasContent(html)?`<div class="cluster"><div class="cluster-k">${lbl}</div>${html}</div>`:'';
-function stepCard(s){if(isHidden('w:step:'+s.id))return '';const it=itemById(s.id);const last=(s.history||[]).slice(-1)[0];
-      const nChecked=s.items.filter((_,i)=>s.checks&&s.checks[i]).length;const k='step:'+s.id;const open=isOpen(k,true);
-      return `<div class="it${open?' open':''}" id="it-${esc(s.id)}" data-key="${k}">
-        <div class="it-row"><button class="it-h" type="button" data-act="exp" data-id="${k}" data-def="1" aria-expanded="${open}"><span class="car"></span><span class="it-t" data-find>${esc(s.title)}</span></button>
-          <span class="it-meta">${ageBadge(last,14,45)}</span></div>
-        <div class="xb"${open?'':' hidden'}>
-          ${s.desc?`<p class="row-sub">${md(s.desc)}</p>`:''}
-          ${T.editBlock==='st:'+s.id?`<form class="edit" data-form="step" data-id="${esc(s.id)}"><label>Description<input class="field" name="desc" id="st-desc-${esc(s.id)}" value="${esc(s.desc||'')}"></label>
-            <label>Checklist (one per line)<textarea class="field" name="text" id="st-text-${esc(s.id)}" rows="${s.items.length+2}">${esc(s.items.join('\n'))}</textarea></label>
-            <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="blk-cancel">Cancel</button></div></form>`
-          :`<div>${s.items.map((x,i)=>{const on=!!(s.checks&&s.checks[i]);return `<label class="lc${on?' done':''}" data-find><input type="checkbox" data-act="step-check" data-id="${esc(s.id)}" data-v="${i}"${on?' checked':''}><span>${md(x)}</span></label>`}).join('')}</div>`}
-          <div class="btnrow"><button class="btn sm" type="button" data-act="step-done" data-id="${esc(s.id)}">Finish this round (${nChecked}/${s.items.length})</button>${(s.history||[]).length?`<span class="small muted">${s.history.length} ${s.history.length===1?'round':'rounds'} so far</span>`:''}</div>
-          ${it?`<div class="todos">${todosOf(it).map(t=>todoLine(t,'step',{})).join('')}</div>${todoAdd(it)}${logPart(it)}`:''}
-          <div class="row-foot"><button class="linkbtn muted" type="button" data-act="step-edit" data-id="${esc(s.id)}">Edit checklist</button><button class="linkbtn danger" type="button" data-act="hide" data-id="w:step:${esc(s.id)}" data-v="${esc(s.title)}">Delete</button></div>
-        </div></div>`}
-function timelineHtml(){
-  const P=D.timeline.periods||[];
-    return P.map((p,i)=>{const next=P.slice(i+1).find(q=>q.ym>p.ym);const now=p.ym<=TODAY_YM&&(!next||next.ym>TODAY_YM);const past=!now&&p.ym<TODAY_YM;
-      const items=[...(p.refs||[]).map(todoById).filter(t=>t&&!t.del).map(t=>todoLine(t,'tl',{chip:true,noDel:true})),
-        ...(p.extra||[]).map(x=>{const k='tl:'+x.id;const on=!!D.checks[k];return `<div class="td${on?' done':''}"><input type="checkbox" id="cb-tl-${esc(x.id)}" data-act="check" data-id="${k}"${on?' checked':''}><label class="td-t" for="cb-tl-${esc(x.id)}">${md(x.t)}</label></div>`})];
-      return `<div class="tl-p${now?' now':''}${past?' past':''}"><div class="tl-when">${esc(p.label)}</div><div class="todos">${items.join('')||'<p class="blank">—</p>'}</div></div>`}).join('')}
-const THINK={
-  /* half step back: research planning */
-  half(){const s=D.steps.find(x=>x.id==='hb');return `
-    ${s?stepCard(s):''}
-    ${cluster('Research thinking',notes(['how','what','taste','watch','ptaste']))}
-    ${cluster('Reading and resources',notes(['reading','career_reads']))}`},
-  /* full step back: career planning */
-  full(){const s=D.steps.find(x=>x.id==='fb');const post=areaItems('career'),prize=areaItems('profile');
-    const papers=areaItems('research','proj');const pid=papers.some(p=>p.id===U.paper)?U.paper:(papers[0]&&papers[0].id);
-    const tpl=D.launchTpl||[];const keys=tpl.flatMap((g,gi)=>g.items.map((_,ii)=>`launch:${pid}:${gi}:${ii}`));const n=keys.filter(k=>D.checks[k]).length;
-    const tl=timelineHtml();const rated=D.abilities.filter(a=>D.rate[a.id]).length;
-    return `
-    ${s?stepCard(s):''}
-    ${cluster('Opportunities',`
-      ${group('o-prize','Fellowships · awards · programs',itemList(prize,'profile','app','e.g. a fellowship')||'<p class="blank">None yet.</p>',{count:prize.length,aside:addBtn('profile','app','+ Add')})}
-      ${group('o-post','Postdoc · funding',itemList(post,'career','app','e.g. a postdoc fellowship')||'<p class="blank">Nothing yet. This matters from year 4.</p>',{closed:true,count:post.length,aside:addBtn('career','app','+ Add')})}
-      ${group('o-letters','Recommendation letters',`<div class="box">${[0,1,2].map(i=>`<div class="slot"><b>${i+1}</b><input class="field" id="letter-${i}" data-act="letter" data-id="${i}" value="${esc(D.letters[i]||'')}" aria-label="Letter writer ${i+1}"></div>`).join('')}<p class="hint">Who would write each letter, and what they can speak to.</p></div>`,{closed:true,hide:'w:letters'})}`)}
-    ${cluster('Visibility',`
-      ${group('e-ch','Channels',`<div class="box ch-box">${D.channels.map(freshRow).join('')}</div>`,{id:'channels',closed:true,hide:'w:channels'})}
-      ${pid?group('e-launch','Paper launch checklist',`<div class="box">
-        <div class="chips"><label class="k" for="paper-sel">paper</label><select class="pill" id="paper-sel" data-act="paper">${papers.map(p=>`<option value="${esc(p.id)}"${p.id===pid?' selected':''}>${esc(label(p))}</option>`).join('')}</select><span class="small muted">${n}/${keys.length}</span></div>
-        ${tpl.map((g,gi)=>`<div class="grp"><div class="grp-k">${esc(g.g)}</div>${g.items.map((x,ii)=>{const k=`launch:${pid}:${gi}:${ii}`;const on=!!D.checks[k];return `<label class="lc${on?' done':''}"><input type="checkbox" data-act="check" data-id="${k}"${on?' checked':''}><span>${md(x)}</span></label>`}).join('')}</div>`).join('')}</div>`,{closed:true,hide:'w:launch',count:`${n}/${keys.length}`}):''}`)}
-    ${cluster('Planning notes',`
-      ${noteGroup('l-career','Career plan',['career_lede','path_academia','path_industry','path_startup','formula','ap_checks'])}
-      ${noteGroup('l-people','People and postdoc',['connection','postdoc','career_other'])}
-      ${noteGroup('l-ind','Indicators and dimensions',['ind_big','ind_small','dim_service','dim_talk','dim_indep','dim_other'])}
-      ${tl?group('s-tl','Timeline'+(D.timeline.version?' '+esc(D.timeline.version):''),`<div class="box">${tl}</div>`,{closed:true,hide:'w:timeline'}):''}
-      ${D.abilities.length?group('s-review','Periodic review',`<div class="box">${D.abilities.map(a=>`<div class="rate" data-find><span class="rate-t">${esc(a.t)}</span><span class="dots">${[1,2,3,4,5].map(v=>`<button type="button" class="${(D.rate[a.id]||0)>=v?'on':''}" data-act="rate" data-id="${esc(a.id)}" data-v="${v}" aria-label="${v} of 5">${v}</button>`).join('')}</span></div>`).join('')}${rated?`<p class="hint">Last self-review: ${esc(dLong(D.rateAt))}</p>`:''}</div>`,{closed:true,hide:'w:review'}):''}`)}`},
-  notes(){
-    const person=c=>c.p||c.who;const whos=[...new Set(D.convs.map(person))];
-    const convs=D.convs.map(c=>({c,items:(c.items||[]).filter(x=>!U.cfTag||(x.tags||[]).includes(U.cfTag))})).filter(g=>(g.items.length||T.editConv===g.c.id)&&(!U.cfWho||person(g.c)===U.cfWho));
-    return `
-    ${group('n-inbox','Inbox',`<div class="box">
-      <form data-form="inbox" class="add slim"><textarea class="field" id="inbox-text" placeholder="Write it down now, sort it later" aria-label="Quick note" rows="2">${esc(sec.get(DRAFT_KEY)||'')}</textarea><button class="btn sm" type="submit">Save</button></form>
-      ${D.inbox.map(n=>`<div class="inbox-i" data-find><span class="date">${esc(mdShort(n.d))}</span><p>${esc(n.t)}</p><button class="x" type="button" data-act="inbox-del" data-id="${esc(n.id)}" aria-label="Delete this note">×</button></div>`).join('')}</div>`,{count:D.inbox.length||null})}
-    ${group('n-talks','Conversations',`
-      <div class="filters">${whos.length?filterChips('cf-who',U.cfWho,[['','everyone'],...whos.map(w=>[w,w])]):''}${filterChips('cf-tag',U.cfTag,[['','all topics'],...Object.entries(TAGS).map(([k,l])=>[k,l.toLowerCase()])])}</div>
-      ${T.editConv==='new'?convForm(null):''}
-      <div class="convs">${[...convs].reverse().map(g=>convCard(g.c,g.items)).join('')||`<p class="blank">${D.convs.length?'Nothing matches the filter.':'Notes from meetings with your advisor, mentors and peers go here.'}</p>`}</div>`,
-      {id:'convs',count:D.convs.length,aside:`<button class="btn ghost sm" type="button" data-act="conv-new">+ New conversation</button>`})}
-    ${group('s-absorb','To absorb',`<div class="box">${D.absorb.map(x=>`<div class="td${x.done?' done':''}" data-find><input type="checkbox" id="ab-${esc(x.id)}" data-act="absorb" data-id="${esc(x.id)}"${x.done?' checked':''}><span class="td-t">${md(x.t)}</span><span class="act"><button class="x" type="button" data-act="absorb-del" data-id="${esc(x.id)}" aria-label="Delete">×</button></span></div>`).join('')}
-      <form class="add slim" data-form="absorb"><input type="text" class="field" id="absorb-t" name="t" placeholder="+ An idea, technique or habit to take in" required aria-label="New idea"><button class="btn sm" type="submit">Add</button></form></div>`,{closed:true,count:D.absorb.filter(x=>!x.done).length,hide:'w:absorb'})}`}
-};
-
-/* ---------- logbook: what has already been done ---------- */
-const LOGK=[['','all'],['note','notes'],['done','completed'],['auto','updates'],['review','reviews']];
-function activity(){const map=new Map();const add=e=>{if(!e.d)return;if(!map.has(e.d))map.set(e.d,[]);map.get(e.d).push(e)};
-  for(const l of D.logs)if(logOk(l))add({d:l.d,t:l.t,item:l.item,kind:l.auto?(l.todo||l.rec?'done':'auto'):'note',id:l.id});
-  for(const [wk,w] of Object.entries(D.weeks))if(w.review&&w.review.trim()&&/^\d{4}-W\d{2}$/.test(wk)){const sun=weekRange(wk)[1];add({d:sun>TODAY_ISO?TODAY_ISO:sun,t:w.review.trim(),kind:'review',wk})}
-  return map}
-function renderLog(){
-  const A=activity();
-  const start=weekMonday(CUR_WK);start.setDate(start.getDate()-52*7);
-  let cols='',lastM=start.getMonth();
-  for(let c=0;c<53;c++){const ws=new Date(start);ws.setDate(ws.getDate()+c*7);const lab=c>0&&ws.getMonth()!==lastM?MON[ws.getMonth()]:'';lastM=ws.getMonth();
-    let cells='';for(let r=0;r<7;r++){const d=new Date(ws);d.setDate(d.getDate()+r);const k=iso(d);const n=(A.get(k)||[]).length;const fut=d>TODAY;
-      const lv=n===0?0:n===1?1:n<=3?2:n<=5?3:4;
-      cells+=fut?'<span class="hc fut"></span>':`<button type="button" class="hc l${lv}${k===TODAY_ISO?' today':''}${U.logDay===k?' sel':''}" data-act="log-day" data-v="${k}" title="${DOW[d.getDay()]} ${dLong(k)} · ${n} ${n===1?'entry':'entries'}" aria-label="${dLong(k)}: ${n} ${n===1?'entry':'entries'}"></button>`}
-    cols+=`<div class="hcol"><span class="hm">${lab}</span>${cells}</div>`}
-  const d30=iso(new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate()-29));
-  let e30=0,act30=0,done30=0;for(const [k,v] of A)if(k>=d30&&k<=TODAY_ISO){e30+=v.length;act30++;done30+=v.filter(x=>x.kind==='done').length}
-  const days=[...A.keys()];let streak=0;
-  for(let wk=CUR_WK,i=0;i<520;i++,wk=addWeeks(wk,-1)){const [a,b]=weekRange(wk);if(days.some(k=>k>=a&&k<=b))streak++;else if(i>0)break}
-  const ps=parseD(D.phd.start);const sinceStart=ps?days.filter(k=>k>=iso(ps)).reduce((s,k)=>s+A.get(k).length,0):null;
-  let entries=[...A.values()].flat();
-  if(U.logKind)entries=entries.filter(e=>e.kind===U.logKind);
-  if(U.logDay)entries=entries.filter(e=>e.d===U.logDay);
-  entries.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);
-  const months=[...new Set(entries.map(e=>e.d.slice(0,7)))];const shown=U.logDay?months:months.slice(0,U.logMonths);
-  const row=e=>{const it=e.item?itemById(e.item):null;const d=parseD(e.d);
-    return `<div class="log-e ${e.kind}${e.kind==='done'||e.kind==='auto'?' auto':''}" data-find><span class="d">${DOW[d.getDay()]} ${d.getDate()}</span><span class="t">${e.kind==='review'?`<span class="tag tagk">week review</span>`:''}${md(e.t)}</span><span class="act">${it?itemChip(it):''}${e.kind==='note'?`<button class="x" type="button" data-act="log-del" data-id="${esc(e.id)}" aria-label="Delete this entry">×</button>`:''}</span></div>`};
-  const list=shown.map(ym=>{const es=entries.filter(e=>e.d.slice(0,7)===ym);const [y,m]=ym.split('-');
-    return `<section class="lmonth"><h3>${MONTH[+m-1]} ${y} <span class="cnt">${es.length}</span></h3><div class="log">${es.map(row).join('')}</div></section>`}).join('');
-  return `<div class="narrow stack">
-  ${pageHead('Logbook')}
-  <p class="lede">Everything you have done, in one place: notes written here or on an item, completed to-dos, status changes and weekly reviews.</p>
-  <section class="box">
-    <div class="stats"><div class="stat"><b>${e30}</b><span>entries · 30 days</span></div><div class="stat"><b>${act30}</b><span>active days · 30 days</span></div><div class="stat"><b>${done30}</b><span>completed · 30 days</span></div><div class="stat"><b>${streak}</b><span>week streak</span></div>${sinceStart!=null?`<div class="stat"><b>${sinceStart}</b><span>since the PhD began</span></div>`:''}</div>
-    <div class="heat-wrap"><div class="hdays"><span></span><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span></div><div class="heat" id="heat">${cols}</div></div>
-    <div class="heat-key">less <span class="hc l0"></span><span class="hc l1"></span><span class="hc l2"></span><span class="hc l3"></span><span class="hc l4"></span> more</div>
-  </section>
-  <section class="box">
-    <h2 class="h-sm">Log something</h2>
-    <form class="add slim" data-form="journal"><input type="date" class="field" name="d" id="jr-d" value="${TODAY_ISO}" aria-label="Date"><select class="field" name="item" id="jr-item" aria-label="What it is about"><option value="">General</option>${itemOptions(U.lastJournal)}</select><input type="text" class="field" name="t" id="jr-t" placeholder="What did you do, read or learn?" required aria-label="Log entry"><button class="btn sm" type="submit">Log</button></form>
-  </section>
-  <div class="btnrow">${filterChips('log-kind',U.logKind,LOGK)}${U.logDay?`<span class="tag">${esc(dLong(U.logDay))}</span><button class="linkbtn" type="button" data-act="log-day" data-v="">show every day</button>`:''}</div>
-  ${list||'<p class="blank">Nothing logged yet. Tick a to-do, write a progress note or fill in a weekly review and it will appear here.</p>'}
-  ${!U.logDay&&months.length>shown.length?`<button class="btn ghost" type="button" data-act="log-more">Show older months (${months.length-shown.length} more)</button>`:''}
-  </div>`}
-
 /* ---------- settings ---------- */
 function themeChoice(){let t='';try{t=localStorage.getItem(THEME_KEY)||''}catch(e){}return t==='light'||t==='dark'?t:'system'}
 const fmsg=k=>T.msgK===k?(T.pwErr?`<span class="err">${esc(T.pwErr)}</span>`:T.pwMsg?`<span class="okmsg">${esc(T.pwMsg)}</span>`:''):'';
@@ -1376,28 +962,6 @@ function signinBox(){const c=GH.cfg;const remember=!!ls.get(REMEMBER_KEY);const 
       <button class="btn ghost" type="button" data-act="rec-new">${rn?'Click again: replace the recovery code':'New recovery code'}</button>
       <button class="btn ghost" type="button" data-act="signout">${out?'Click again to sign out':'Sign out of this device'}</button>
     </div></section>`}
-function sectionsBox(){const hid=new Set(D.hiddenTabs||[]);
-  return `<section class="box"><h2 class="h-sm">Sections</h2><div class="chips">${TABS.map(([id,l])=>`<label class="rep-l"><input type="checkbox" data-act="tab-show" data-id="${id}"${hid.has(id)?'':' checked'}> ${l}</label>`).join('')}</div>
-    <p class="hint">Hidden sections keep everything in them, and links or search can still open them.</p></section>`}
-function calendarBox(){const on=!!(D.cal&&D.cal.priv);const d=CAL.data;const c=GH.cfg;const repo=`https://github.com/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}`;
-  const ago=d?Math.round((Date.now()-new Date(d.at))/6e4):0;
-  return `<section class="box"><h2 class="h-sm">Calendar</h2>
-  ${!on?`<p class="para small">Count your meetings from Google Calendar, NUS Outlook, Feishu and others in the <em>Plan</em>, so it knows how many free hours each day has. A GitHub Action in this repository fetches them every 15 minutes and encrypts them so that only this panel can read them.</p>
-    <div class="btnrow"><button class="btn" type="button" data-act="cal-on"${T.busy==='cal'?' disabled':''}>${T.busy==='cal'?'Creating the key…':'Turn on calendar sync'}</button></div>`
-  :`<p class="para small">${d?`Last synced ${ago<1?'just now':ago<120?ago+' minutes ago':Math.round(ago/60)+' hours ago'}, ${d.events.length} events.`:CAL.err&&CAL.err!=='no sync yet'?'<span class="err">'+esc(CAL.err)+'</span>':'Waiting for the first sync.'}</p>
-    ${d&&(d.sources||[]).length?`<ul class="list small">${d.sources.map((s,i)=>`<li><span class="src"><i style="--c:var(--c${i%6})"></i>${esc(s.name)}</span> ${s.ok?s.n+' events':`<span class="err">failed (${esc(s.err||'')})</span>`}</li>`).join('')}</ul>`:''}
-    <details class="howto"${d&&(d.sources||[]).length?'':' open'}><summary>Adding or changing calendars</summary><ol class="steps">
-      <li>Get a private link for each calendar.<ul class="list">
-        <li><strong>Google</strong>: calendar.google.com → Settings → your calendar → Integrate calendar → <em>Secret address in iCal format</em>.</li>
-        <li><strong>NUS Outlook</strong>: outlook.office.com → Settings → Calendar → Shared calendars → <em>Publish a calendar</em>: Calendar, “Can view all details”, Publish, then copy the ICS link.</li>
-        <li><strong>Feishu</strong>: if Feishu Calendar’s settings offer CalDAV sync, use the server address, user name and password it shows. Otherwise forward Feishu invitations to one of the calendars above.</li></ul></li>
-      <li>On GitHub, add a secret named <code>CALENDAR_SOURCES</code> under <a href="${repo}/settings/secrets/actions/new" target="_blank" rel="noopener noreferrer">this repository’s Actions secrets</a>, one calendar per line:<pre><code>Google | https://calendar.google.com/calendar/ical/…/basic.ics
-NUS    | https://outlook.office365.com/owa/calendar/…/calendar.ics
-Feishu | caldav | https://… | user name | password</code></pre></li>
-      <li>They are counted within 15 minutes, or at once with <a href="${repo}/actions/workflows/calendar.yml" target="_blank" rel="noopener noreferrer">Actions → calendar → Run workflow</a>.</li></ol>
-      <p class="hint">Each link lets whoever has it read that calendar, so keep them only in the secret. GitHub stores secrets encrypted and the sync never prints them.</p></details>
-    <div class="btnrow"><button class="btn ghost sm" type="button" data-act="cal-reload">Reload the calendar</button></div>`}
-  </section>`}
 function renderSettings(){
   const c=GH.cfg;const imp=T.confirm==='import';const hidden=Object.entries(D.hidden||{});const gh=Sync.mode==='github';
   return `<div class="narrow stack">
@@ -1411,8 +975,6 @@ function renderSettings(){
       ${imp?`<button class="btn danger" type="button" data-act="import-confirm">Confirm: replace all data with this file</button><button class="btn ghost" type="button" data-act="import-cancel">Cancel</button>`:`<label class="btn ghost" for="import-file" style="display:inline-block">Import a backup</label>`}
       <input type="file" id="import-file" accept="application/json,.json" data-act="import" hidden>
     </div></section>
-  ${sectionsBox()}
-  ${gh&&!(D.hiddenTabs||[]).includes('week')?calendarBox():''}
   ${gh?signinBox():''}
   <section class="box"><h2 class="h-sm">Appearance</h2>${filterChips('theme',themeChoice(),[['system','follow system'],['light','light'],['dark','dark']])}<p class="hint">Shared with the homepage: switching here switches h-tr.github.io too.</p></section>
   <section class="box" id="settings-hidden"><h2 class="h-sm">Deleted sections</h2>
@@ -1517,165 +1079,14 @@ function renderRes(){const S=D.servers||[];const editing=T.editSrv||!S.length;
   ${group('res-setup','Connecting a server',setupGuide(),{closed:S.length>0})}
   </div>`}
 
-/* ============================== plan: last week, the week's time, outcomes ==============================
-   Meetings come from the `calendar` branch (they only count against free hours). A GitHub Action (.github/workflows/calendar.yml) fetches the calendars
-   in the CALENDAR_SOURCES secret every 15 minutes and encrypts them to the planner's RSA public key; the private
-   key lives inside the encrypted plans (D.cal), so only a signed-in planner can read them. */
-const CAL={data:null,at:0,err:'',busy:false,timer:0};
-const CAL_BRANCH='calendar',CAL_PATH='calendar.json',CAL_PUB='tools/calendar-sync/public-key.json';
-const HOUR=36e5,HPX=44;
-const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
-const hm=d=>pad(d.getHours())+':'+pad(d.getMinutes());
-const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
-const visArea=area=>!(D.hiddenTabs||[]).includes((AREA_TAB[area]||['week'])[0]);
-const visItem=id=>{const it=itemById(id);return !!it&&visArea(it.area)};
-const pinned=()=>D.milestones.filter(m=>m.pin&&!m.done&&m.d).sort(byD);
-const safeUrl=u=>/^https:\/\//.test(u||'')?u:'';
-const inMin=m=>m<60?m+' min':Math.floor(m/60)+' h'+(m%60?' '+m%60+' min':'');
-
-async function calDecrypt(env){
-  const k=await crypto.subtle.importKey('jwk',D.cal.priv,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);
-  const ak=await crypto.subtle.importKey('raw',await crypto.subtle.decrypt({name:'RSA-OAEP'},k,b64u8(env.wk)),'AES-GCM',false,['decrypt']);
-  return JSON.parse(tdc.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u8(env.iv)},ak,b64u8(env.ct))))}
-async function calLoad(force){
-  if(!D)return;
-  if(Sync.mode==='preview'){CAL.data=D.calPreview||null;return}
-  if(Sync.mode!=='github'||!D.cal||!D.cal.priv||CAL.busy||(!force&&CAL.at&&Date.now()-CAL.at<5*60e3))return;
-  CAL.busy=true;
-  try{const f=await GH.read(CAL_PATH,CAL_BRANCH);CAL.data=f.missing?null:await calDecrypt(JSON.parse(f.text));CAL.err=f.missing?'no sync yet':''}
-  catch(e){CAL.err=e.name==='OperationError'?'cannot decrypt: the calendar was encrypted for an older key':(e.message||'cannot load')}
-  finally{CAL.busy=false;CAL.at=Date.now()}
-  if(U.tab==='week')paintWeekCal();else if(U.tab==='settings')render()}
-async function calEnable(){
-  const kp=await crypto.subtle.generateKey({name:'RSA-OAEP',modulusLength:3072,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['encrypt','decrypt']);
-  const pub=await crypto.subtle.exportKey('jwk',kp.publicKey),priv=await crypto.subtle.exportKey('jwk',kp.privateKey);
-  const br=GH.cfg.siteBranch||'main';const cur=await GH.read(CAL_PUB,br);
-  await GH.write(CAL_PUB,br,JSON.stringify({kty:pub.kty,n:pub.n,e:pub.e,alg:'RSA-OAEP-256'},null,1)+'\n',cur.missing?null:cur.sha,'calendar: set the planner public key');
-  D.cal={priv,at:TODAY_ISO};CAL.at=0;commit('calendar key')}
-/* while the plan is open, reload the calendar every five minutes */
-function calTick(){if(!D||U.tab!=='week'||document.visibilityState!=='visible')return;calLoad(false)}
-function calSync(){const on=!!D&&U.tab==='week'&&document.visibilityState==='visible';
-  if(on&&!CAL.timer){CAL.timer=setInterval(calTick,60e3);calLoad(false).then(()=>{if(Sync.mode==='preview')paintWeekCal()})}
-  else if(!on&&CAL.timer){clearInterval(CAL.timer);CAL.timer=0}}
-function paintWeekCal(){if(U.tab==='week')renderSoft()}
-
-/* ---------- the plan: 1 last week, 2 the week's time, 3 outcomes per project ----------
-   Research is the map of where each project stands; the plan turns it into next week's work. Meetings only
-   count against the hours: free time per day is the working window minus the meetings in it. */
-const PLAN0={start:9,end:18,days:[1,1,1,1,1,0,0]};       // working window and working days, Monday first
-const planCfg=()=>Object.assign({},PLAN0,D.plan||{});
-const fh=h=>(Math.round(h*2)/2).toFixed(1).replace(/\.0$/,'')+' h';
-const DAYN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-/* on weekends the plan opens on next week, the one being planned; on weekdays on the current week */
-const planWeek=()=>U.week||((TODAY.getDay()+6)%7>=5?addWeeks(CUR_WK,1):CUR_WK);
-function dayLoad(d,cfg){
-  const w0=new Date(d),w1=new Date(d);w0.setHours(cfg.start,0,0,0);w1.setHours(cfg.end,0,0,0);const d1=addDays(d,1);
-  const iv=[],list=[],notes=[];
-  for(const e of (CAL.data&&CAL.data.events)||[]){
-    if(e.all){const s=parseD(e.s),en=parseD(e.e);if(s&&en&&s<=d&&en>d)notes.push(e.t);continue}
-    const s=new Date(e.s),en=new Date(e.e);if(en-s>=20*HOUR||en<=d||s>=d1)continue;
-    list.push(hm(s)+'–'+hm(en)+'  '+e.t);if(en<=w0||s>=w1)continue;iv.push([Math.max(+s,+w0),Math.min(+en,+w1)])}
-  iv.sort((a,b)=>a[0]-b[0]);let busy=0,cs=0,ce=0;
-  for(const [a,b] of iv){if(a>ce){busy+=ce-cs;cs=a;ce=b}else ce=Math.max(ce,b)}busy+=ce-cs;
-  return {busy:busy/HOUR,win:Math.max(0,cfg.end-cfg.start),list,notes}}
-function weekFree(wk){const cfg=planCfg(),mon=weekMonday(wk);let free=0,busy=0;
-  const days=Array.from({length:7},(_,i)=>{const d=addDays(mon,i),on=!!cfg.days[i],L=dayLoad(d,cfg),f=on?Math.max(0,L.win-L.busy):0;if(on){free+=f;busy+=L.busy}return {d,on,L,f}});
-  return {days,free,busy,cfg}}
-function calNote(){
-  if(Sync.mode==='preview')return CAL.data?'Meetings from the sample calendar. Hover a day for its meetings.':'';
-  if(!D.cal||!D.cal.priv)return `Meetings are not counted yet: <button class="linkbtn" type="button" data-act="tab" data-v="settings">connect your calendars</button>.`;
-  if(!CAL.data)return CAL.busy||!CAL.at?'Loading your calendars…':CAL.err==='no sync yet'?'Calendar sync is on and waiting for its first run (Settings → Calendar).':'Calendars: '+esc(CAL.err);
-  const ago=Math.round((Date.now()-new Date(CAL.data.at))/6e4);const bad=(CAL.data.sources||[]).filter(s=>!s.ok);
-  return `Meetings from ${(CAL.data.sources||[]).filter(s=>s.ok).map(s=>esc(s.name)).join(', ')||'no calendar'}, synced ${ago<1?'just now':ago<120?ago+' min ago':Math.round(ago/60)+' h ago'}${bad.length?` · <span class="err">${bad.map(s=>esc(s.name)).join(', ')} failed</span>`:''}. Hover a day for its meetings.`}
-function hoursForm(cfg){return `<form class="edit" data-form="plan-hours">
-    <div class="row2"><label>Work starts at<input type="number" class="field" name="start" id="ph-start" min="0" max="23" value="${cfg.start}"></label><label>and ends at<input type="number" class="field" name="end" id="ph-end" min="1" max="24" value="${cfg.end}"></label></div>
-    <div class="chips">${DAYN.map((n,i)=>`<label class="rep-l"><input type="checkbox" name="d${i}"${cfg.days[i]?' checked':''}> ${n}</label>`).join('')}</div>
-    <p class="hint">Free time is this window on these days, minus your meetings.</p>
-    <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="hours-cancel">Cancel</button></div></form>`}
+/* ============================== deadlines kept in view (top of Research) ============================== */
+const pinned=()=>D.milestones.filter(m=>m.pin&&!m.done&&m.d).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
 function deadlineEditor(){return `<form class="edit" data-form="deadlines"><label>Deadlines to keep in view, one per line: the date, then what it is
     <textarea class="field code" name="text" id="dl-text" rows="${Math.max(3,pinned().length+2)}" placeholder="2026-12-04  RSS 2027 extended abstract">${esc(pinned().map(m=>m.d+'  '+m.t).join('\n'))}</textarea></label>
     <div class="btnrow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-act="dl-cancel">Cancel</button></div></form>`}
-function deadlinesLine(wk){const [mon,sun]=weekRange(wk);const P=pinned().filter(m=>daysTo(m.d)>=0);
-  return `<div class="pdl">${P.map(m=>{const n=daysTo(m.d),inWk=m.d>=mon&&m.d<=sun;return `<span class="${inWk||n<=14?'soon':''}"><strong>${esc(m.t)}</strong> · ${esc(DOW[parseD(m.d).getDay()]+' '+mdShort(m.d))} · ${inWk?'this week':'in '+n+' days'}</span>`}).join('')}
-    <button class="linkbtn muted" type="button" data-act="dl-edit">${P.length?'edit deadlines':'+ add a deadline'}</button></div>`}
-function timeInner(wk){const W=weekFree(wk),cfg=W.cfg;
-  if(T.editHours)return hoursForm(cfg);
-  const [mon,sun]=weekRange(wk);
-  const due=liveTodos().filter(t=>!t.done&&t.ddl&&t.ddl>=mon&&t.ddl<=sun&&visItem(t.item)).sort((a,b)=>a.ddl<b.ddl?-1:1);
-  const rows=W.days.map(({d,on,L,f})=>{const pb=on&&L.win?Math.min(100,L.busy/L.win*100):0;
-    return `<div class="tday${on?'':' off'}${sameDay(d,TODAY)?' today':''}${d<TODAY?' past':''}"${L.list.length?` title="${esc(L.list.join('\n'))}"`:''}>
-      <span class="tdl">${DOW[d.getDay()]} ${d.getDate()}</span><span class="tbar">${on?`<i style="width:${pb}%"></i>`:''}</span>
-      <span class="tdv">${on?`${L.busy?fh(L.busy)+' meetings · ':''}<b>${fh(f)} free</b>`:L.list.length?L.list.length+' meeting'+(L.list.length>1?'s':''):'off'}</span>
-      ${L.notes.length?`<span class="tdn">${esc(L.notes.join(' · '))}</span>`:''}</div>`}).join('');
-  return `<div class="tsum"><b>${fh(W.free)}</b> free for focused work${W.busy?`, after ${fh(W.busy)} of meetings`:''} · <button class="linkbtn muted" type="button" data-act="hours-edit">${String(cfg.start).padStart(2,'0')}:00–${String(cfg.end).padStart(2,'0')}:00, ${cfg.days.every((x,i)=>!!x===(i<5))?'Mon–Fri':DAYN.filter((_,i)=>cfg.days[i]).join(' ')}</button></div>
-    <div class="tdays">${rows}</div><p class="hint">${calNote()}</p>
-    ${T.editDl?deadlineEditor():deadlinesLine(wk)}
-    ${due.length?`<div class="pdue"><span class="k">due this week</span>${due.map(t=>`<span>${md(t.t)} <span class="muted">· ${DOW[parseD(t.ddl).getDay()]}</span></span>`).join('')}</div>`:''}`}
-
-/* step 1: what happened to last week's plan */
-function lastWeekInner(wk){const lw=addWeeks(wk,-1);const W=week(lw);const [m,s]=weekRange(lw);const tgt=new Set(week(wk).plan||[]);
-  const P=(W.plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item));
-  const open=P.filter(t=>!t.done),done=[...P.filter(t=>t.done),...liveTodos().filter(t=>t.done&&t.doneAt>=m&&t.doneAt<=s&&!P.includes(t)&&visItem(t.item))];
-  const toCarry=open.filter(t=>!tgt.has(t.id));
-  const note=`<textarea class="field lw-note" data-wk="${lw}" data-field="review" rows="2" placeholder="Anything to change for this week?" aria-label="Note on ${lw.slice(5)}">${esc(W.review||'')}</textarea>`;
-  if(!P.length&&!done.length)return `<p class="blank">Nothing was planned or finished in ${lw.slice(5)}.</p>${note}`;
-  return `<div class="lw-sum"><span><b>${done.length}</b> done · <b>${open.length}</b> not done</span>${toCarry.length?`<button class="btn ghost sm" type="button" data-act="wk-carry" data-v="${wk}">Carry ${toCarry.length} over</button>`:''}</div>
-    ${open.length?`<div class="olist">${open.map(t=>`<div class="orow"><span class="td-t">${md(t.t)}</span>${itemChip(itemById(t.item))}${t.est!=null?`<span class="muted small">${fh(+t.est)}</span>`:''}${tgt.has(t.id)?'<span class="tag">carried over</span>':`<button class="wkb" type="button" data-act="wk-add" data-id="${esc(t.id)}" data-v="${wk}">carry over</button>`}</div>`).join('')}</div>`:''}
-    ${done.length?`<details class="lw-done"><summary>done (${done.length})</summary><div class="olist">${done.map(t=>`<div class="orow done"><span class="td-t">${md(t.t)}</span>${itemChip(itemById(t.item))}</div>`).join('')}</div></details>`:''}
-    ${note}`}
-
-/* step 3: outcomes per project, picked from the project's open to-dos or added here, each with an estimate */
-const ACTIVE=it=>!['Done','Paused','Ended','Dropped'].includes(st(it));
-function projDeadline(it){const tg=(it.target||'').trim().toLowerCase();return tg?pinned().find(m=>m.t.toLowerCase().startsWith(tg)&&daysTo(m.d)>=0)||null:null}
-function planRow(t,wk,chip){return `<div class="orow${t.done?' done':''}">
-    <input type="checkbox" data-act="done" data-id="${esc(t.id)}"${t.done?' checked':''} aria-label="Done: ${esc(t.t)}">
-    ${T.editTodo==='pl:'+t.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-pl-${t.id}" name="t" value="${esc(t.t)}" aria-label="Edit outcome" data-edit="todo" data-key="pl:${esc(t.id)}" data-id="${esc(t.id)}" autocomplete="off"></form>`
-      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(t.id)}" data-v="pl" title="Click to edit">${md(t.t)}</button>`}
-    ${chip&&t.item!=='other'?itemChip(itemById(t.item)):''}${dueBadge(t)}<label class="hrs"><input type="number" min="0" step="0.5" value="${t.est!=null?t.est:''}" placeholder="–" data-act="est" data-id="${esc(t.id)}" aria-label="Hours for: ${esc(t.t)}"> h</label>
-    <button class="x" type="button" data-act="wk-remove" data-id="${esc(t.id)}" data-v="${wk}" title="Take out of this week" aria-label="Take out of this week">−</button></div>`}
-const candRow=(t,wk)=>`<div class="crow"><button class="wkb add" type="button" data-act="wk-add" data-id="${esc(t.id)}" data-v="${wk}" title="Plan it for this week">+ plan</button><span class="td-t">${md(t.t)}</span>${dueBadge(t)}${t.est!=null?`<span class="small">${fh(+t.est)}</span>`:''}</div>`;
-const addOutcome=(item,wk,name)=>`<form class="add slim oadd" data-form="plan-add" data-item="${esc(item)}" data-wk="${wk}"><input type="text" class="field" name="t" placeholder="+ an outcome for this week" required aria-label="New outcome for ${esc(name)}"><input type="number" class="field hrs-in" name="h" min="0" step="0.5" placeholder="h" aria-label="Hours"><button class="btn sm" type="submit">Add</button></form>`;
-/* a project opens fully when something is planned for it, it has a deadline coming, or you ask; otherwise it is one line */
-function projGroup(it,wk,plan){const ts=todosOf(it);const order=week(wk).plan||[];const P=ts.filter(t=>plan.has(t.id)).sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id)),C=ts.filter(t=>!t.done&&!plan.has(t.id)).sort((a,b)=>(a.ddl||'9')<(b.ddl||'9')?-1:(a.ddl||'9')>(b.ddl||'9')?1:0);
-  const hrs=P.reduce((s,t)=>s+(+t.est||0),0);const dl=projDeadline(it);const k='cand:'+it.id,more=!!U.exp[k],ok='og:'+it.id;
-  const head=`${it.kind==='proj'?`<span class="proj-id">${esc(it.id)}</span>`:''}<b>${esc(it.title)}</b>${dl?`<span class="tgt${daysTo(dl.d)<=14?' soon':''}">${esc(dl.t)} in ${daysTo(dl.d)} days</span>`:it.target?`<span class="tgt">${esc(it.target)}</span>`:''}`;
-  if(!P.length&&!dl&&!U.exp[ok])return `<section class="og compact" id="pl-${esc(it.id)}"><div class="og-h">${head}<span class="og-n">${C.length?C.length+' open to-do'+(C.length>1?'s':''):''}</span><button class="wkb add" type="button" data-act="og-open" data-id="${esc(ok)}">+ plan</button></div></section>`;
-  return `<section class="og" id="pl-${esc(it.id)}"><div class="og-h">${head}<span class="og-hrs">${hrs?fh(hrs):!P.length&&!dl?`<button class="linkbtn muted" type="button" data-act="og-open" data-id="${esc(ok)}">less</button>`:''}</span></div>
-    ${P.length?`<div class="olist">${P.map(t=>planRow(t,wk)).join('')}</div>`:''}
-    ${(it.weekly||[]).map(w=>weeklyLine(it,w,'pl',{wk,noDel:true})).join('')}
-    ${addOutcome(it.id,wk,it.title)}
-    ${C.length?`<div class="cands"><span class="k">open to-dos in this project</span>${(more?C:C.slice(0,3)).map(t=>candRow(t,wk)).join('')}${C.length>3?`<button class="linkbtn muted" type="button" data-act="cand-more" data-id="${esc(k)}">${more?'fewer':'+ '+(C.length-3)+' more'}</button>`:''}</div>`:''}
-  </section>`}
-function capBar(wk,free){const P=(week(wk).plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item));
-  const planned=P.reduce((s,t)=>s+(+t.est||0),0),doneH=P.filter(t=>t.done).reduce((s,t)=>s+(+t.est||0),0),noEst=P.filter(t=>t.est==null).length;
-  const max=Math.max(free,planned)||1,over=planned-free;
-  return `<div class="cap${over>0?' over':''}"><div class="cap-t"><b>${fh(planned)}</b> planned of <b>${fh(free)}</b> free${over>0?` · <span class="err">${fh(over)} over</span>`:free-planned>=1?` · ${fh(free-planned)} left`:''}${doneH?` · ${fh(doneH)} done`:''}${noEst?` · <span class="muted">${noEst} without an estimate</span>`:''}</div>
-    <div class="cap-bar"><i class="cap-done" style="width:${doneH/max*100}%"></i><i class="cap-plan" style="width:${(planned-doneH)/max*100}%"></i>${over>0?`<span class="cap-line" style="left:${free/max*100}%"></span>`:''}</div></div>`}
-function renderWeek(){
-  const wk=planWeek();const [mon,sun]=weekRange(wk);const plan=new Set(week(wk).plan||[]);const W=weekFree(wk);
-  const rank=it=>(projDeadline(it)?0:2)+(it.kind==='proj'?0:1);
-  const projs=[...areaItems('research','proj'),...areaItems('research','collab')].filter(it=>ACTIVE(it)||todosOf(it).some(t=>plan.has(t.id))).sort((a,b)=>rank(a)-rank(b)||(b.sel?1:0)-(a.sel?1:0));
-  const shown=new Set(projs.map(p=>p.id));
-  const other=(week(wk).plan||[]).map(todoById).filter(t=>t&&!t.del&&itemById(t.item)&&!shown.has(t.item));
-  const otherIt=itemById('other');
-  return `<div class="narrow stack plan">
-  <div class="wknav">
-    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,-1)}" aria-label="Previous week">←</button>
-    <h1 class="wklabel">Plan <span>${wk.slice(5)} · ${mdShort(mon)} – ${mdShort(sun)}</span></h1>
-    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,1)}" aria-label="Next week">→</button>
-    <div class="chips">${[[CUR_WK,'this week'],[addWeeks(CUR_WK,1),'next week']].map(([w,l])=>`<button class="chipbtn" type="button" data-act="wk-go" data-v="${w}" aria-pressed="${wk===w}">${l}</button>`).join('')}</div>
-  </div>
-  <section class="pstep"><h2 class="ph"><span class="pn">1</span>Last week <small>${addWeeks(wk,-1).slice(5)}</small></h2>${lastWeekInner(wk)}</section>
-  <section class="pstep"><h2 class="ph"><span class="pn">2</span>Time</h2><div id="plan-time">${timeInner(wk)}</div></section>
-  <section class="pstep"><h2 class="ph"><span class="pn">3</span>Outcomes</h2>
-    ${capBar(wk,W.free)}
-    <p class="lede">What should each project have to show at the end of the week? Pick from its open to-dos or add an outcome, with a rough number of hours.</p>
-    ${projs.map(it=>projGroup(it,wk,plan)).join('')||'<p class="blank">No active projects: add one in Research.</p>'}
-    <section class="og"><div class="og-h"><b>Other</b><span class="og-hrs">${other.length?fh(other.reduce((s,t)=>s+(+t.est||0),0)):''}</span></div>
-      ${other.length?`<div class="olist">${other.map(t=>planRow(t,wk,true)).join('')}</div>`:''}${otherIt?(otherIt.weekly||[]).map(w=>weeklyLine(otherIt,w,'pl',{wk,noDel:true})).join(''):''}
-      ${addOutcome('other',wk,'Other')}</section>
-  </section>
-  </div>`}
+function deadlineStrip(){if(T.editDl)return deadlineEditor();const P=pinned().filter(m=>daysTo(m.d)>=0);
+  return `<div class="dls">${P.map(m=>{const n=daysTo(m.d);return `<div class="dl${n<=14?' soon':''}"><b>${n===0?'today':n}</b><span>${n===0?'':n===1?'day to':'days to'} <strong>${esc(m.t)}</strong><small>${esc(DOW[parseD(m.d).getDay()]+', '+dLong(m.d))}</small></span></div>`}).join('')}
+    <button class="linkbtn muted dl-ed" type="button" data-act="dl-edit">${P.length?'edit':'+ add a deadline'}</button></div>`}
 
 /* ============================== sign-in, setup and recovery screens ============================== */
 function shellBare(){document.getElementById('tabs').innerHTML='';moveInd(null);document.querySelector('.search').hidden=true;document.getElementById('sync').hidden=true;document.getElementById('settings-btn').hidden=true;
@@ -1799,16 +1210,14 @@ async function signOut(){if(Sync.pending){try{await Sync.push()}catch(e){}}
   sec.del(CFG_KEY);sec.del(CACHE_KEY);sec.del(DRAFT_KEY);location.reload()}
 
 /* ============================== app shell ============================== */
-const PANELS={week:renderWeek,roadmap:renderRoadmap,research:renderResearch,exp:renderExp,admin:renderAdmin,res:renderRes,think:renderThink,log:renderLog,settings:renderSettings};
+const PANELS={research:renderResearch,res:renderRes,settings:renderSettings};
 const PANEL_IDS=Object.keys(PANELS);
 /* the ink underline: sits under the current section, follows the pointer across the nav */
 function moveInd(el){const ind=document.getElementById('tab-ind');if(el===undefined)el=document.querySelector('#tabs .tab[aria-selected="true"]');
   if(!el){ind.style.width='0';return}ind.style.width=el.offsetWidth+'px';ind.style.transform=`translateX(${el.offsetLeft}px)`;
   if(!ind.classList.contains('ready'))requestAnimationFrame(()=>requestAnimationFrame(()=>ind.classList.add('ready')))}
 function renderTabs(){
-  const over=D?liveTodos().filter(t=>!t.done&&t.ddl&&daysTo(t.ddl)<0).length:0;
-  const hid=new Set(D?D.hiddenTabs||[]:[]);
-  document.getElementById('tabs').innerHTML=TABS.filter(([id])=>!hid.has(id)||U.tab===id).map(([id,l])=>`<button class="tab" type="button" role="tab" id="tab-${id}" aria-controls="p-${id}" aria-selected="${U.tab===id}" data-act="tab" data-v="${id}">${l}${id==='week'&&over?`<span class="n" title="Overdue">${over}</span>`:''}</button>`).join('');
+  document.getElementById('tabs').innerHTML=TABS.map(([id,l])=>`<button class="tab" type="button" role="tab" id="tab-${id}" aria-controls="p-${id}" aria-selected="${U.tab===id}" data-act="tab" data-v="${id}">${l}</button>`).join('');
   document.getElementById('settings-btn').setAttribute('aria-pressed',U.tab==='settings');
   moveInd();
 }
@@ -1823,24 +1232,22 @@ function renderPanel(id){document.getElementById('p-'+id).innerHTML=PANELS[id]()
   if(id==='log'){const h=document.getElementById('heat');if(h)h.scrollLeft=h.scrollWidth}}
 function render(){
   if(!D)return;ensurePanels();
-  /* a hidden section only shows when asked for explicitly (a link or a search hit); otherwise open the first shown one */
-  const shown=id=>!(D.hiddenTabs||[]).includes(id);
-  if(U.tab!=='settings'&&!shown(U.tab)&&T.peek!==U.tab)U.tab=TABS.map(x=>x[0]).find(shown)||'research';document.querySelector('.search').hidden=false;document.getElementById('sync').hidden=false;document.getElementById('settings-btn').hidden=false;
-  if(!PANELS[U.tab])U.tab='week';
+document.querySelector('.search').hidden=false;document.getElementById('sync').hidden=false;document.getElementById('settings-btn').hidden=false;
+  if(!PANELS[U.tab])U.tab='research';
   const a=document.activeElement;const aid=a&&a.id;const key=a&&a.dataset&&a.dataset.act?[a.dataset.act,a.dataset.id||'',a.dataset.v||'']:null;
   renderTabs();paintHead();
   for(const id of PANEL_IDS){const el=document.getElementById('p-'+id);el.hidden=U.tab!==id;if(id===U.tab)renderPanel(id);else T.stale[id]=true}
   let el=aid&&document.getElementById(aid);
   if(!el&&key){const sel=`[data-act="${key[0]}"]`+(key[1]?`[data-id="${CSS.escape(key[1])}"]`:'')+(key[2]?`[data-v="${CSS.escape(key[2])}"]`:'');el=document.getElementById('p-'+U.tab).querySelector(sel)}
   if(el&&el!==document.body)el.focus({preventScroll:true});
-  monSync();calSync();
+  monSync();
 }
 function renderAllPanels(){for(const id of PANEL_IDS)if(T.stale[id]!==false)renderPanel(id)}
 let softPending=false;
 const typing=a=>a&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&(a.type==='text'||a.type==='password')));
 function renderSoft(){if(typing(document.activeElement)){softPending=true;return}render()}
 document.addEventListener('focusout',()=>{if(softPending){softPending=false;setTimeout(()=>{if(!typing(document.activeElement))render();else softPending=true},0)}});
-function setTab(id,sub){if(!PANELS[id])return;U.tab=id;T.peek=id;if(sub)U.sub=sub;saveUI();try{history.replaceState(null,'','#'+id)}catch(e){}render()}
+function setTab(id,sub){if(!PANELS[id])return;U.tab=id;if(sub)U.sub=sub;saveUI();try{history.replaceState(null,'','#'+id)}catch(e){}render()}
 /* show a collapsed element: open every collapsed ancestor and switch to its sub-page */
 function reveal(el){
   for(let p=el;p&&p.id!=='panels';p=p.parentElement){
@@ -1886,32 +1293,14 @@ document.addEventListener('change',async e=>{
   const t=e.target,act=t.dataset&&t.dataset.act,id=t.dataset&&t.dataset.id;if(!act||!D&&act!=='seed-file')return;
   switch(act){
     case 'st':{const it=itemById(id);if(!it)return;const old=st(it);it.st=t.value;addLog(it.id,`Status: ${old} → ${t.value}`,{auto:true});commit('status');return}
-    case 'rec':{const w=ensureWeek(t.dataset.v);const it=itemById(t.dataset.item);const wt=it&&(it.weekly||[]).find(x=>x.id===id);
-      if(t.checked){snapshot();w.rec[id]=TODAY_ISO;if(wt)addLog(it.id,'Weekly: '+wt.t,{auto:true,rec:id,wk:t.dataset.v});commit('weekly task');toast('Done',true)}
-      else{delete w.rec[id];D.logs=D.logs.filter(l=>!(l.rec===id&&l.wk===t.dataset.v));commit('weekly task')}return}
     case 'done':if(t.checked){snapshot();setDone(id,true);commit('done');toast('Done',true)}else{setDone(id,false);commit('undone')}return;
     case 'ddl':{const td=todoById(id);if(td){td.ddl=t.value;delete T.ddlOpen[id];commit('due date')}return}
     case 'check':D.checks[id]=t.checked;if(!t.checked)delete D.checks[id];commit('checklist');return;
-    case 'step-check':{const s=D.steps.find(x=>x.id===id);if(!s)return;s.checks=s.checks||{};if(t.checked)s.checks[t.dataset.v]=true;else delete s.checks[t.dataset.v];commit('step-back checklist');return}
-    case 'absorb':{const x=D.absorb.find(a=>a.id===id);if(x){x.done=t.checked;commit('to absorb')}return}
-    case 'ch-date':{const c=D.channels.find(x=>x.id===id);if(c){c.date=t.value;commit('channel')}return}
-    case 'ms-done':{const m=D.milestones.find(x=>x.id===id);if(!m)return;m.done=t.checked;if(t.checked){m.doneAt=TODAY_ISO;addLog('','Milestone: '+m.t,{auto:true,ms:m.id})}else{delete m.doneAt;D.logs=D.logs.filter(l=>l.ms!==m.id)}commit('milestone');return}
-    case 'paper':U.paper=t.value;saveUI();render();return;
-    case 'est':{const td=todoById(id);if(!td)return;const h=parseFloat(t.value);if(isNaN(h))delete td.est;else td.est=Math.max(0,Math.round(h*2)/2);commit('estimate');return}
-    case 'tab-show':{const h=new Set(D.hiddenTabs||[]);if(t.checked)h.delete(id);else h.add(id);
-      if(TABS.every(x=>h.has(x[0]))){t.checked=true;toast('Keep at least one section');return}D.hiddenTabs=TABS.map(x=>x[0]).filter(x=>h.has(x));commit('sections');return}
     case 'remember':setRemember(t.checked);toast(t.checked?'This device will keep you signed in':'You will be signed out when this tab closes');return;
     case 'stu-add':{const s=(D.students||[]).find(x=>x.id===id);if(s&&t.value){s.projects=[...(s.projects||[]),t.value];commit('students')}return}
     case 'import':{try{T.pendingImport=await readFile(t);T.confirm='import';setTab('settings')}catch(err){toast(err.message)}t.value='';return}
     case 'seed-file':{try{const data=await readFile(t);await firstWrite(data)}catch(err){screenErr(err.message)}return}
   }
-});
-let typeTimer;
-document.addEventListener('input',e=>{
-  const t=e.target;
-  if(t.dataset&&t.dataset.act==='letter'&&D){D.letters[+t.dataset.id]=t.value;clearTimeout(typeTimer);typeTimer=setTimeout(()=>Sync.changed('letters'),600);return}
-  if(t.id==='inbox-text'){sec.set(DRAFT_KEY,t.value);return}
-  if(t.dataset&&t.dataset.wk&&t.dataset.field&&D){ensureWeek(t.dataset.wk)[t.dataset.field]=t.value;clearTimeout(typeTimer);typeTimer=setTimeout(()=>Sync.changed('week plan'),600)}
 });
 document.addEventListener('submit',e=>{
   const f=e.target;const kind=f.dataset&&f.dataset.form;if(!kind)return;e.preventDefault();
@@ -1939,30 +1328,16 @@ document.addEventListener('submit',e=>{
         const s=sec.get(CFG_KEY);s.token=token;sec.set(CFG_KEY,s);await rewrapPassword(pw,token,'planner: new token')})()
         .then(()=>{T.busy='';T.pwMsg='Token replaced. You can delete the old one on GitHub.';render()}).catch(err=>{T.busy='';T.pwErr='Could not replace it: '+err.message;render()});return}
     case 'todo-edit':saveTodoEdit(f.elements.t);return;
-    case 'todo-add':{const item=f.dataset.item;if(!v('t'))return;if(v('rep')){const it=itemById(item);if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.exp[item]=true;commit('new weekly task');refocus('add-t-'+item);return}addTodo(item,v('t'),v('d'),'');U.exp[item]=true;commit('new to-do');refocus('add-t-'+item);return}
-    case 'wk-quick':{if(!v('t'))return;if(v('rep')){const it=itemById(v('item'));if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.lastItem=v('item');saveUI();commit('new weekly task');refocus('wkq-t');return}addTodo(v('item'),v('t'),v('d'),f.dataset.wk);U.lastItem=v('item');saveUI();commit('week plan');refocus('wkq-t');return}
+    case 'todo-add':{const item=f.dataset.item;if(!v('t'))return;addTodo(item,v('t'),v('d'),'');U.exp[item]=true;commit('new to-do');refocus('add-t-'+item);return}
     case 'log-add':{if(!v('t'))return;addLog(f.dataset.item,v('t'),{d:v('d')||TODAY_ISO});U.exp['log:'+f.dataset.item]=true;commit('progress log');refocus('log-t-'+f.dataset.item);return}
-    case 'journal':{if(!v('t'))return;const item=v('item');addLog(item&&itemById(item)?item:'',v('t'),{d:v('d')||TODAY_ISO});U.lastJournal=item;saveUI();commit('logbook');refocus('jr-t');toast('Logged');return}
     case 'item-add':{const area=f.dataset.area,k=f.dataset.kind;const it={id:k==='proj'?nextProjId():'n'+uid(),area,kind:k,set:KIND_SET[k],title:v('title'),created:TODAY_ISO};
       it.st=SETS[it.set][0];if(k==='proj'){it.target=v('sub');it.people='';it.notes=''}else it.sub=v('sub');
-      if(k==='goal'){it.hz=f.dataset.hz||'long';it.by=v('by')}
       if(area==='research')it.sel=true;
       D.items.push(it);T.adding='';U.exp[it.id]=true;saveUI();commit('new item');requestAnimationFrame(()=>{const el=document.getElementById('it-'+it.id);if(el)flash(el)});return}
     case 'item-edit':{const it=itemById(f.dataset.id);if(!it)return;it.title=v('title')||it.title;
       if(it.kind==='proj'){it.target=v('target');it.people=f.elements.people.value.trim();it.notes=f.elements.notes.value.replace(/\s+$/,'')}else it.sub=f.elements.sub.value.replace(/\s+$/,'');
-      if(it.kind==='goal'){it.hz=v('hz')||it.hz;it.by=v('by')}
       T.editItem='';commit('edit item');return}
     case 'blk':{const id=f.dataset.id;const b=D.blocks[id]=Object.assign({type:'list'},D.blocks[id]||{});b.title=v('title');b.text=f.elements.text.value.replace(/\s+$/,'');T.editBlock='';U.exp['blk:'+id]=true;commit('edit: '+(b.title||id));return}
-    case 'step':{const s=D.steps.find(x=>x.id===f.dataset.id);if(!s)return;s.desc=v('desc');s.items=f.elements.text.value.split('\n').map(x=>x.trim()).filter(Boolean);s.checks={};T.editBlock='';commit('step-back checklist');return}
-    case 'ms':{const id=f.dataset.id;const fields={t:v('t'),d:v('d'),kind:v('kind'),est:v('est'),url:v('url'),note:v('note')};if(!fields.t||!parseD(fields.d))return;
-      if(id==='new')D.milestones.push(Object.assign({id:'m'+uid(),done:false},fields));else{const m=D.milestones.find(x=>x.id===id);if(!m)return;Object.assign(m,fields)}
-      T.editMs='';commit('milestone');return}
-    case 'plan-add':{if(!v('t'))return;const item=f.dataset.item;
-      if(item==='other'&&!itemById('other')){D.items.push({id:'other',area:'week',kind:'todo',set:'todo',title:'Other',st:'In progress',created:TODAY_ISO});reindex()}
-      if(!itemById(item))return;const td=addTodo(item,v('t'),'',f.dataset.wk);const h=parseFloat(v('h'));if(!isNaN(h))td.est=Math.max(0,Math.round(h*2)/2);
-      commit('plan');requestAnimationFrame(()=>{const n=document.querySelector(`form[data-form="plan-add"][data-item="${CSS.escape(item)}"] input[name="t"]`);if(n)n.focus()});return}
-    case 'plan-hours':{const s0=+v('start'),e0=+v('end');if(!(e0>s0&&s0>=0&&e0<=24))return toast('Work has to end after it starts, within 0–24');
-      D.plan={start:s0,end:e0,days:[0,1,2,3,4,5,6].map(i=>f.elements.namedItem('d'+i).checked?1:0)};T.editHours=false;commit('work hours');return}
     case 'deadlines':{let bad=0;const keep=new Set();
       for(const line of f.elements.text.value.split('\n').map(x=>x.trim()).filter(Boolean)){const m=/^(\d{4}-\d{2}-\d{2})\s+(.+)$/.exec(line);if(!m||!parseD(m[1])){bad++;continue}
         let x=D.milestones.find(y=>y.t===m[2].trim());if(!x){x={id:'m'+uid(),t:m[2].trim(),d:m[1],kind:'venue',est:false,url:'',note:'',done:false};D.milestones.push(x)}
@@ -1975,15 +1350,8 @@ document.addEventListener('submit',e=>{
         if(!name||!/^https?:\/\/[^\s]+$/.test(url||'')){bad++;continue}
         const prev=old.find(s=>s.name===name);out.push({id:prev?prev.id:'s'+uid(),name,url,note})}
       D.servers=out;T.editSrv=false;LIVE.hist={};LIVE.st={};commit('servers');if(bad)toast(bad+(bad===1?' line was':' lines were')+' skipped: each needs a name and an http(s) address');return}
-    case 'phd':{Object.assign(D.phd,{who:v('who'),zh:v('zh'),prog:v('prog'),start:v('start'),end:v('end')});T.editPhd=false;commit('PhD details');return}
     case 'student-new':{if(!v('name'))return;(D.students=D.students||[]).push({id:'st'+uid(),name:v('name'),projects:[],note:''});T.addingStudent=false;commit('students');return}
     case 'student':{const s=(D.students||[]).find(x=>x.id===f.dataset.id);if(!s)return;s.name=v('name')||s.name;s.note=v('note');T.editStudent='';commit('students');return}
-    case 'conv':{const id=f.dataset.id;const items=textToConvItems(f.elements.text.value);
-      if(id==='new')D.convs.push({id:'c'+uid(),who:v('who'),p:v('who'),date:v('date'),items});
-      else{const c=D.convs.find(x=>x.id===id);if(!c)return;if(c.who!==v('who'))c.p=v('who');c.who=v('who');c.date=v('date');c.items=items}
-      T.editConv='';commit('conversation');return}
-    case 'absorb':{if(!v('t'))return;D.absorb.push({id:'x'+uid(),t:v('t'),done:false});commit('to absorb');refocus('absorb-t');return}
-    case 'inbox':{const t=f.elements[0].value.trim();if(!t)return;D.inbox.unshift({id:uid(),t,d:TODAY_ISO});sec.del(DRAFT_KEY);commit('inbox');toast('Saved');return}
   }
 });
 document.addEventListener('click',async e=>{
@@ -1998,14 +1366,11 @@ document.addEventListener('click',async e=>{
   if(act.startsWith('selview:')){U.selView[act.slice(8)]=v;saveUI();render();return}
   switch(act){
     case 'tab':setTab(v);window.scrollTo({top:0});return;
-    case 'sub':setTab('think',v);return;
     case 'goto':goto(b.dataset.tab,b.dataset.target,b.dataset.sub);return;
     case 'exp':{const box=b.closest('[data-key]');const body=box&&box.querySelector(':scope > .xb');if(!body)return;
       const open=body.hidden;body.hidden=!open;box.classList.toggle('open',open);b.setAttribute('aria-expanded',open);U.exp[box.dataset.key]=open;saveUI();return}
     case 'sel':{const it=itemById(id);if(!it)return;it.sel=!it.sel;commit(it.sel?'select':'unselect');return}
     case 'theme':setTheme(v);break;
-    case 'cf-who':U.cfWho=v;break; case 'cf-tag':U.cfTag=v;break; case 'pick-area':U.pickArea=v;break; case 'ms-kind':U.msKind=v;break;
-    case 'log-kind':U.logKind=v;break; case 'log-day':U.logDay=U.logDay===v?'':v;break; case 'log-more':U.logMonths=(U.logMonths||3)+6;break;
     case 'todo-edit':{T.editTodo=v+':'+id;render();const n=document.getElementById('te-'+v+'-'+id);if(n){n.focus();n.select()}return}
     case 'ddl-open':{T.ddlOpen[id]=true;render();const n=document.getElementById('dd-'+v+'-'+id);if(n){n.focus();try{n.showPicker()}catch(err){}}return}
     case 'undo':if(undoSnap){D=adopt(undoSnap);undoSnap=null;document.getElementById('toast').hidden=true;commit('undo');toast('Undone')}return;
@@ -2016,54 +1381,21 @@ document.addEventListener('click',async e=>{
     case 'item-del':snapshot();D.items=D.items.filter(x=>x.id!==id);for(const t of D.todos)if(t.item===id)t.del=true;T.editItem='';commit('delete item');toast('Item deleted',true);return;
     case 'add-open':T.adding=v;render();{const n=document.getElementById('na-title-'+v.replace(/\|/g,'-'));if(n)n.focus()}return;
     case 'add-cancel':T.adding='';render();return;
-    case 'to-weekly':{const td=todoById(id);const it=td&&itemById(td.item);if(!it)return;snapshot();(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:td.t,created:TODAY_ISO});deleteTodo(id);commit('make weekly');toast('Now a weekly task',true);return}
-    case 'to-once':{const it=itemById(b.dataset.item);const w=it&&(it.weekly||[]).find(x=>x.id===id);if(!w)return;snapshot();it.weekly=it.weekly.filter(x=>x.id!==id);addTodo(it.id,w.t,'',CUR_WK);commit('make one-off');toast('Now a one-off to-do in this week',true);return}
-    case 'focus':{const w=ensureWeek(v);if(w.focus[id])delete w.focus[id];else w.focus[id]=true;commit('week focus');return}
     case 'more':{const row=b.closest('.td');if(row)row.classList.toggle('show-act');return}
-    case 'wkly-del':{const it=itemById(b.dataset.item);if(!it)return;snapshot();it.weekly=(it.weekly||[]).filter(x=>x.id!==id);commit('delete weekly task');toast('Weekly task deleted',true);return}
     case 'todo-del':snapshot();deleteTodo(id);commit('delete to-do');toast('To-do deleted',true);return;
     case 'log-del':snapshot();D.logs=D.logs.filter(l=>l.id!==id);commit('delete log entry');toast('Entry deleted',true);return;
-    case 'wk-toggle':{const w=ensureWeek(v);if(w.plan.includes(id))w.plan=w.plan.filter(x=>x!==id);else w.plan.push(id);commit('week plan');return}
-    case 'wk-add':ensureWeek(v).plan.push(id);commit('week plan');return;
-    case 'wk-remove':{const w=ensureWeek(v);w.plan=w.plan.filter(x=>x!==id);commit('week plan');return}
-    case 'wk-go':U.week=v;saveUI();if(U.tab!=='week')U.tab='week';render();window.scrollTo({top:0});return;
-    case 'wk-carry':{const w=ensureWeek(v);const prev=week(addWeeks(v,-1));for(const tid of prev.plan||[]){const t=todoById(tid);if(t&&!t.done&&!t.del&&!w.plan.includes(tid))w.plan.push(tid)}commit('week plan');toast('Brought over');return}
     case 'blk-edit':T.editBlock=id;render();{const n=document.getElementById('blk-text-'+id);if(n)n.focus()}return;
     case 'blk-cancel':T.editBlock='';render();return;
-    case 'step-edit':T.editBlock=T.editBlock==='st:'+id?'':'st:'+id;render();return;
-    case 'step-done':{const s=D.steps.find(x=>x.id===id);if(!s)return;s.history=s.history||[];if(s.history.slice(-1)[0]!==TODAY_ISO)s.history.push(TODAY_ISO);
-      const n=s.items.filter((_,i)=>s.checks&&s.checks[i]).length;s.checks={};addLog(itemById(s.id)?s.id:'',`Finished a round of “${s.title}” (${n}/${s.items.length})`,{auto:true});commit(s.title.toLowerCase());toast('Round recorded');return}
-    case 'rate':D.rate[id]=+v;D.rateAt=TODAY_ISO;commit('self-review');return;
-    case 'absorb-del':snapshot();D.absorb=D.absorb.filter(x=>x.id!==id);commit('to absorb');toast('Deleted',true);return;
-    case 'inbox-del':snapshot();D.inbox=D.inbox.filter(n=>n.id!==id);commit('inbox');toast('Deleted',true);return;
-    case 'ch-today':{const c=D.channels.find(x=>x.id===id);if(c){c.date=TODAY_ISO;commit('channel');toast('Marked as updated today')}return}
-    case 'ms-new':T.editMs='new';U.exp['rm-ms']=true;render();{const n=document.getElementById('ms-t-new');if(n)n.focus()}return;
-    case 'ms-edit':T.editMs=id;render();{const n=document.getElementById('ms-t-'+id);if(n)n.focus()}return;
-    case 'ms-cancel':T.editMs='';render();return;
-    case 'ms-del':snapshot();D.milestones=D.milestones.filter(m=>m.id!==id);commit('delete milestone');toast('Milestone deleted',true);return;
-    case 'phd-edit':T.editPhd=!T.editPhd;render();return;
-    case 'hours-edit':T.editHours=true;render();return;
-    case 'hours-cancel':T.editHours=false;render();return;
-    case 'cand-more':U.exp[id]=!U.exp[id];break;
-    case 'og-open':{U.exp[id]=!U.exp[id];saveUI();render();const n=document.querySelector(`#pl-${CSS.escape(id.slice(3))} form[data-form="plan-add"] input[name="t"]`);if(n)n.focus();return}
-    case 'cal-sel':T.calSel=T.calSel===id?'':(id||'');paintWeekCal();return;
     case 'dl-edit':T.editDl=true;render();{const n=document.getElementById('dl-text');if(n)n.focus()}return;
     case 'dl-cancel':T.editDl=false;render();return;
-    case 'cal-on':T.busy='cal';render();calEnable().then(()=>{T.busy='';toast('Calendar sync is on. Now add your calendar links (see below).');render()}).catch(err=>{T.busy='';toast('Could not turn it on: '+err.message);render()});return;
-    case 'cal-reload':calLoad(true).then(()=>{toast(CAL.data?'Calendar reloaded':'No calendar yet: '+(CAL.err||'waiting for the first sync'))});return;
     case 'srv-edit':T.editSrv=true;render();{const n=document.getElementById('srv-text');if(n)n.focus()}return;
     case 'srv-cancel':T.editSrv=false;render();return;
     case 'mon-more':U.exp[id]=!U.exp[id];break;
-    case 'phd-cancel':T.editPhd=false;render();return;
     case 'stu-proj':{const s=(D.students||[]).find(x=>x.id===id);if(!s)return;const p=s.projects||[];s.projects=p.includes(v)?p.filter(x=>x!==v):[...p,v];commit('students');return}
     case 'student-add':T.addingStudent=true;U.exp['r-stu']=true;render();{const n=document.getElementById('stu-new');if(n)n.focus()}return;
     case 'student-edit':T.editStudent=id;render();{const n=document.getElementById('stu-name-'+id);if(n)n.focus()}return;
     case 'student-cancel':T.addingStudent=false;T.editStudent='';render();return;
     case 'student-del':snapshot();D.students=(D.students||[]).filter(x=>x.id!==id);commit('students');toast('Student deleted',true);return;
-    case 'conv-new':T.editConv='new';U.cfWho='';U.cfTag='';U.exp['n-talks']=true;render();{const n=document.getElementById('cv-who-new');if(n)n.focus()}return;
-    case 'conv-edit':T.editConv=id;render();return;
-    case 'conv-cancel':T.editConv='';render();return;
-    case 'conv-del':snapshot();D.convs=D.convs.filter(c=>c.id!==id);T.editConv='';commit('conversation');toast('Conversation deleted',true);return;
     case 'sync-now':Sync.pending?Sync.push():Sync.refresh().then(()=>{if(Sync.status==='ok')toast('Up to date')});return;
     case 'download':download();return;
     case 'reload':location.replace(location.pathname+'?v='+encodeURIComponent(document.getElementById('update').dataset.v||Date.now())+location.hash);return;
@@ -2079,7 +1411,7 @@ document.addEventListener('click',async e=>{
 document.getElementById('sync').addEventListener('click',async()=>{if(!D)return;if(/error|offline/.test(Sync.status)){Sync.push();return}
   if(Sync.status==='auth'){sec.del(CFG_KEY);T.vault=T.vault||await fetchVault();T.connectStage='';T.connectErr='GitHub refused the saved access. Sign in again.';screen(T.vault?'login':'setup');return}
   setTab('settings')});
-document.addEventListener('visibilitychange',()=>{monSync();calSync();if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
+document.addEventListener('visibilitychange',()=>{monSync();if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
 addEventListener('online',()=>{if(Sync.pending)Sync.push()});
 
 function saveTodoEdit(inp){T.editTodo='';const val=inp.value.trim();
@@ -2123,7 +1455,7 @@ document.addEventListener('keydown',e=>{if(e.key==='/'&&!/^(INPUT|TEXTAREA|SELEC
 
 /* ============================== boot ============================== */
 async function boot(){
-  const h=(location.hash||'').slice(1);if(PANELS[h])U.tab=h;if(!PANELS[U.tab])U.tab='week';U.week='';
+  const h=(location.hash||'').slice(1);if(PANELS[h])U.tab=h;if(!PANELS[U.tab])U.tab='research';
   applyTheme();paintHead();
   const cfg=sec.get(CFG_KEY);const seedEl=document.getElementById('seed');
   if(cfg&&cfg.token&&cfg.dek){
