@@ -29,6 +29,8 @@ fetch() { python3 -c 'import sys,urllib.request; sys.stdout.buffer.write(urllib.
 
 DIR="$HOME/.local/share/plan-monitor"
 mkdir -p "$DIR/bin"
+# private: on a shared server this holds the Tailscale node key and control socket, which other users must not reach
+chmod 700 "$DIR"
 SRC=$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)
 if [ -n "$SRC" ] && [ -f "$SRC/plan_monitor.py" ]; then cp "$SRC/plan_monitor.py" "$DIR/"; else fetch "$RAW/plan_monitor.py" > "$DIR/plan_monitor.py"; fi
 python3 "$DIR/plan_monitor.py" --once >/dev/null || { echo "the agent could not take a sample; see the error above" >&2; exit 1; }
