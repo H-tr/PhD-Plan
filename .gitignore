@@ -1,2 +1,5 @@
 *.zip
 .DS_Store
+# plaintext plans (the seed and any downloaded backups) never go into this public repository
+private/
+phd-plan-*.json

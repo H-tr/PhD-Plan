@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1417-352f11">
+<meta name="app-build" content="1024-1431-f49123">
 <title>PhD Plan</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M8 23V9h7a4.5 4.5 0 0 1 0 9H8' fill='none' stroke='%23111' stroke-width='2.2'/%3E%3Ccircle cx='23.5' cy='21.5' r='2.2' fill='%23a8281e'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -136,6 +136,7 @@ strong{font-weight:600}
 .connect label.fl{display:grid;gap:3px;font-size:15px;color:var(--muted)}
 .err{color:var(--hl);font-size:15px;margin:0}
 .okmsg{color:var(--ok);font-size:15px;margin:0}
+.reccode{font:19px/1.4 var(--f-code);letter-spacing:.06em;color:var(--ink);background:var(--sunk);padding:12px 14px;border-radius:3px;margin:0;user-select:all;overflow-wrap:anywhere}
 
 /* controls */
 select.pill{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background-color:transparent;color:var(--muted);font:15.5px/1.2 var(--f-body);font-variant-caps:all-small-caps;letter-spacing:.05em;padding:1px 22px 3px 9px;border-radius:999px;cursor:pointer;max-width:100%;
@@ -502,7 +503,7 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 <main class="wrap" id="main">
   <div id="panels"></div>
 </main>
-<footer class="wrap"><div class="site-foot"><a href="https://h-tr.github.io/">h-tr.github.io</a><span>Plans live in a private repository; this page only reads and writes them.</span></div></footer>
+<footer class="wrap"><div class="site-foot"><a href="https://h-tr.github.io/">h-tr.github.io</a><span>Plans are encrypted in your browser; the repository only ever holds ciphertext.</span></div></footer>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div class="update" id="update" role="status" hidden>A new version of this page is available. <button class="btn sm" type="button" data-act="reload">Reload</button></div>
 
@@ -626,7 +627,7 @@ let D=null;                       // synced data (lives in the private repo)
 const CFG_KEY='phd-plan.github',CACHE_KEY='phd-plan.cache',UI_KEY='phd-plan.ui',PREVIEW_KEY='phd-plan.preview',DRAFT_KEY='phd-plan.draft',THEME_KEY='theme';
 const U=Object.assign({tab:'week',week:'',cfWho:'',cfTag:'',pickArea:'',paper:'',sub:'half',msKind:'',logKind:'',logDay:'',logMonths:3},ls.get(UI_KEY)||{});
 U.exp=U.exp||{};U.selView=U.selView||{};
-const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',loginErr:'',stale:{},vault:null,pwMsg:'',pwErr:'',busy:''};
+const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},editBlock:'',editItem:'',adding:'',editConv:'',editMs:'',editPhd:false,confirm:'',connectErr:'',connectStage:'',stale:{},vault:null,pwMsg:'',pwErr:'',msgK:'',busy:'',screen:'',recShow:'',pending:null,recovered:null,unlocked:null};
 const saveUI=()=>ls.set(UI_KEY,U);
 let IX={items:new Map(),todos:new Map(),byItem:new Map()};
 const adopt=x=>normalize(clone(x));
@@ -689,8 +690,13 @@ const GH={cfg:null,
     try{await this.api('/git/ref/heads/'+encodeURIComponent(c.branch));return}catch(e){if(e.status!==404)throw e}
     const repo=await this.repo();const ref=await this.api('/git/ref/heads/'+encodeURIComponent(repo.default_branch));
     await this.api('/git/refs',{method:'POST',headers:Object.assign(this.h(),{'Content-Type':'application/json'}),body:JSON.stringify({ref:'refs/heads/'+c.branch,sha:ref.object.sha})})},
-  async get(){const f=await this.read(this.cfg.path,this.cfg.branch);if(f.missing)return f;return {data:normalize(JSON.parse(f.text)),sha:f.sha}},
-  async put(data,sha,message){return this.write(this.cfg.path,this.cfg.branch,JSON.stringify(data,null,1)+'\n',sha,message)}
+  /* plans are decrypted after reading and encrypted before writing; a plaintext file (from before encryption) reads as plain:true */
+  async get(){const f=await this.read(this.cfg.path,this.cfg.branch);if(f.missing)return f;const j=JSON.parse(f.text);
+    if(!isEnv(j))return {data:normalize(j),sha:f.sha,plain:true};
+    if(!DEK)throw Object.assign(new Error('The plans are encrypted and this device has no key. Sign in again.'),{status:401});
+    return {data:normalize(await decData(j)),sha:f.sha}},
+  async put(data,sha,message){if(!DEK)throw new Error('No encryption key: refusing to write the plans unencrypted');
+    return this.write(this.cfg.path,this.cfg.branch,JSON.stringify(await encData(data))+'\n',sha,message)}
 };
 async function ghErr(r){let m='';try{m=(await r.json()).message||''}catch(e){}const e=new Error(m||('HTTP '+r.status));e.status=r.status;return e}
 const cfgKey=c=>c?[c.owner,c.repo,c.branch,c.path].join('/').toLowerCase():'';
@@ -708,7 +714,7 @@ const Sync={mode:'none',sha:null,base:null,status:'none',msg:'',lastAt:'',pendin
     if(this.pushing){this.again=true;return}
     if(!this.pending){this.status='ok';paintSync();return}
     clearTimeout(this.timer);this.pushing=true;this.status='saving';paintSync();
-    const acts=this.acts.splice(0);const msg='plans: '+(acts.slice(0,4).join(', ')||'update');
+    const acts=this.acts.splice(0);const msg='plans: update';   // generic: the repository is public, so commit messages say nothing about the content
     try{
       for(let attempt=0;;attempt++){
         const snap=clone(D);
@@ -742,30 +748,51 @@ function paintSync(){
   b.title=Sync.msg||'';
 }
 
-/* ============================== password vault ==============================
-   The GitHub token is encrypted with the sign-in password and published as vault.json next to this
-   page, so the password alone unlocks the planner on any device. PBKDF2-SHA256 (1,000,000 rounds)
-   derives an AES-256-GCM key; a wrong password fails GCM authentication. The file is public, so the
-   password must resist offline guessing: use a long passphrase that you use nowhere else. */
+/* ============================== encryption ==============================
+   The repository is public, so the plans are encrypted in this browser before they are written: a random
+   256-bit data key encrypts data.json with AES-256-GCM. vault.json, served next to this page, holds that key
+   and the GitHub token, wrapped twice: once under the sign-in password and once under a recovery code, each
+   through PBKDF2-SHA256 with 1,000,000 rounds. Without the password or the recovery code, everything in the
+   repository is ciphertext. A wrong secret fails GCM authentication. */
 const KDF_ITER=1000000,PW_MIN=12;
-async function vaultKey(pw,salt,iter){const base=await crypto.subtle.importKey('raw',te.encode(pw.normalize('NFC')),'PBKDF2',false,['deriveKey']);
+let DEK=null;                      // the data key (non-extractable CryptoKey) once signed in
+const rand=n=>crypto.getRandomValues(new Uint8Array(n));
+async function kdf(secret,salt,iter){const base=await crypto.subtle.importKey('raw',te.encode(secret.normalize('NFC')),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt,iterations:iter},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
-async function sealVault(pw,payload){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
-  const key=await vaultKey(pw,salt,KDF_ITER);const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(JSON.stringify(payload))));
-  return {v:1,kdf:'PBKDF2-SHA256',iter:KDF_ITER,cipher:'AES-256-GCM',salt:u8b64(salt),iv:u8b64(iv),ct:u8b64(ct),at:TODAY_ISO}}
-async function openVault(pw,v){const key=await vaultKey(pw,b64u8(v.salt),v.iter||KDF_ITER);
-  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u8(v.iv)},key,b64u8(v.ct));return JSON.parse(tdc.decode(pt))}
+async function wrap(by,secret,payload){const salt=rand(16),iv=rand(12);const k=await kdf(secret,salt,KDF_ITER);
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,te.encode(JSON.stringify(payload))));
+  return {by,iter:KDF_ITER,salt:u8b64(salt),iv:u8b64(iv),ct:u8b64(ct)}}
+async function unwrap(w,secret){const k=await kdf(secret,b64u8(w.salt),w.iter||KDF_ITER);
+  return JSON.parse(tdc.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u8(w.iv)},k,b64u8(w.ct))))}
+const REC_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function newRecovery(){let s='';for(const b of rand(24))s+=REC_ABC[b&31];return s.match(/.{4}/g).join('-')}   // 120 bits
+const recNorm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const looksRec=s=>!/[a-z]/.test(s)&&recNorm(s).length===24&&[...recNorm(s)].every(c=>REC_ABC.includes(c));
+const vaultOf=wraps=>({v:2,kdf:'PBKDF2-SHA256',cipher:'AES-256-GCM',wraps,at:TODAY_ISO});
+const wrapOf=(v,by)=>(v&&v.wraps||[]).find(w=>w.by===by);
+/* try the secret as a password and as a recovery code; returns {by, p} or throws {wrong:true} */
+async function openVault(secret,v){
+  for(const by of looksRec(secret)?['recovery','password']:['password','recovery']){const w=wrapOf(v,by);if(!w)continue;
+    try{return {by,p:await unwrap(w,by==='recovery'?recNorm(secret):secret)}}catch(e){if(e.name!=='OperationError')throw e}}
+  throw Object.assign(new Error('wrong secret'),{wrong:true})}
+async function useDek(b64){DEK=await crypto.subtle.importKey('raw',b64u8(b64),{name:'AES-GCM'},false,['encrypt','decrypt'])}
+const isEnv=j=>isObj(j)&&typeof j.ct==='string'&&typeof j.iv==='string'&&!Array.isArray(j.items);
+async function encData(obj){const iv=rand(12);const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},DEK,te.encode(JSON.stringify(obj))));return {v:1,alg:'AES-256-GCM',iv:u8b64(iv),ct:u8b64(ct)}}
+async function decData(env){return JSON.parse(tdc.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64u8(env.iv)},DEK,b64u8(env.ct))))}
 async function fetchVault(){if(!/^https?:/.test(location.protocol))return null;
-  try{const r=await fetch('vault.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return null;const v=await r.json();return v&&v.ct&&v.salt&&v.iv?v:null}catch(e){return null}}
-const vaultPayload=c=>({owner:c.owner,repo:c.repo,branch:c.branch,path:c.path,token:c.token,vaultPath:c.vaultPath,siteBranch:c.siteBranch});
-async function saveVault(pw){
-  const c=GH.cfg;if(!c.siteBranch){c.siteBranch=(await GH.repo()).default_branch;sec.set(CFG_KEY,c)}
-  const v=await sealVault(pw,vaultPayload(c));
-  const back=await openVault(pw,v);if(back.token!==c.token)throw new Error('the encrypted copy did not round-trip');
-  const cur=await GH.read(c.vaultPath,c.siteBranch);
-  await GH.write(c.vaultPath,c.siteBranch,JSON.stringify(v,null,1)+'\n',cur.missing?null:cur.sha,cur.missing?'planner: set the sign-in password':'planner: change the sign-in password');
-  T.vault=v}
-async function removeVault(){const c=GH.cfg;const cur=await GH.read(c.vaultPath,c.siteBranch);if(!cur.missing)await GH.remove(c.vaultPath,c.siteBranch,cur.sha,'planner: remove the sign-in password');T.vault=null}
+  try{const r=await fetch('vault.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return null;const v=await r.json();return v&&Array.isArray(v.wraps)?v:null}catch(e){return null}}
+const cfgOnly=c=>({owner:c.owner,repo:c.repo,branch:c.branch,path:c.path,vaultPath:c.vaultPath,siteBranch:c.siteBranch});
+/* the freshest vault comes from the API (the copy served by Pages lags a minute behind a change) */
+async function readVaultApi(){const c=GH.cfg;const f=await GH.read(c.vaultPath,c.siteBranch);return f.missing?{v:null,sha:null}:{v:JSON.parse(f.text),sha:f.sha}}
+async function writeVault(v,sha,msg){await GH.write(GH.cfg.vaultPath,GH.cfg.siteBranch,JSON.stringify(v,null,1)+'\n',sha,msg);T.vault=v}
+/* a new password wrap over the signed-in session; the recovery wrap stays as it is */
+async function rewrapPassword(pw,token,msg){const c=GH.cfg;const cur=await readVaultApi();const dek=sec.get(CFG_KEY).dek;
+  const pwWrap=await wrap('password',pw,{cfg:cfgOnly(c),token,dek});
+  const rest=((cur.v||T.vault)||{wraps:[]}).wraps.filter(w=>w.by!=='password');
+  await writeVault(vaultOf([pwWrap,...rest]),cur.sha,msg)}
+async function newRecoveryWrap(){const c=GH.cfg;const cur=await readVaultApi();const rec=newRecovery();
+  const w=await wrap('recovery',recNorm(rec),{cfg:cfgOnly(c),dek:sec.get(CFG_KEY).dek});
+  await writeVault(vaultOf([...((cur.v||T.vault)||{wraps:[]}).wraps.filter(x=>x.by!=='recovery'),w]),cur.sha,'planner: new recovery code');return rec}
 function defaultCfg(){const h=location.hostname,seg=location.pathname.split('/').filter(Boolean)[0]||'';
   const gh=/\.github\.io$/i.test(h);const owner=gh?h.split('.')[0]:'';
   return {owner,repo:gh?(seg&&!/\.html?$/.test(seg)?seg:owner+'.github.io'):'',branch:'data',path:'data.json',vaultPath:'docs/vault.json',siteBranch:''}}
@@ -1259,32 +1286,39 @@ function renderLog(){
 
 /* ---------- settings ---------- */
 function themeChoice(){let t='';try{t=localStorage.getItem(THEME_KEY)||''}catch(e){}return t==='light'||t==='dark'?t:'system'}
-function signinBox(){const c=GH.cfg;const has=!!T.vault;const remember=!!ls.get(REMEMBER_KEY);const out=T.confirm==='signout',rm=T.confirm==='rm-vault';
-  return `<section class="box"><h2 class="h-sm">Sign-in</h2>
-    <p class="para small">${has?`Password sign-in is <strong>on</strong>${T.vault.at?' (set '+esc(dLong(T.vault.at))+')':''}. The token is kept encrypted in <code>${esc(c.vaultPath)}</code> on <code>${esc(c.siteBranch||'main')}</code>. That file is public; the password is not.`:'Password sign-in is <strong>off</strong>. Set a password to unlock the planner on any device without pasting the token.'}</p>
+const fmsg=k=>T.msgK===k?(T.pwErr?`<span class="err">${esc(T.pwErr)}</span>`:T.pwMsg?`<span class="okmsg">${esc(T.pwMsg)}</span>`:''):'';
+function signinBox(){const c=GH.cfg;const remember=!!ls.get(REMEMBER_KEY);const out=T.confirm==='signout',rn=T.confirm==='rec-new';
+  return `<section class="box"><h2 class="h-sm">Sign-in and encryption</h2>
+    <p class="para small">Plans are encrypted in this browser (AES-256-GCM) before they are saved, so <strong>${esc(c.owner)}/${esc(c.repo)}</strong> only ever holds ciphertext. <code>${esc(c.vaultPath)}</code> keeps the data key and the GitHub token, locked by your password and, separately, by your recovery code.</p>
+    ${T.recShow?`<div class="box" style="gap:10px"><p class="para small">Your new recovery code. Save it now; it will not be shown again, and the old code no longer works.</p>${recBox()}</div>`:''}
     <form class="edit" data-form="set-pw">
       <input class="vh" type="text" name="username" autocomplete="username" value="${esc(c.owner)}/${esc(c.repo)}" tabindex="-1" aria-hidden="true">
-      <div class="row2"><label>${has?'New password':'Password'}<input class="field" type="password" name="pw" id="pw-new" autocomplete="new-password" minlength="${PW_MIN}" required></label>
+      <div class="row2"><label>New password<input class="field" type="password" name="pw" id="pw-new" autocomplete="new-password" minlength="${PW_MIN}" required></label>
       <label>Repeat it<input class="field" type="password" name="pw2" id="pw-new2" autocomplete="new-password" minlength="${PW_MIN}" required></label></div>
-      <p class="hint">At least ${PW_MIN} characters. Four or five random words make a passphrase that is easy to type and very hard to guess. Use it nowhere else.</p>
-      <div class="btnrow"><button class="btn" type="submit"${T.busy==='pw'?' disabled':''}>${T.busy==='pw'?'Encrypting…':has?'Change password':'Set password'}</button>
-      ${T.pwErr?`<span class="err">${esc(T.pwErr)}</span>`:''}${T.pwMsg?`<span class="okmsg">${esc(T.pwMsg)}</span>`:''}</div>
+      <p class="hint">At least ${PW_MIN} characters, used nowhere else. The recovery code keeps working.</p>
+      <div class="btnrow"><button class="btn" type="submit"${T.busy==='pw'?' disabled':''}>${T.busy==='pw'?'Encrypting…':'Change password'}</button>${fmsg('pw')}</div>
+    </form>
+    <form class="edit" data-form="swap-token">
+      <div class="row2"><label>New GitHub token<input class="field" type="password" name="token" id="tk-new" placeholder="github_pat_…" autocomplete="off" required></label>
+      <label>Current password<input class="field" type="password" name="pw" id="tk-pw" autocomplete="current-password" required></label></div>
+      <p class="hint">Before the token expires, create a new one the same way and swap it in here.</p>
+      <div class="btnrow"><button class="btn ghost" type="submit"${T.busy==='tk'?' disabled':''}>${T.busy==='tk'?'Saving…':'Replace the token'}</button>${fmsg('tk')}</div>
     </form>
     <label class="rep-l"><input type="checkbox" data-act="remember"${remember?' checked':''}> Keep me signed in on this device</label>
-    <p class="hint">Off: the token is kept for this tab only and forgotten when the tab closes. On: it is kept in this browser’s storage, which other pages on ${esc(location.hostname||'this site')} can read too.</p>
+    <p class="hint">Off: the keys are kept for this tab only and forgotten when it closes. On: they are kept in this browser’s storage, which other pages on ${esc(location.hostname||'this site')} can read too.</p>
     <div class="btnrow">
+      <button class="btn ghost" type="button" data-act="rec-new">${rn?'Click again: replace the recovery code':'New recovery code'}</button>
       <button class="btn ghost" type="button" data-act="signout">${out?'Click again to sign out':'Sign out of this device'}</button>
-      ${has?`<button class="btn danger" type="button" data-act="rm-vault">${rm?'Click again: remove password sign-in':'Remove password sign-in'}</button>`:''}
     </div></section>`}
 function renderSettings(){
   const c=GH.cfg;const imp=T.confirm==='import';const hidden=Object.entries(D.hidden||{});const gh=Sync.mode==='github';
   return `<div class="narrow stack">
   ${pageHead('Settings')}
   <section class="box"><h2 class="h-sm">Sync</h2>
-    ${gh?`<p class="para small">Plans are stored in the private repository <strong>${esc(c.owner)}/${esc(c.repo)}</strong>, file <code>${esc(c.path)}</code> on branch <code>${esc(c.branch)}</code>. Every save is a commit, so the full history is on GitHub. Status: ${esc(document.getElementById('sync').textContent)}.</p>`
+    ${gh?`<p class="para small">Plans are saved, encrypted, to <code>${esc(c.path)}</code> on branch <code>${esc(c.branch)}</code> of <strong>${esc(c.owner)}/${esc(c.repo)}</strong>. Every save is a commit, so the full history is on GitHub. Status: ${esc(document.getElementById('sync').textContent)}.</p>`
       :`<p class="para small">This is a <strong>local preview</strong>; changes stay in this browser.</p>`}
     <div class="btnrow">
-      ${gh?`<button class="btn" type="button" data-act="sync-now">Sync now</button>`:`<button class="btn" type="button" data-act="connect">Connect a private repository</button>`}
+      ${gh?`<button class="btn" type="button" data-act="sync-now">Sync now</button>`:`<button class="btn" type="button" data-act="connect">Connect to GitHub</button>`}
       <button class="btn ghost" type="button" data-act="download">Download a backup</button>
       ${imp?`<button class="btn danger" type="button" data-act="import-confirm">Confirm: replace all data with this file</button><button class="btn ghost" type="button" data-act="import-cancel">Cancel</button>`:`<label class="btn ghost" for="import-file" style="display:inline-block">Import a backup</label>`}
       <input type="file" id="import-file" accept="application/json,.json" data-act="import" hidden>
@@ -1296,82 +1330,122 @@ function renderSettings(){
   <p class="hint">Version ${esc(BUILD)}</p>
   </div>`}
 
-/* ============================== sign-in and connect screens ============================== */
-function shellBare(){document.getElementById('tabs').innerHTML='';moveInd(null);document.querySelector('.search').hidden=true;
+/* ============================== sign-in, setup and recovery screens ============================== */
+function shellBare(){document.getElementById('tabs').innerHTML='';moveInd(null);document.querySelector('.search').hidden=true;document.getElementById('sync').hidden=true;document.getElementById('settings-btn').hidden=true;
   const p=document.getElementById('panels');p.dataset.ready='';return p}
-function renderLogin(){
-  const p=shellBare();const busy=T.connectStage==='unlock';const c=defaultCfg();
-  p.innerHTML=`<div class="connect">
-    <div class="hero"><p class="umb">Sign in</p><p class="umb-sub">This page holds no plans. They live in a private GitHub repository, and your password unlocks the key to it.</p></div>
-    <form class="box" data-form="login" style="gap:12px">
-      <input class="vh" type="text" name="username" autocomplete="username" value="${esc(c.owner)}/${esc(c.repo)}" tabindex="-1" aria-hidden="true">
-      <label class="fl">Password<input class="field" type="password" name="pw" id="lg-pw" autocomplete="current-password" required></label>
-      <label class="rep-l"><input type="checkbox" name="remember" id="lg-rem"${ls.get(REMEMBER_KEY)?' checked':''}> Keep me signed in on this device</label>
-      <div class="btnrow"><button class="btn" type="submit"${busy?' disabled':''}>${busy?'Unlocking…':'Unlock'}</button><button class="linkbtn muted" type="button" data-act="use-token">Use a GitHub token instead</button></div>
-      ${T.loginErr?`<p class="err">${esc(T.loginErr)}</p>`:''}
-      <p class="hint">Leave “keep me signed in” off on shared computers; you then stay signed in only until this tab closes.</p>
-    </form></div>`;
-  const pw=document.getElementById('lg-pw');if(pw&&!busy)pw.focus()}
-function renderConnect(){
-  const c=Object.assign(defaultCfg(),GH.cfg||sec.get(CFG_KEY)||{},T.form||{});const stage=T.connectStage;const needPw=!T.vault;
-  const p=shellBare();
-  p.innerHTML=`<div class="connect">
-    <div class="hero"><p class="umb">Connect your plans</p><p class="umb-sub">This page holds no plans. They live in a private GitHub repository that only a token you create can read and write.</p></div>
-    ${stage==='missing'?`<div class="box"><h3>The repository is reachable, but it has no plans file yet</h3>
-      <p class="para small">Choose a JSON file (a backup you downloaded earlier, or a seed file) and it will be written to <code>${esc(c.path)}</code> on branch <code>${esc(c.branch)}</code>. Or start with an empty planner.</p>
-      <div class="btnrow"><label class="btn" for="seed-file">Choose a JSON file</label><input type="file" id="seed-file" accept="application/json,.json" data-act="seed-file" hidden>
-      <button class="btn ghost" type="button" data-act="start-empty">Start empty</button></div>${T.connectErr?`<p class="err">${esc(T.connectErr)}</p>`:''}</div>`:`
-    <form class="box" data-form="connect" style="gap:12px">
-      <div class="grid2" style="gap:12px"><label class="fl">GitHub user<input class="field" name="owner" id="cn-owner" value="${esc(c.owner)}" required autocomplete="off"></label>
-      <label class="fl">Private repository<input class="field" name="repo" id="cn-repo" value="${esc(c.repo)}" required autocomplete="off"></label></div>
-      <div class="grid2" style="gap:12px"><label class="fl">Plans file<input class="field" name="path" id="cn-path" value="${esc(c.path)}" required></label>
-      <label class="fl">Branch for plans<input class="field" name="branch" id="cn-branch" value="${esc(c.branch)}" required></label></div>
-      <label class="fl">Fine-grained token<input class="field" type="password" name="token" id="cn-token" value="${esc(T.tokenDraft||'')}" placeholder="github_pat_…" required autocomplete="off"></label>
-      ${needPw?`<input class="vh" type="text" name="username" autocomplete="username" value="${esc(c.owner)}/${esc(c.repo)}" tabindex="-1" aria-hidden="true">
-      <div class="grid2" style="gap:12px"><label class="fl">Choose a sign-in password<input class="field" type="password" name="pw" id="cn-pw" autocomplete="new-password"></label>
-      <label class="fl">Repeat it<input class="field" type="password" name="pw2" id="cn-pw2" autocomplete="new-password"></label></div>
-      <p class="hint">With a password you can sign in on any other device with just the password. The token is encrypted with it (PBKDF2, 1,000,000 rounds, then AES-256-GCM) and saved as <code>${esc(c.vaultPath)}</code> next to this page. That file is public, so use at least ${PW_MIN} characters and a passphrase you use nowhere else. Leave both empty to skip; you can set it later in Settings.</p>`:''}
-      <label class="rep-l"><input type="checkbox" name="remember" id="cn-rem"${ls.get(REMEMBER_KEY)?' checked':''}> Keep me signed in on this device</label>
-      <div class="btnrow"><button class="btn" type="submit"${stage==='busy'?' disabled':''}>${stage==='busy'?esc(T.busy||'Connecting…'):'Connect'}</button>${T.vault?`<button class="btn ghost" type="button" data-act="use-password">Back to password sign-in</button>`:''}${D?`<button class="btn ghost" type="button" data-act="connect-cancel">Back</button>`:''}</div>
-      <p class="err" data-err${T.connectErr?'':' hidden'}>${esc(T.connectErr)}</p>
-    </form>
-    <div class="box"><h3>Creating the token (about two minutes)</h3><ol>
+const userField=c=>`<input class="vh" type="text" name="username" autocomplete="username" value="${esc(c.owner)}/${esc(c.repo)}" tabindex="-1" aria-hidden="true">`;
+const remField=id=>`<label class="rep-l"><input type="checkbox" name="remember" id="${id}"${ls.get(REMEMBER_KEY)?' checked':''}> Keep me signed in on this device</label>`;
+const pwPair=(id,lbl)=>`<div class="grid2" style="gap:12px"><label class="fl">${lbl}<input class="field" type="password" name="pw" id="${id}" autocomplete="new-password" minlength="${PW_MIN}" required></label><label class="fl">Repeat it<input class="field" type="password" name="pw2" id="${id}2" autocomplete="new-password" minlength="${PW_MIN}" required></label></div>`;
+const errP=()=>`<p class="err" data-err${T.connectErr?'':' hidden'}>${esc(T.connectErr)}</p>`;
+const busyBtn=lbl=>`<button class="btn" type="submit"${T.connectStage==='busy'?' disabled':''}>${T.connectStage==='busy'?esc(T.busy||'Working…'):lbl}</button>`;
+const tokenHelp=c=>`<div class="box"><h3>Creating the token (about two minutes)</h3><ol>
       <li>On GitHub: Settings → Developer settings → Personal access tokens → <strong>Fine-grained tokens</strong> → Generate new token.</li>
       <li>Repository access: <strong>Only select repositories</strong>, and pick <code>${esc(c.owner||'you')}/${esc(c.repo||'the repository')}</code> alone.</li>
       <li>Permissions → Repository permissions → <strong>Contents: Read and write</strong>. Nothing else is needed.</li>
-      <li>Choose an expiry you will remember (a year is reasonable), generate it, and paste it above.</li></ol>
-      <p class="hint">The token never enters the repository in readable form. If it leaks, delete it on GitHub and connect again with a new one.</p></div>`}
-  </div>`;
-}
+      <li>Choose an expiry you will remember (a year is reasonable), generate it, and paste it here.</li></ol>
+      <p class="hint">The token is stored only inside the encrypted vault and in this browser while you are signed in. If it leaks, delete it on GitHub; that alone cuts off access.</p></div>`;
+const hero=(t,s)=>`<div class="hero"><p class="umb">${t}</p><p class="umb-sub">${s}</p></div>`;
+function renderLogin(){
+  const p=shellBare();const c=defaultCfg();
+  p.innerHTML=`<div class="connect">${hero('Sign in','The plans behind this page are encrypted. Your password unlocks them on any device.')}
+    <form class="box" data-form="login" style="gap:12px">${userField(c)}
+      <label class="fl">Password<input class="field" type="password" name="pw" id="lg-pw" autocomplete="current-password" required></label>
+      ${remField('lg-rem')}
+      <div class="btnrow">${busyBtn('Unlock')}</div>${errP()}
+      <p class="hint">Forgot the password? Type your recovery code into the same box. Leave “keep me signed in” off on shared computers; you then stay signed in until this tab closes.</p>
+    </form></div>`;
+  const pw=document.getElementById('lg-pw');if(pw&&T.connectStage!=='busy')pw.focus()}
+function renderSetup(){
+  const c=Object.assign(defaultCfg(),T.form||{});const p=shellBare();
+  p.innerHTML=`<div class="connect">${hero('Set up your planner','This repository is public, so your plans are encrypted in the browser before they are saved; the repository only ever holds ciphertext. Paste a GitHub token that can write to it, and choose the password you will sign in with.')}
+    <form class="box" data-form="setup" style="gap:12px">${userField(c)}
+      <div class="grid2" style="gap:12px"><label class="fl">GitHub user<input class="field" name="owner" id="cn-owner" value="${esc(c.owner)}" required autocomplete="off"></label>
+      <label class="fl">Repository<input class="field" name="repo" id="cn-repo" value="${esc(c.repo)}" required autocomplete="off"></label></div>
+      <div class="grid2" style="gap:12px"><label class="fl">Plans file<input class="field" name="path" id="cn-path" value="${esc(c.path)}" required></label>
+      <label class="fl">Branch for plans<input class="field" name="branch" id="cn-branch" value="${esc(c.branch)}" required></label></div>
+      <label class="fl">Fine-grained token<input class="field" type="password" name="token" id="cn-token" value="${esc(T.tokenDraft||'')}" placeholder="github_pat_…" required autocomplete="off"></label>
+      ${pwPair('cn-pw','Choose a sign-in password')}
+      <p class="hint">At least ${PW_MIN} characters; four or five random words are easy to type and very hard to guess. Use it nowhere else: the encrypted files are public, so the password is what keeps them closed.</p>
+      ${remField('cn-rem')}
+      <div class="btnrow">${busyBtn('Set up')}</div>${errP()}
+    </form>${tokenHelp(c)}</div>`}
+const recBox=()=>`<p class="reccode" id="rec-code">${esc(T.recShow)}</p>
+      <div class="btnrow"><button class="btn ghost" type="button" data-act="rec-copy">Copy</button><button class="btn" type="button" data-act="rec-saved">I have saved it</button></div>`;
+function renderShowRec(){const p=shellBare();
+  p.innerHTML=`<div class="connect">${hero('Your recovery code','If you ever forget the password, this code is the only way back to your plans. Save it in your password manager now; it will not be shown again.')}
+    <div class="box" style="gap:14px">${recBox()}</div></div>`}
+function renderRecover(){
+  const c=Object.assign(defaultCfg(),T.recovered&&T.recovered.cfg||{});const p=shellBare();
+  p.innerHTML=`<div class="connect">${hero('Recovery code accepted','Choose a new password. The recovery code does not unlock the GitHub token, so paste a token too (a new one is fine).')}
+    <form class="box" data-form="recover" style="gap:12px">${userField(c)}
+      <label class="fl">Fine-grained token<input class="field" type="password" name="token" id="rc-token" placeholder="github_pat_…" required autocomplete="off"></label>
+      ${pwPair('rc-pw','New sign-in password')}${remField('rc-rem')}
+      <div class="btnrow">${busyBtn('Save and sign in')}<button class="btn ghost" type="button" data-act="to-login">Back</button></div>${errP()}</form>
+    ${tokenHelp(c)}</div>`}
+function renderNewToken(){
+  const c=Object.assign(defaultCfg(),T.unlocked&&T.unlocked.cfg||{});const p=shellBare();
+  p.innerHTML=`<div class="connect">${hero('The token has expired','The password is right, but GitHub no longer accepts the saved token (it expired or was revoked). Paste a new one; it will be locked under the same password.')}
+    <form class="box" data-form="newtoken" style="gap:12px">
+      <label class="fl">New fine-grained token<input class="field" type="password" name="token" id="nt-token" placeholder="github_pat_…" required autocomplete="off"></label>
+      <div class="btnrow">${busyBtn('Save and sign in')}<button class="btn ghost" type="button" data-act="to-login">Back</button></div>${errP()}</form>
+    ${tokenHelp(c)}</div>`}
+function renderMissing(){const c=GH.cfg;const p=shellBare();
+  p.innerHTML=`<div class="connect">${hero('No plans yet',`Choose a JSON file (a backup you downloaded, or the seed file) and it will be encrypted and saved to <code>${esc(c.path)}</code> on branch <code>${esc(c.branch)}</code>. Or start with an empty planner.`)}
+    <div class="box"><div class="btnrow"><label class="btn" for="seed-file">Choose a JSON file</label><input type="file" id="seed-file" accept="application/json,.json" data-act="seed-file" hidden>
+      <button class="btn ghost" type="button" data-act="start-empty">Start empty</button></div>${errP()}</div></div>`}
+const SCREENS={login:renderLogin,setup:renderSetup,showrec:renderShowRec,recover:renderRecover,newtoken:renderNewToken,missing:renderMissing};
+function screen(name){T.screen=name;SCREENS[name]()}
+function screenErr(msg){T.connectStage='';T.busy='';T.connectErr=msg;SCREENS[T.screen]()}
+function busy(msg){T.connectStage='busy';T.busy=msg;T.connectErr='';SCREENS[T.screen]()}
 function formErr(f,msg){const p=f.querySelector('[data-err]');if(p){p.textContent=msg;p.hidden=false}else toast(msg)}
-async function doConnect(cfg,pw,o={}){
-  T.connectErr='';T.connectStage='busy';T.busy='Connecting…';GH.cfg=cfg;if(!o.fromVault)renderConnect();
-  const fail=msg=>{T.connectStage='';T.busy='';T.connectErr=msg;T.form={owner:cfg.owner,repo:cfg.repo,path:cfg.path,branch:cfg.branch};GH.cfg=null;Sync.mode='none';renderConnect()};
-  let repo;try{repo=await GH.repo()}catch(e){
-    return fail(e.status===401?(o.fromVault?'The password is right, but GitHub no longer accepts the saved token (it expired or was revoked). Create a new token, connect with it here, then set the password again.':'GitHub rejected this token. Check that you copied all of it.')
-      :e.status===404?'Repository not found. Check the user and repository names, and that the token was given access to this repository.':'Could not connect: '+e.message)}
-  if(!cfg.siteBranch)cfg.siteBranch=repo.default_branch;
-  let remote;try{remote=await GH.get()}catch(e){return fail(e.status===403?'The token cannot read files. Give it Contents “Read and write”.':'Could not read the plans: '+e.message)}
-  sec.set(CFG_KEY,cfg);Sync.mode='github';T.tokenDraft='';T.form=null;
-  if(pw){T.busy='Encrypting the password vault…';renderConnect();
-    try{await saveVault(pw);toast('Password set. Other devices can use it once GitHub Pages republishes (about a minute).')}catch(e){toast('Connected, but the password could not be saved: '+e.message)}}
-  else if(!T.vault)fetchVault().then(v=>{T.vault=v});
-  if(remote.missing){T.connectStage='missing';T.busy='';renderConnect();return}
-  T.connectStage='';T.busy='';D=adopt(remote.data);Sync.base=remote.data;Sync.sha=remote.sha;Sync.pending=false;Sync.status='ok';Sync.lastAt=nowHM();Sync.cache();reindex();paintSync();render();
-  if(!pw)toast('Connected to '+cfg.owner+'/'+cfg.repo);
-}
-async function doLogin(pw,remember){
-  T.loginErr='';T.connectStage='unlock';renderLogin();
-  let cfg;try{cfg=await openVault(pw,T.vault)}catch(e){T.connectStage='';T.loginErr=e&&e.name==='OperationError'?'That password is not right.':'Could not unlock: '+(e.message||e);renderLogin();return}
-  T.connectStage='';setRemember(remember);
-  await doConnect(Object.assign(defaultCfg(),cfg),'',{fromVault:true});
-}
+const ghMsg=(e,what)=>e.status===401?'GitHub rejected the token. Check that you copied all of it.':e.status===403?`The token cannot ${what}. Give it Contents “Read and write” on this repository.`:e.status===404?'Not found. Check the user and repository names, and that the token was given this repository.':'GitHub said: '+e.message;
+
+/* after any successful sign-in: keep the session, then load the plans (encrypting them if they were plaintext) */
+async function startSession(cfg,token,dek,remember){
+  setRemember(remember);await useDek(dek);GH.cfg=Object.assign({},cfg,{token});sec.set(CFG_KEY,Object.assign(cfgOnly(cfg),{token,dek}));Sync.mode='github';
+  let remote;try{remote=await GH.get()}catch(e){return screenErr('Could not read the plans: '+e.message)}
+  T.connectStage='';T.busy='';T.connectErr='';T.form=null;T.tokenDraft='';
+  if(remote.missing)return screen('missing');
+  D=adopt(remote.data);Sync.base=remote.plain?{}:remote.data;Sync.sha=remote.sha;Sync.pending=!!remote.plain;Sync.status=remote.plain?'dirty':'ok';Sync.lastAt=nowHM();Sync.cache();reindex();paintSync();render();
+  if(remote.plain){Sync.acts=['encrypt'];Sync.push();toast('The plans were stored unencrypted; they are being encrypted now.')}}
+async function doLogin(secret,remember){
+  busy('Unlocking…');let r;
+  try{r=await openVault(secret,T.vault)}catch(e){return screenErr(e.wrong?'That password is not right.':'Could not unlock: '+e.message)}
+  if(r.by==='recovery'){T.recovered=r.p;T.connectStage='';T.busy='';return screen('recover')}
+  const {cfg,token,dek}=r.p;GH.cfg=Object.assign({},cfg,{token});
+  try{await GH.repo()}catch(e){if(e.status===401){T.unlocked={cfg,dek,pw:secret,remember};T.connectStage='';T.busy='';return screen('newtoken')}return screenErr('Could not reach GitHub: '+e.message)}
+  await startSession(cfg,token,dek,remember)}
+async function doSetup(cfg,token,pw,remember){
+  busy('Checking the repository…');GH.cfg=Object.assign({},cfg,{token});
+  try{const repo=await GH.repo();cfg.siteBranch=cfg.siteBranch||repo.default_branch}catch(e){return screenErr(ghMsg(e,'read the repository'))}
+  try{const cur=await GH.read(cfg.path,cfg.branch);if(!cur.missing&&isEnv(JSON.parse(cur.text)))return screenErr('The plans in this repository are already encrypted, but vault.json is missing. Restore docs/vault.json from the git history instead of setting up again.')}
+  catch(e){return screenErr(ghMsg(e,'read the plans'))}
+  busy('Encrypting… (a few seconds)');
+  const dek=u8b64(rand(32)),rec=newRecovery();let v;
+  try{v=vaultOf([await wrap('password',pw,{cfg:cfgOnly(cfg),token,dek}),await wrap('recovery',recNorm(rec),{cfg:cfgOnly(cfg),dek})]);
+    const back=await openVault(pw,v);if(back.p.dek!==dek)throw new Error('the encrypted copy did not round-trip')}catch(e){return screenErr('Encryption failed: '+e.message)}
+  busy('Saving the vault…');
+  try{const old=await GH.read(cfg.vaultPath,cfg.siteBranch);await GH.write(cfg.vaultPath,cfg.siteBranch,JSON.stringify(v,null,1)+'\n',old.missing?null:old.sha,'planner: set up encryption and the sign-in password');T.vault=v}
+  catch(e){return screenErr(ghMsg(e,'write to the repository'))}
+  T.pending={cfg,token,dek,remember};T.recShow=rec;T.connectStage='';T.busy='';screen('showrec')}
+async function doRecover(token,pw,remember){
+  const {cfg,dek}=T.recovered;busy('Checking the token…');GH.cfg=Object.assign({},cfg,{token});
+  try{await GH.repo()}catch(e){return screenErr(ghMsg(e,'read the repository'))}
+  busy('Saving the new password…');
+  try{sec.set(CFG_KEY,Object.assign(cfgOnly(cfg),{token,dek}));await rewrapPassword(pw,token,'planner: new sign-in password')}catch(e){sec.del(CFG_KEY);return screenErr(ghMsg(e,'write to the repository'))}
+  T.recovered=null;await startSession(cfg,token,dek,remember);toast('New password saved. Other devices can use it in about a minute.')}
+async function doNewToken(token){
+  const {cfg,dek,pw,remember}=T.unlocked;busy('Checking the token…');GH.cfg=Object.assign({},cfg,{token});
+  try{await GH.repo()}catch(e){return screenErr(ghMsg(e,'read the repository'))}
+  busy('Saving…');
+  try{sec.set(CFG_KEY,Object.assign(cfgOnly(cfg),{token,dek}));await rewrapPassword(pw,token,'planner: new token')}catch(e){sec.del(CFG_KEY);return screenErr(ghMsg(e,'write to the repository'))}
+  T.unlocked=null;await startSession(cfg,token,dek,remember);toast('Token replaced. You can delete the old one on GitHub.')}
 async function firstWrite(data){
-  try{await GH.ensureBranch()}catch(e){T.connectErr='Could not create the branch: '+e.message;renderConnect();return}
+  busy('Encrypting and saving…');
+  try{await GH.ensureBranch()}catch(e){return screenErr('Could not create the branch: '+e.message)}
   D=adopt(data);reindex();Sync.mode='github';Sync.sha=null;Sync.base={};Sync.pending=true;Sync.acts=['first plans'];
   await Sync.push();
-  if(Sync.status==='ok'){T.connectStage='';render();toast('Plans written to the repository')}else{T.connectErr='Could not write: '+(Sync.msg||Sync.status);renderConnect()}
-}
+  if(Sync.status==='ok'){T.connectStage='';T.busy='';render();toast('Plans encrypted and saved')}else{D=null;screenErr('Could not write: '+(Sync.msg||Sync.status))}}
 function setRemember(on){const keys=[CFG_KEY,CACHE_KEY,DRAFT_KEY];const vals=keys.map(k=>sec.get(k));
   if(on)ls.set(REMEMBER_KEY,1);else ls.del(REMEMBER_KEY);keys.forEach((k,i)=>{sec.del(k);if(vals[i]!=null)sec.set(k,vals[i])})}
 async function signOut(){if(Sync.pending){try{await Sync.push()}catch(e){}}
@@ -1400,7 +1474,7 @@ function ensurePanels(){const host=document.getElementById('panels');if(host.dat
 function renderPanel(id){document.getElementById('p-'+id).innerHTML=PANELS[id]();T.stale[id]=false;
   if(id==='log'){const h=document.getElementById('heat');if(h)h.scrollLeft=h.scrollWidth}}
 function render(){
-  if(!D)return;ensurePanels();document.querySelector('.search').hidden=false;
+  if(!D)return;ensurePanels();document.querySelector('.search').hidden=false;document.getElementById('sync').hidden=false;document.getElementById('settings-btn').hidden=false;
   if(!PANELS[U.tab])U.tab='week';
   const a=document.activeElement;const aid=a&&a.id;const key=a&&a.dataset&&a.dataset.act?[a.dataset.act,a.dataset.id||'',a.dataset.v||'']:null;
   renderTabs();paintHead();
@@ -1474,7 +1548,7 @@ document.addEventListener('change',async e=>{
     case 'remember':setRemember(t.checked);toast(t.checked?'This device will keep you signed in':'You will be signed out when this tab closes');return;
     case 'stu-add':{const s=(D.students||[]).find(x=>x.id===id);if(s&&t.value){s.projects=[...(s.projects||[]),t.value];commit('students')}return}
     case 'import':{try{T.pendingImport=await readFile(t);T.confirm='import';setTab('settings')}catch(err){toast(err.message)}t.value='';return}
-    case 'seed-file':{try{const data=await readFile(t);await firstWrite(data)}catch(err){T.connectErr=err.message;renderConnect()}return}
+    case 'seed-file':{try{const data=await readFile(t);await firstWrite(data)}catch(err){screenErr(err.message)}return}
   }
 });
 let typeTimer;
@@ -1491,14 +1565,24 @@ document.addEventListener('submit',e=>{
   const refocus=id=>{const n=document.getElementById(id);if(n)n.focus()};
   switch(kind){
     case 'login':doLogin(f.elements.pw.value,f.elements.remember.checked);return;
-    case 'connect':{const cfg=Object.assign(defaultCfg(),{owner:v('owner'),repo:v('repo'),path:v('path').replace(/^\/+/,''),branch:v('branch'),token:v('token')});
-      const pw=f.elements.pw?f.elements.pw.value:'',pw2=f.elements.pw2?f.elements.pw2.value:'';
-      if(pw||pw2){if(pw!==pw2)return formErr(f,'The two passwords differ.');if(pw.length<PW_MIN)return formErr(f,`Use at least ${PW_MIN} characters for the password.`)}
-      T.form={owner:cfg.owner,repo:cfg.repo,path:cfg.path,branch:cfg.branch};T.tokenDraft=cfg.token;setRemember(v('remember'));doConnect(cfg,pw);return}
-    case 'set-pw':{const pw=f.elements.pw.value,pw2=f.elements.pw2.value;T.pwMsg='';T.pwErr='';
+    case 'setup':{const cfg=Object.assign(defaultCfg(),{owner:v('owner'),repo:v('repo'),path:v('path').replace(/^\/+/,''),branch:v('branch')});const token=v('token');
+      const pw=f.elements.pw.value,pw2=f.elements.pw2.value;
+      if(pw!==pw2)return formErr(f,'The two passwords differ.');if(pw.length<PW_MIN)return formErr(f,`Use at least ${PW_MIN} characters for the password.`);
+      T.form={owner:cfg.owner,repo:cfg.repo,path:cfg.path,branch:cfg.branch};T.tokenDraft=token;doSetup(cfg,token,pw,v('remember'));return}
+    case 'recover':{const pw=f.elements.pw.value,pw2=f.elements.pw2.value;
+      if(pw!==pw2)return formErr(f,'The two passwords differ.');if(pw.length<PW_MIN)return formErr(f,`Use at least ${PW_MIN} characters for the password.`);
+      doRecover(v('token'),pw,v('remember'));return}
+    case 'newtoken':doNewToken(v('token'));return;
+    case 'set-pw':{const pw=f.elements.pw.value,pw2=f.elements.pw2.value;T.msgK='pw';T.pwMsg='';T.pwErr='';
       if(pw!==pw2){T.pwErr='The two passwords differ.';render();return}
       if(pw.length<PW_MIN){T.pwErr=`Use at least ${PW_MIN} characters.`;render();return}
-      T.busy='pw';render();saveVault(pw).then(()=>{T.busy='';T.pwMsg='Saved. Other devices can use it in about a minute.';render()}).catch(err=>{T.busy='';T.pwErr='Could not save: '+err.message;render()});return}
+      T.busy='pw';render();rewrapPassword(pw,GH.cfg.token,'planner: change the sign-in password').then(()=>{T.busy='';T.pwMsg='Saved. Other devices can use it in about a minute.';render()}).catch(err=>{T.busy='';T.pwErr='Could not save: '+err.message;render()});return}
+    case 'swap-token':{const token=v('token'),pw=f.elements.pw.value;T.msgK='tk';T.pwMsg='';T.pwErr='';T.busy='tk';render();
+      (async()=>{const old=GH.cfg.token;GH.cfg.token=token;
+        try{await GH.repo();const cur=await readVaultApi();await unwrap(wrapOf(cur.v,'password'),pw)}
+        catch(e){GH.cfg.token=old;throw new Error(e.name==='OperationError'?'the current password is not right':e.status===401?'GitHub rejected the new token':e.message)}
+        const s=sec.get(CFG_KEY);s.token=token;sec.set(CFG_KEY,s);await rewrapPassword(pw,token,'planner: new token')})()
+        .then(()=>{T.busy='';T.pwMsg='Token replaced. You can delete the old one on GitHub.';render()}).catch(err=>{T.busy='';T.pwErr='Could not replace it: '+err.message;render()});return}
     case 'todo-edit':saveTodoEdit(f.elements.t);return;
     case 'todo-add':{const item=f.dataset.item;if(!v('t'))return;if(v('rep')){const it=itemById(item);if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.exp[item]=true;commit('new weekly task');refocus('add-t-'+item);return}addTodo(item,v('t'),v('d'),'');U.exp[item]=true;commit('new to-do');refocus('add-t-'+item);return}
     case 'wk-quick':{if(!v('t'))return;if(v('rep')){const it=itemById(v('item'));if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.lastItem=v('item');saveUI();commit('new weekly task');refocus('wkq-t');return}addTodo(v('item'),v('t'),v('d'),f.dataset.wk);U.lastItem=v('item');saveUI();commit('week plan');refocus('wkq-t');return}
@@ -1532,11 +1616,12 @@ document.addEventListener('submit',e=>{
 document.addEventListener('click',async e=>{
   const b=e.target.closest('[data-act]');if(!b||b.tagName==='SELECT'||b.tagName==='INPUT')return;
   const act=b.dataset.act,id=b.dataset.id,v=b.dataset.v;
-  if(act==='use-token'){T.connectStage='';T.loginErr='';T.connectErr='';renderConnect();return}
-  if(act==='use-password'){T.connectStage='';T.connectErr='';renderLogin();return}
+  if(act==='to-login'){T.connectErr='';T.connectStage='';T.unlocked=null;T.recovered=null;screen('login');return}
   if(act==='start-empty'){await firstWrite(clone(EMPTY));return}
+  if(act==='rec-copy'){try{await navigator.clipboard.writeText(T.recShow);toast('Copied')}catch(err){const el=document.querySelector('.reccode');if(el){const r=document.createRange();r.selectNodeContents(el);getSelection().removeAllRanges();getSelection().addRange(r)}toast('Selected: copy it with ⌘C / Ctrl+C')}return}
+  if(act==='rec-saved'){T.recShow='';if(T.pending){const p=T.pending;T.pending=null;await startSession(p.cfg,p.token,p.dek,p.remember)}else render();return}
   if(!D&&act!=='reload')return;
-  if(!/^(import-confirm|import-cancel|signout|rm-vault)$/.test(act)){if(T.confirm==='import')T.pendingImport=null;T.confirm=''}
+  if(!/^(import-confirm|import-cancel|signout|rec-new)$/.test(act)){if(T.confirm==='import')T.pendingImport=null;T.confirm=''}
   if(act.startsWith('selview:')){U.selView[act.slice(8)]=v;saveUI();render();return}
   switch(act){
     case 'tab':setTab(v);window.scrollTo({top:0});return;
@@ -1600,16 +1685,15 @@ document.addEventListener('click',async e=>{
     case 'reload':location.replace(location.pathname+'?v='+encodeURIComponent(document.getElementById('update').dataset.v||Date.now())+location.hash);return;
     case 'import-confirm':if(T.pendingImport){D=adopt(T.pendingImport);T.pendingImport=null;T.confirm='';commit('import backup');toast('Imported')}return;
     case 'import-cancel':T.pendingImport=null;T.confirm='';render();return;
-    case 'connect':T.connectStage='';T.connectErr='';renderConnect();return;
-    case 'connect-cancel':T.connectErr='';document.getElementById('panels').dataset.ready='';render();return;
+    case 'connect':T.connectErr='';T.vault=await fetchVault();screen(T.vault?'login':'setup');return;
     case 'signout':if(T.confirm!=='signout'){T.confirm='signout';render();return}signOut();return;
-    case 'rm-vault':if(T.confirm!=='rm-vault'){T.confirm='rm-vault';render();return}T.confirm='';removeVault().then(()=>{toast('Password sign-in removed');render()}).catch(err=>toast('Could not remove it: '+err.message));return;
+    case 'rec-new':if(T.confirm!=='rec-new'){T.confirm='rec-new';render();return}T.confirm='';newRecoveryWrap().then(rec=>{T.recShow=rec;render()}).catch(err=>toast('Could not create it: '+err.message));return;
     default:return;
   }
   saveUI();render();
 });
 document.getElementById('sync').addEventListener('click',async()=>{if(!D)return;if(/error|offline/.test(Sync.status)){Sync.push();return}
-  if(Sync.status==='auth'){sec.del(CFG_KEY);T.vault=T.vault||await fetchVault();if(T.vault){T.loginErr='GitHub refused the saved access. Sign in again.';renderLogin()}else{T.connectStage='';T.connectErr='The token expired or was revoked. Paste a new one.';renderConnect()}return}
+  if(Sync.status==='auth'){sec.del(CFG_KEY);T.vault=T.vault||await fetchVault();T.connectStage='';T.connectErr='GitHub refused the saved access. Sign in again.';screen(T.vault?'login':'setup');return}
   setTab('settings')});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
 addEventListener('online',()=>{if(Sync.pending)Sync.push()});
@@ -1658,24 +1742,24 @@ async function boot(){
   const h=(location.hash||'').slice(1);if(PANELS[h])U.tab=h;if(!PANELS[U.tab])U.tab='week';U.week='';
   applyTheme();paintHead();
   const cfg=sec.get(CFG_KEY);const seedEl=document.getElementById('seed');
-  if(cfg&&cfg.token){
-    GH.cfg=Object.assign(defaultCfg(),cfg);Sync.mode='github';fetchVault().then(v=>{T.vault=v;if(D&&U.tab==='settings')render()});
+  if(cfg&&cfg.token&&cfg.dek){
+    GH.cfg=Object.assign(defaultCfg(),cfg);Sync.mode='github';await useDek(cfg.dek);fetchVault().then(v=>{if(v)T.vault=v});
     const cache=sec.get(CACHE_KEY);
     if(cache&&cache.D&&cache.key===cfgKey(GH.cfg)){D=normalize(cache.D);Sync.base=cache.base;Sync.sha=cache.sha;Sync.pending=!!cache.dirty;Sync.status=Sync.pending?'dirty':'ok';reindex();paintSync();render()}
-    else{const host=document.getElementById('panels');host.dataset.ready='';host.innerHTML='<p class="blank">Reading your plans from the private repository…</p>'}
+    else{const host=document.getElementById('panels');host.dataset.ready='';host.innerHTML='<p class="blank">Reading and decrypting your plans…</p>'}
     try{const remote=await GH.get();
-      if(remote.missing){if(!D){T.connectStage='missing';renderConnect();return}Sync.sha=null;Sync.base={};Sync.pending=true;Sync.push();return}
+      if(remote.missing){if(!D)return screen('missing');Sync.sha=null;Sync.base={};Sync.pending=true;Sync.push();return}
       D=adopt(D&&Sync.pending?merge3(Sync.base,D,remote.data):remote.data);
-      Sync.base=remote.data;Sync.sha=remote.sha;Sync.lastAt=nowHM();Sync.status=Sync.pending?'dirty':'ok';Sync.cache();reindex();paintSync();render();
+      Sync.base=remote.plain?{}:remote.data;Sync.sha=remote.sha;Sync.lastAt=nowHM();if(remote.plain)Sync.pending=true;Sync.status=Sync.pending?'dirty':'ok';Sync.cache();reindex();paintSync();render();
       if(Sync.pending)Sync.push();
     }catch(e){
       if(D){Sync.status=(e.status===401||e.status===403)?'auth':'offline';Sync.msg=e.message;paintSync()}
-      else if(e.status===401){sec.del(CFG_KEY);GH.cfg=null;Sync.mode='none';T.vault=await fetchVault();if(T.vault){T.loginErr='GitHub refused the saved access. Sign in again.';renderLogin()}else{T.connectErr='The saved token no longer works. Paste a new one.';renderConnect()}}
-      else{T.connectErr='Could not read the plans: '+e.message;renderConnect()}
+      else{const auth=e.status===401;if(auth){sec.del(CFG_KEY);GH.cfg=null;Sync.mode='none'}T.vault=await fetchVault();
+        T.connectErr=auth?'GitHub refused the saved access. Sign in again.':'Could not read the plans: '+e.message;screen(T.vault?'login':'setup')}
     }
   }else if(seedEl){
     Sync.mode='preview';D=normalize(ls.get(PREVIEW_KEY)||JSON.parse(seedEl.textContent));Sync.status='local';reindex();paintSync();render();
-  }else{T.vault=await fetchVault();if(T.vault)renderLogin();else renderConnect()}
+  }else{if(cfg)sec.del(CFG_KEY);T.vault=await fetchVault();screen(T.vault?'login':'setup')}
 }
 boot().then(()=>setTimeout(checkUpdate,1500));
 })();
