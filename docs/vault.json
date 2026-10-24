@@ -1,0 +1,22 @@
+{
+ "v": 2,
+ "kdf": "PBKDF2-SHA256",
+ "cipher": "AES-256-GCM",
+ "wraps": [
+  {
+   "by": "password",
+   "iter": 1000000,
+   "salt": "dBIU4heJ0MxhFacrJec9Rg==",
+   "iv": "DuAYMtA51Q+JHrKx",
+   "ct": "W3ht81hxL+JpUHof4cqJ6X7kyr7fRtC//BElO7PwpmeyxHstwl2l4fwNLIUE1VVobSlAUgz0VgB7QkkqzKy2BIpgBjRYUIkC+3yV39eZNc63WK2Oss1OfgOe3kYKUn7Idhxqh19woDDThG88bXISlanDZBVXm9Xq5Gg7sJzXBphPQPChlxwE42NswzuOs1kgFG1lPfW/WQJ+BZaOCwW5/vnHuDP/mxG/2ZkeohQUpWPz1him6gMCqkR0gz7b+E3pGuXNU8nRhkw0NP2A9ay++duaQEGPOUyq9pUh4nQiuAOptuODFkCDm9BKl5bHfUou0H3GIQQ4yoK8k0amm3tLI5fEA6ZMolz6bxCmv1ZvBZjlQKNMAAmqth2blUv7ZOokw2rVyEDEt2oDh7zx"
+  },
+  {
+   "by": "recovery",
+   "iter": 1000000,
+   "salt": "ShWoNdjYuneByGtR7/AdTg==",
+   "iv": "NEIOGg/pUX8LoRzD",
+   "ct": "0JU0jnhBasc9yt/3+uaEtclFE6/34orBtSY/0uMubgAbvhfL4Uftyu/itMHM+PVs0JjI7XhPKs6Iwjlqk73MMci9G84nQz73AVMubvxLDun+eHdHREbHOPPm9INS+EjlzZeNKDXivv/9Z0gBkSyueJ2WgGOMwB+U6IbzyKPw0p2xeB8Q7oe9UKgJ9T9q2FOJgwrgZ5s0LAUyRgxmPSav+o3GttvijITw821RY6o1QYcAlhRuEHnEE+yo96DCI5JZJvZPFQ=="
+  }
+ ],
+ "at": "2026-10-24"
+}
