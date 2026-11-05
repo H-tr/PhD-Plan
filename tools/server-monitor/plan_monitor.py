@@ -8,7 +8,7 @@ numbers as JSON on 127.0.0.1 only. Publish it to your tailnet, and nowhere else,
     python3 plan_monitor.py --port 9101 --origin https://h-tr.github.io
     python3 plan_monitor.py --once          # print one snapshot and exit
 
-GET /metrics   the latest snapshot
+GET /metrics   the latest snapshot; "age" is how many seconds ago it was taken
 GET /history   the last 30 minutes at 10 s steps: [t, cpu %, memory %, [GPU util %], [GPU memory %]]
 
 Standard library only; runs as an ordinary user. It never executes anything a request asks for.
@@ -29,7 +29,9 @@ PROC = os.environ.get('PLAN_MONITOR_PROC', '/proc')              # test hooks
 NVSMI = os.environ.get('PLAN_MONITOR_NVIDIA_SMI', 'nvidia-smi')
 TICK = os.sysconf('SC_CLK_TCK')
 PAGE = os.sysconf('SC_PAGE_SIZE')
-REAL_FS = {'ext2', 'ext3', 'ext4', 'xfs', 'btrfs', 'zfs', 'f2fs', 'nfs', 'nfs4', 'cifs', 'lustre', 'gpfs', 'fuseblk'}
+# local filesystems only: while the server of a network mount (NFS, CIFS, ...) is down, every call that touches
+# the mount blocks until it is back, and the agent must keep running whatever the lab NAS does
+REAL_FS = {'ext2', 'ext3', 'ext4', 'xfs', 'btrfs', 'zfs', 'f2fs', 'fuseblk'}
 GPU_Q = 'index,uuid,name,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw,power.limit'
 APP_Q = 'gpu_uuid,pid,used_memory,process_name'
 HIST_STEP = 10
@@ -57,6 +59,27 @@ def user_of(uid):
     return _names[uid]
 
 
+_stuck = []
+def run(cmd, timeout):
+    """subprocess.run(cmd, timeout=...) that cannot hang the sampler. A command stuck in the kernel (nvidia-smi
+    when a GPU has fallen off the bus) can outlive even SIGKILL, and subprocess.run would wait for it forever;
+    here it is left behind, and the command is not started again while it is still stuck."""
+    _stuck[:] = [p for p in _stuck if p.poll() is None]
+    if _stuck:
+        raise subprocess.TimeoutExpired(cmd, timeout)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        out, err = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        p.kill()
+        try:
+            p.communicate(timeout=2)
+        except subprocess.TimeoutExpired:
+            _stuck.append(p)
+        raise
+    return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+
+
 def default_disks():
     """Real filesystems from /proc/mounts, one mount per device, the root first."""
     seen, out = set(), []
@@ -78,6 +101,7 @@ def default_disks():
 class Sampler:
     def __init__(self, disks):
         self.disks = disks
+        self.cmds = {}
         self.prev_cpu = None
         self.prev_proc = {}
         self.prev_t = None
@@ -140,24 +164,47 @@ class Sampler:
         users.sort(key=lambda x: (-x['cpu'], -x['rss']))
         return users[:10]
 
+    def cmdline(self, pid, start):
+        """A process's command line, read once per process. Reading it takes the process's memory lock, which a job
+        stuck on an unreachable network filesystem can hold for as long as the outage lasts: then only a helper
+        thread waits, and the job is shown by its program name."""
+        key = (pid, start)
+        if key not in self.cmds:
+            box = []
+
+            def get():
+                try:
+                    box.append(read(f'{PROC}/{pid}/cmdline').replace('\0', ' ').strip()[:160])
+                except OSError:
+                    pass
+            t = threading.Thread(target=get, daemon=True)
+            t.start()
+            t.join(0.5)
+            if len(self.cmds) > 1000:
+                self.cmds.clear()
+            self.cmds[key] = box[0] if box else ''
+        return self.cmds[key]
+
     def proc_info(self, pid, mem, name, uptime):
         info = {'pid': int(pid), 'mem': mem, 'name': os.path.basename(name), 'user': '?', 'cmd': '', 'elapsed': None}
         try:
             info['user'] = user_of(os.stat(f'{PROC}/{pid}').st_uid)
-            info['cmd'] = read(f'{PROC}/{pid}/cmdline').replace('\0', ' ').strip()[:160]
             stat = read(f'{PROC}/{pid}/stat')
-            info['elapsed'] = int(uptime - int(stat[stat.rfind(')') + 2:].split()[19]) / TICK)
+            start = int(stat[stat.rfind(')') + 2:].split()[19])
+            info['elapsed'] = int(uptime - start / TICK)
+            info['cmd'] = self.cmdline(pid, start)
         except (OSError, ValueError, IndexError):
             pass                  # another PID namespace, or /proc mounted with hidepid
         return info
 
     def gpus(self, uptime):
         try:
-            g = subprocess.run([NVSMI, '--query-gpu=' + GPU_Q, '--format=csv,noheader,nounits'],
-                               capture_output=True, text=True, timeout=8)
+            g = run([NVSMI, '--query-gpu=' + GPU_Q, '--format=csv,noheader,nounits'], 8)
         except FileNotFoundError:
             return [], None       # no NVIDIA driver: a CPU-only machine
-        except (OSError, subprocess.TimeoutExpired) as e:
+        except subprocess.TimeoutExpired:
+            return [], 'nvidia-smi is not responding'
+        except OSError as e:
             return [], f'nvidia-smi: {e}'
         if g.returncode:
             return [], (g.stderr or g.stdout).strip()[:200]
@@ -171,8 +218,7 @@ class Sampler:
             gpus.append(d)
             by_uuid[p[1]] = d
         try:
-            a = subprocess.run([NVSMI, '--query-compute-apps=' + APP_Q, '--format=csv,noheader,nounits'],
-                               capture_output=True, text=True, timeout=8)
+            a = run([NVSMI, '--query-compute-apps=' + APP_Q, '--format=csv,noheader,nounits'], 8)
             for line in a.stdout.strip().splitlines():
                 p = [x.strip() for x in line.split(',')]
                 if len(p) >= 4 and p[0] in by_uuid:
@@ -230,7 +276,7 @@ def serve(sampler, bind, port, origins):
             path = self.path.split('?', 1)[0]
             with sampler.lock:
                 if path in ('/', '/metrics'):
-                    body = sampler.latest
+                    body = dict(sampler.latest, age=round(time.time() - sampler.latest['t'], 1))
                 elif path == '/history':
                     body = {'v': 1, 'step': HIST_STEP, 'points': list(sampler.hist)}
                 else:

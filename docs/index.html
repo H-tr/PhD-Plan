@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com https://*.ts.net http://localhost:* http://127.0.0.1:*; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
-<meta name="app-build" content="1024-1722-21458a">
+<meta name="app-build" content="1105-1945-4004eb">
 <title>Control Panel</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23fffff8'/%3E%3Cpath d='M7 10h18M7 16h18M7 22h18' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='10' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3Ccircle cx='21' cy='16' r='2.6' fill='%23a8281e'/%3E%3Ccircle cx='15' cy='22' r='2.6' fill='%23fffff8' stroke='%23111' stroke-width='1.8'/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -377,7 +377,8 @@ textarea.goal:focus{border-bottom-color:var(--ink)}
 .srv-st{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .srv-st i{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
 .srv-st.live{color:var(--ok)} .srv-st.live i{background:var(--ok)}
-.srv-st.stale{color:var(--warn)} .srv-st.stale i{background:var(--warn)}
+.srv-st.stale,.srv-st.frozen{color:var(--warn)} .srv-st.stale i,.srv-st.frozen i{background:var(--warn)}
+.srv-h:has(.srv-st.frozen)~:is(.gpus,.rrows){opacity:.45}
 .srv-st.off{color:var(--hl)} .srv-st.off i{background:var(--hl)}
 @media (prefers-reduced-motion: no-preference){.srv-st.live i{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.3}}}
 .srv-meta{font-size:14px;color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
@@ -1036,6 +1037,7 @@ async function pollServer(s){const m=LIVE.st[s.id]||(LIVE.st[s.id]={});const bas
   try{
     if(!LIVE.hist[s.id]){const h=await getJSON(base+'/history',6000);LIVE.hist[s.id]=(h.points||[]).slice(-180)}
     const x=await getJSON(base+'/metrics',5000);m.snap=x;m.ok=Date.now();m.err='';
+    m.age=x.age!=null?x.age:Math.max(0,Date.now()/1000-x.t);   // seconds since the server took these numbers
     const H=LIVE.hist[s.id];const last=H[H.length-1];
     if(x.cpu!=null&&(!last||x.t-last[0]>=9.5)){H.push([x.t,x.cpu,pctOf(x.mem.used,x.mem.total),(x.gpus||[]).map(g=>g.util),(x.gpus||[]).map(g=>pctOf(g.mem_used,g.mem_total))]);if(H.length>180)H.shift()}
   }catch(e){m.err=e.name==='AbortError'?'no answer within 5 seconds':e.name==='TypeError'?'cannot connect':(e.message||'cannot connect')}
@@ -1044,7 +1046,9 @@ async function monTick(){if(LIVE.busy||!D)return;LIVE.busy=true;try{await Promis
 function monSync(){const on=!!D&&U.tab==='res'&&document.visibilityState==='visible'&&(D.servers||[]).length>0;
   if(on&&!LIVE.timer){LIVE.timer=setInterval(monTick,LIVE.POLL);monTick()}else if(!on&&LIVE.timer){clearInterval(LIVE.timer);LIVE.timer=0}}
 function srvState(s){const m=LIVE.st[s.id]||{};if(!m.ok&&!m.err)return 'wait';
-  return m.ok&&Date.now()-m.ok<LIVE.POLL*2+4000?'live':m.ok?'stale':'off'}
+  return m.ok&&Date.now()-m.ok<LIVE.POLL*2+4000?(m.age>30?'frozen':'live'):m.ok?'stale':'off'}
+/* the server answers, but with numbers it took a while ago: its agent is stuck */
+const tookAt=x=>ago(new Date(x.t*1000).toISOString());
 function spark(vals,w,h){w=w||90;h=h||20;const v=vals.map(x=>x==null?null:Math.max(0,Math.min(100,x)));const n=v.length;let d='',pen=false;
   if(v.filter(x=>x!=null).length>1)v.forEach((y,i)=>{if(y==null){pen=false;return}d+=(pen?'L':'M')+(i/(n-1)*w).toFixed(1)+' '+(h-1-y/100*(h-2)).toFixed(1);pen=true});
   return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${d?`<path d="${d}"/>`:''}</svg>`}
@@ -1067,9 +1071,10 @@ function gpuRow(g,hist){const mp=pctOf(g.mem_used,g.mem_total);const procs=g.pro
     <span class="gm">${bar(mp)}<span>${mibG(g.mem_used)} / ${mibG(g.mem_total)} GB</span></span>
     <span class="gt${g.temp>=85?' hot':g.temp>=75?' warm':''}">${g.temp==null?'':Math.round(g.temp)+'°'}</span>${spark(hist,60,16)}${whoCell(who)}</div>`}
 function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[],state=srvState(s);
-  const label={wait:'connecting…',live:'live',stale:'stale · '+(m.ok?Math.round((Date.now()-m.ok)/1000)+' s ago':''),off:'unreachable'}[state];
+  const label={wait:'connecting…',live:'live',frozen:'not updating',stale:'stale · '+(m.ok?Math.round((Date.now()-m.ok)/1000)+' s ago':''),off:'unreachable'}[state];
   let h=`<div class="srv-h"><h3 data-find>${esc(s.name)}</h3><span class="srv-st ${state}"><i></i>${label}</span>${x?`<span class="srv-meta">${esc(x.host)} · up ${dur(x.uptime)} · load ${x.load.map(n=>n.toFixed(1)).join(' ')}</span>`:''}</div>`;
   if(s.note)h+=`<p class="hint" data-find>${md(s.note)}</p>`;
+  if(state==='frozen')h+=`<p class="err small">The server answers, but its numbers stopped updating ${esc(tookAt(x))}; what is shown below is from then.</p><p class="hint">The agent restarts itself within about 7 minutes. If this stays, log in and run <code>~/.local/share/plan-monitor/run.sh</code>.</p>`;
   if(!x)return h+(state==='off'?(LIVE.lna==='prompt'?`<p class="err small">Chrome is waiting for your permission.</p><p class="hint">Click <strong>Allow</strong> in the prompt next to the address bar (“look for and connect to devices on your local network”). If it is gone, click the site-settings icon left of the address and allow <em>Local network access</em>.</p>`
     :LIVE.lna==='denied'?`<p class="err small">Chrome is blocking access to devices on your network for this site.</p><p class="hint">Click the site-settings icon left of the address and set <em>Local network access</em> to Allow, then reload.</p>`
     :`<p class="err small">${esc(srvUrl(s))}: ${esc(m.err)}.</p><p class="hint">Is this device on your tailnet with Tailscale switched on? Is the agent running on the server (<code>~/.local/share/plan-monitor/run.sh</code> starts it)?</p>`):'');
@@ -1082,7 +1087,7 @@ function serverInner(s){const m=LIVE.st[s.id]||{},x=m.snap,H=LIVE.hist[s.id]||[]
 </div>`;
   return h}
 function glanceHtml(){return (D.servers||[]).map(s=>{const m=LIVE.st[s.id]||{},x=m.snap,st=srvState(s);const G=x&&x.gpus||[];
-  const txt=x?(G.length?`${G.filter(gpuFree).length}/${G.length} GPUs free · `:'')+`cpu ${x.cpu==null?'—':Math.round(x.cpu)+'%'} · mem ${Math.round(pctOf(x.mem.used,x.mem.total))}%`:st==='off'?'unreachable':'connecting…';
+  const txt=st==='frozen'?`not updating · numbers from ${tookAt(x)}`:x?(G.length?`${G.filter(gpuFree).length}/${G.length} GPUs free · `:'')+`cpu ${x.cpu==null?'—':Math.round(x.cpu)+'%'} · mem ${Math.round(pctOf(x.mem.used,x.mem.total))}%`:st==='off'?'unreachable':'connecting…';
   return `<button type="button" class="gl" data-act="goto" data-tab="res" data-target="srv-${esc(s.id)}"><span class="srv-st ${st}"><i></i></span><b>${esc(s.name)}</b><span>${txt}</span></button>`}).join('')}
 function paintGlance(){const el=document.getElementById('res-glance');if(el)el.innerHTML=glanceHtml()}
 function paintServer(s){if(T.editSrv||U.tab!=='res')return;const el=document.getElementById('srv-'+s.id);if(el)el.innerHTML=serverInner(s)}

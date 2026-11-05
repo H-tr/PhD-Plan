@@ -3,6 +3,8 @@
 The agent behind the planner's **Resources** tab. `plan_monitor.py` samples CPU, memory, disks, GPUs (through `nvidia-smi`), and who is using them, every 2 seconds. It serves the numbers as JSON on `127.0.0.1:9101`. `tailscale serve` publishes that port over HTTPS to your tailnet and nowhere else, and the page polls it every 3 seconds while the tab is open.
 
 - Standard library Python 3 only; runs as an ordinary user and never executes anything a request asks for.
+- Does not depend on the lab NAS: it reports local disks only and never touches network mounts, which block every call while their server is down. A GPU job stuck on such a mount, or an `nvidia-smi` that stops answering, holds up only a helper thread; the card then shows the job by its program name, or says the GPUs are not answering.
+- Every answer carries `age`, the seconds since its numbers were taken. The page marks a server whose numbers are more than 30 seconds old as *not updating*, and cron restarts an agent whose numbers are more than 2 minutes old.
 - Answers browsers only from `https://h-tr.github.io` (`--origin` to change), including Chrome's private-network preflight.
 - `GET /metrics`: the latest snapshot. `GET /history`: the last 30 minutes at 10-second steps.
 

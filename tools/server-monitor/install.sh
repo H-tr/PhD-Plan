@@ -44,10 +44,16 @@ if [ "$USERSPACE" = 1 ] && [ ! -x "$DIR/bin/tailscaled" ]; then
   rm -rf "$DIR"/tailscale_*/
 fi
 
-# run.sh starts whatever is not already running; cron calls it at boot and every five minutes.
+# run.sh starts whatever is not already running; cron calls it at boot and every five minutes. It also restarts
+# an agent that still answers but whose numbers are more than two minutes old.
 cat > "$DIR/run.sh" <<EOF
 #!/usr/bin/env bash
 D="$DIR"
+AGE=\$(python3 -c 'import json,sys,urllib.request; print(int(json.load(urllib.request.urlopen(sys.argv[1], timeout=5)).get("age", 0)))' http://127.0.0.1:$PORT/metrics 2>/dev/null)
+if [ "\${AGE:-0}" -gt 120 ]; then
+  echo "\$(date '+%F %T') numbers \${AGE} s old: restarting" >>"\$D/agent.log"
+  pkill -9 -u "\$(id -u)" -f "plan_monitor.py --port $PORT"; sleep 1
+fi
 if ! pgrep -u "\$(id -u)" -f "plan_monitor.py --port $PORT" >/dev/null; then
   nohup python3 "\$D/plan_monitor.py" --port $PORT --origin "$ORIGIN" >>"\$D/agent.log" 2>&1 &
 fi
